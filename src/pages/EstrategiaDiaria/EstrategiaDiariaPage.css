@@ -1,0 +1,224 @@
+.estrategia-diaria-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.estrategia-diaria-header h2 {
+  margin-bottom: 0.25rem;
+}
+
+.estrategia-diaria-header p {
+  color: var(--text-secondary);
+}
+
+.estrategia-diaria-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.estrategia-diaria-card {
+  padding: 1.25rem;
+}
+
+.estrategia-identificacao {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  max-width: 600px;
+}
+
+.estrategia-identificacao .identificacao-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.estrategia-identificacao label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.estrategia-identificacao input,
+.estrategia-identificacao select {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+}
+
+.estrategia-identificacao select option {
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .estrategia-identificacao select {
+  color-scheme: dark;
+}
+
+.estrategia-diaria-page.exporting .hide-on-pdf,
+.estrategia-diaria-page.exporting .col-actions,
+.estrategia-diaria-page.exporting .action-btn {
+  display: none !important;
+}
+
+.resumo-card {
+  border: 1px solid var(--border-color);
+}
+
+.resumo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.resumo-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.resumo-item.destaque {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-light);
+}
+
+.resumo-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.resumo-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.resumo-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.estrategia-excel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.file-input-label:hover {
+  filter: brightness(1.05);
+}
+
+.success-banner {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success-color);
+}
+
+.estrategia-diaria-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+.estrategia-diaria-form .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.estrategia-diaria-form input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+}
+
+.estrategia-diaria-form .form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.estrategia-diaria-form .info-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.estrategia-diaria-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.estrategia-diaria-chart {
+  width: 100%;
+  height: 320px;
+}
+
+.estrategia-diaria-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.estrategia-diaria-table th,
+.estrategia-diaria-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.estrategia-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 1rem;
+}
+
+.estrategia-erros {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.error-item {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger-color);
+}
+

@@ -1,0 +1,18 @@
+.money-visibility-toggle {
+  border: none;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.money-visibility-toggle:hover {
+  background: var(--card-hover);
+  transform: translateY(-1px);
+}
+
+

@@ -1,0 +1,259 @@
+.laminas-editor {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.editor-col {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.editor-preview {
+  align-items: center;
+}
+
+.editor-col h3 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.editor-form label,
+.editor-assets label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.editor-form input,
+.editor-form textarea,
+.editor-assets input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.kpi-section h4 {
+  margin: 0 0 0.5rem;
+  color: var(--text-primary);
+}
+
+.lamina-preview {
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 12px;
+  padding: 18mm 16mm;
+  width: min(210mm, 100%);
+  aspect-ratio: 210 / 297;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.lamina-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-area {
+  width: 120px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #cbd5f5;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #64748b;
+  overflow: hidden;
+}
+
+.logo-area img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.lamina-top-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.lamina-top-text strong {
+  font-size: 1rem;
+}
+
+.lamina-top-text span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #475569;
+}
+
+.lamina-date {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.lamina-highlight {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.lamina-description {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.lamina-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+.lamina-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-right: 1px solid #e2e8f0;
+  padding-right: 1rem;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metric-item span {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #64748b;
+}
+
+.metric-item strong {
+  font-size: 0.95rem;
+}
+
+.lamina-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  min-height: 360px;
+}
+
+.lamina-chart {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 220px;
+  grid-column: 1 / -1;
+}
+
+.lamina-track {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f766e;
+}
+
+.lamina-chart img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.grafico-placeholder {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: auto;
+}
+
+.lamina-resumo h4,
+.lamina-performance h4,
+.lamina-comments h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #475569;
+}
+
+.lamina-comments {
+  margin-top: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #f8fafc;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.planilha-erros {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--danger-color, #ef4444);
+  color: var(--danger-color, #ef4444);
+  font-size: 0.8rem;
+}
+
+.editor-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1200px) {
+  .laminas-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .lamina-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lamina-metrics {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+
+  .lamina-main {
+    grid-template-columns: 1fr;
+  }
+
+  .lamina-preview {
+    width: 100%;
+    aspect-ratio: 210 / 297;
+  }
+}
+

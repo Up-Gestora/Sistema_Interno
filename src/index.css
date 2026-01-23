@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #1d2f34;
+  --primary-dark: #131b1d;
+  --primary-light: #4c5f64;
+  --secondary-color: #7f9399;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+}
+
+/* Dark Theme (Default) */
+[data-theme='dark'] {
+  --bg-color: #000000;
+  --bg-secondary: #131b1d;
+  --bg-tertiary: #1d2f34;
+  --card-bg: #131b1d;
+  --card-hover: #1d2f34;
+  --sidebar-bg: #000000;
+  --header-bg: #131b1d;
+  --text-primary: #f1f5f6;
+  --text-secondary: #c9d4d7;
+  --text-muted: #7f9399;
+  --border-color: #1d2f34;
+  --border-hover: #4c5f64;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
+
+/* Light Theme */
+[data-theme='light'] {
+  --bg-color: #f4f7f8;
+  --bg-secondary: #e6ecee;
+  --bg-tertiary: #d8e1e3;
+  --card-bg: #ffffff;
+  --card-hover: #f7f9fa;
+  --sidebar-bg: #ffffff;
+  --header-bg: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #131b1d;
+  --text-muted: #4c5f64;
+  --border-color: #c7d1d4;
+  --border-hover: #1d2f34;
+  --shadow: 0 2px 4px 0 rgb(0 0 0 / 0.1), 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* Transições otimizadas apenas para elementos que mudam com o tema */
+html {
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+body {
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+  will-change: background-color, color;
+}
+
+/* Aplicar transições apenas em elementos que usam variáveis de tema */
+[class*="card"],
+[class*="Card"],
+[class*="header"],
+[class*="Header"],
+[class*="page"],
+[class*="Page"] {
+  transition: background-color 0.15s ease-out, color 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+/* Sidebar tem transição própria para width, então não incluímos aqui */
+
+/* Elementos de entrada mantêm transições rápidas apenas para hover/focus */
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.1s ease-out, color 0.1s ease-out, border-color 0.1s ease-out, transform 0.1s ease-out;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+

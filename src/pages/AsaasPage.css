@@ -1,0 +1,482 @@
+.asaas-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.periodo-select {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.periodo-select label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-config {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-config:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.error-banner-card {
+  margin-bottom: 1rem;
+}
+
+.error-banner {
+  padding: 1rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--danger-color);
+  border-radius: 6px;
+  color: var(--danger-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.error-banner > div:first-child {
+  flex: 1;
+}
+
+.error-banner button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--danger-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cors-solution {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(251, 191, 36, 0.1);
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.cors-solution p {
+  margin: 0 0 0.75rem 0;
+  font-weight: 600;
+}
+
+.cors-solution ol {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+}
+
+.cors-solution li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.error-banner button {
+  background: none;
+  border: none;
+  color: var(--danger-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.config-prompt {
+  text-align: center;
+  padding: 3rem;
+}
+
+.config-prompt p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.resumo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+
+.resumo-card {
+  padding: 1.5rem;
+}
+
+.resumo-card h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.75rem 0;
+}
+
+.resumo-card .valor {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.resumo-card .valor.positivo {
+  color: var(--success-color);
+}
+
+.resumo-card .valor.negativo {
+  color: var(--danger-color);
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  height: 1rem;
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.4;
+  animation: loadingPulse 1s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.pagamentos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pagamentos-header h2 {
+  margin: 0;
+}
+
+.filtros {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filtro-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn-refresh {
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-refresh:hover:not(:disabled) {
+  background-color: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+.btn-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagamentos-table-container {
+  overflow-x: auto;
+}
+
+.pagamentos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.pagamentos-table thead {
+  background-color: var(--bg-tertiary);
+}
+
+.pagamentos-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.pagamentos-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.pagamentos-table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.valor-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-received {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--success-color);
+}
+
+.status-pending {
+  background-color: rgba(251, 191, 36, 0.2);
+  color: #f59e0b;
+}
+
+.status-overdue {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--danger-color);
+}
+
+.status-refunded {
+  background-color: rgba(107, 114, 128, 0.2);
+  color: var(--text-secondary);
+}
+
+.status-default {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.config-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-form label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.config-form input,
+.config-form select {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9375rem;
+}
+
+.config-form input:focus,
+.config-form select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.config-form small {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.cors-warning {
+  padding: 1rem;
+  background-color: rgba(251, 191, 36, 0.1);
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.cors-warning p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.cors-warning ul {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.cors-warning li {
+  margin: 0.25rem 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-tertiary);
+}
+
+@media (max-width: 768px) {
+  .resumo-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .pagamentos-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtros {
+    width: 100%;
+  }
+
+  .filtro-select {
+    flex: 1;
+  }
+
+  .pagamentos-table {
+    font-size: 0.75rem;
+  }
+
+  .pagamentos-table th,
+  .pagamentos-table td {
+    padding: 0.5rem;
+  }
+}
+

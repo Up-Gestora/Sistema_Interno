@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lâmina Carteira Tática - UP Carteiras Administradas</title>
+    <style>
+      :root {
+        --blue: #08376a;
+        --blue-dark: #062c54;
+        --blue-light: #0d4c8b;
+        --green: #0f766e;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: #e2e8f0;
+        --panel: #e6e6e6;
+        --panel-2: #f3f4f6;
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #0f172a;
+        color: var(--text);
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 20px;
+      }
+
+      .panel {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .panel h3 {
+        margin: 0 0 12px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        margin-top: 6px;
+      }
+
+      textarea {
+        min-height: 180px;
+        resize: vertical;
+        font-family: "Courier New", monospace;
+        font-size: 0.8rem;
+      }
+
+      .hint {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      .error {
+        color: #dc2626;
+        font-size: 0.75rem;
+        margin-top: 6px;
+      }
+
+      .actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .preview-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .a4 {
+        width: min(210mm, 100%);
+        aspect-ratio: 210 / 297;
+        background: #ffffff;
+        padding: 0;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        background: var(--blue);
+        color: #ffffff;
+        padding: 12px 20px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+
+      .top-left {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-box {
+        width: 52px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: #ffffff;
+        background: transparent;
+        overflow: hidden;
+      }
+
+      .logo-box img,
+      .footer-logo img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .top-text h2 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .top-text p {
+        margin: 3px 0 0;
+        font-size: 0.65rem;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+
+      .top-right {
+        text-align: right;
+        font-size: 0.75rem;
+      }
+
+      .top-right strong {
+        display: block;
+        font-size: 1.35rem;
+      }
+
+      .desc {
+        padding: 12px 20px 6px;
+        font-size: 0.72rem;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .desc strong {
+        color: var(--blue);
+      }
+
+      .divider {
+        height: 3px;
+        background: var(--blue);
+        margin: 6px 20px 0;
+      }
+
+      .main {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 14px;
+        padding: 12px 20px 6px;
+        flex: 1;
+      }
+
+      .metricas {
+        background: #e5e7eb;
+        border-radius: 12px;
+        padding: 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .metrica span {
+        font-size: 0.63rem;
+        text-transform: uppercase;
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      .metrica strong {
+        display: block;
+        font-size: 0.7rem;
+        color: #111827;
+      }
+
+      .track-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        color: var(--blue);
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+
+      .track-header strong {
+        font-size: 0.95rem;
+      }
+
+      .chart {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #ffffff;
+        padding: 6px;
+      }
+
+      .chart img {
+        width: 100%;
+        height: 210px;
+        object-fit: contain;
+        border-radius: 6px;
+      }
+
+      .tables {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .box h4 {
+        margin: 0 0 4px;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: var(--blue);
+      }
+
+      .resumo-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px;
+        padding: 4px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.65rem;
+      }
+
+      .resumo-item strong {
+        color: var(--blue);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.65rem;
+      }
+
+      th,
+      td {
+        padding: 4px;
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+      }
+
+      th {
+        color: var(--blue);
+        text-transform: uppercase;
+        font-size: 0.6rem;
+      }
+
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 14px;
+        padding: 0 20px 10px;
+      }
+
+      .atrib {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 8px;
+        border: 1px solid var(--border);
+      }
+
+      .atrib h4 {
+        margin: 0 0 6px;
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .atrib img {
+        width: 100%;
+        height: 120px;
+        object-fit: contain;
+      }
+
+      .atrib-legenda {
+        display: grid;
+        gap: 4px;
+        font-size: 0.6rem;
+        margin-top: 4px;
+        color: var(--muted);
+      }
+
+      .atrib-legenda span {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .atrib small {
+        display: block;
+        font-size: 0.55rem;
+        color: var(--muted);
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+
+      .comentarios {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+        font-size: 0.65rem;
+        color: var(--muted);
+        background: #ffffff;
+      }
+
+      .mes-title {
+        font-size: 1.05rem;
+        color: var(--blue);
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .operacional {
+        background: var(--blue);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 10px;
+        font-size: 0.65rem;
+        margin-top: 8px;
+      }
+
+      .operacional h4 {
+        margin: 0 0 6px;
+        font-size: 0.7rem;
+      }
+
+      .operacional ul {
+        margin: 0;
+        padding-left: 14px;
+        display: grid;
+        gap: 3px;
+      }
+
+      .footer {
+        background: var(--blue-dark);
+        color: #ffffff;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 6px 20px;
+        font-size: 0.55rem;
+        gap: 8px;
+      }
+
+      .footer-icons {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .footer-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1px solid #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.55rem;
+      }
+
+      .footer-logo {
+        width: 36px;
+        height: 26px;
+        border-radius: 6px;
+        background: #ffffff;
+        color: var(--blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="panel">
+        <h3>Dados (JSON)</h3>
+        <label>
+          JSON do template
+          <textarea id="jsonInput"></textarea>
+          <span class="error" id="jsonError"></span>
+        </label>
+        <div class="actions">
+          <label>
+            Logo (topo)
+            <input type="file" id="logoInput" accept="image/*" />
+          </label>
+          <label>
+            Gráfico (imagem)
+            <input type="file" id="chartInput" accept="image/*" />
+          </label>
+          <label>
+            Atribuição (imagem)
+            <input type="file" id="atribInput" accept="image/*" />
+          </label>
+          <label>
+            Logo (rodapé)
+            <input type="file" id="footerLogoInput" accept="image/*" />
+          </label>
+          <span class="hint">Dica: exporte os gráficos como imagem e carregue aqui.</span>
+        </div>
+      </div>
+
+      <div class="panel preview-wrapper">
+        <div class="a4" id="preview">
+          <div class="top-bar">
+            <div class="top-left">
+              <div class="logo-box" id="logoBox">UP</div>
+              <div class="top-text">
+                <h2 data-field="titulo"></h2>
+                <p data-field="subtitulo"></p>
+              </div>
+            </div>
+            <div class="top-right">
+              <div data-field="periodo"></div>
+              <strong data-field="destaque"></strong>
+            </div>
+          </div>
+
+          <div class="desc" data-field="descricao"></div>
+          <div class="divider"></div>
+
+          <div class="main">
+            <div class="metricas" id="metricas"></div>
+            <div>
+              <div class="track-header">
+                <span data-field="chartTitle"></span>
+                <strong data-field="chartValue"></strong>
+              </div>
+              <div class="chart">
+                <img id="chartImage" alt="Gráfico" />
+              </div>
+
+              <div class="tables">
+                <div class="box">
+                  <h4>Resumo Mensal</h4>
+                  <div id="resumoMensal"></div>
+                </div>
+                <div class="box">
+                  <h4>Performance</h4>
+                  <table>
+                    <thead>
+                      <tr id="tabelaHeader"></tr>
+                    </thead>
+                    <tbody id="tabelaBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-grid">
+            <div class="atrib">
+              <h4>Atribuição de Resultados</h4>
+              <img id="atribImage" alt="Atribuição" />
+              <div class="atrib-legenda" id="atribLegenda"></div>
+              <small data-field="disclaimer"></small>
+            </div>
+            <div>
+              <div class="comentarios">
+                <div class="mes-title" data-field="mesTitulo"></div>
+                <div data-field="comentarios"></div>
+              </div>
+              <div class="operacional">
+                <h4 data-field="operacionalTitulo"></h4>
+                <ul id="operacionalLista"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="footer-icons">
+              <div class="footer-icon">◎</div>
+              <div class="footer-icon">☎</div>
+              <div class="footer-icon">✉</div>
+            </div>
+            <span data-field="rodape"></span>
+            <div class="footer-logo" id="footerLogo">UP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const defaultData = {
+        titulo: "Carteira UP FILS",
+        subtitulo: "INTELIGÊNCIA ARTIFICIAL A SERVIÇO DO SEU DINHEIRO",
+        periodo: "Dezembro/25",
+        destaque: "+6,00%",
+        descricao:
+          "A Carteira Tática UP se encontra aberta para captação, buscando gerar alpha tanto sobre o IFIX quanto sobre o CDI no longo prazo. Trata-se de uma estratégia focada em fundos imobiliários, agro e infras.",
+        metricas: [
+          { label: "Público Alvo", value: "qualquer investidor com perfis de risco moderado/arrojado." },
+          { label: "Drawdown máximo", value: "-3,24%" },
+          { label: "Volatilidade Anualizada", value: "7,38%" },
+          { label: "Retorno Acumulado", value: "43,55%" },
+          { label: "Índice de Sharpe", value: "3,60" },
+          { label: "Benchmark", value: "IFIX" },
+          { label: "Alpha", value: "28,32%" },
+          { label: "Investimento Mínimo", value: "R$ 50.000,00" },
+          { label: "Cota de Resgate", value: "Imediata" },
+          { label: "Prazo de Resgate", value: "D+5" },
+          { label: "Taxa de Gestão", value: "0,60% a 2,00%" },
+          { label: "Taxa de Performance", value: "30% sobre o IFIX (marca d'água)" },
+          { label: "Gestão", value: "UP GCA" },
+          { label: "PL Total", value: "R$ 6,76MM" }
+        ],
+        resumoMensal: [
+          { label: "Total de operações", value: "124" },
+          { label: "Operações com ganhos", value: "84,68%" },
+          { label: "Maior ganho por operação", value: "+25%" }
+        ],
+        tabela: {
+          headers: ["Período", "Tática", "IFIX", "CDI", "Alpha"],
+          rows: [
+            ["01 M", "6,00", "3,13", "0,96", "2,86"],
+            ["03 M", "7,91", "5,18", "3,01", "2,73"],
+            ["Início", "43,55", "15,23", "14,43", "28,32"]
+          ]
+        },
+        chartTitle: "Track Record",
+        chartValue: "+43,55%",
+        mesTitulo: "Dezembro de 2025",
+        comentarios:
+          "Fechamos o mês de novembro com uma rentabilidade líquida de 6,00%, frente a 3,13% do IFIX e 0,96% do CDI. Seguiremos aprimorando a estratégia para 2026.",
+        disclaimer:
+          "Disclaimer: A rentabilidade obtida no passado não representa quaisquer garantias de rentabilidade futura.",
+        atribLegenda: [
+          { label: "Ações e ETFs", value: "1,91%", color: "#94a3b8" },
+          { label: "FIIs", value: "98,09%", color: "#0b3c78" }
+        ],
+        operacionalTitulo: "Operacional",
+        operacional: [
+          "Estratégia sistemática em FIIs;",
+          "Gestão de risco dinâmica e automatizada via sistema interno;",
+          "Controle de drawdown com stop técnico;",
+          "Exposição regrada por controle interno;",
+          "Revisão mensal de parâmetros e performance;",
+          "Monitoramento contínuo em tempo real 24/7."
+        ],
+        rodape: "UP Carteiras Administradas - 58.450.405/0001-01"
+      };
+
+      const jsonInput = document.getElementById("jsonInput");
+      const jsonError = document.getElementById("jsonError");
+      const chartInput = document.getElementById("chartInput");
+      const logoInput = document.getElementById("logoInput");
+      const atribInput = document.getElementById("atribInput");
+      const footerLogoInput = document.getElementById("footerLogoInput");
+
+      const chartImage = document.getElementById("chartImage");
+      const logoBox = document.getElementById("logoBox");
+      const atribImage = document.getElementById("atribImage");
+      const footerLogo = document.getElementById("footerLogo");
+
+      function render(data) {
+        document.querySelector('[data-field="titulo"]').textContent = data.titulo || "";
+        document.querySelector('[data-field="subtitulo"]').textContent = data.subtitulo || "";
+        document.querySelector('[data-field="periodo"]').textContent = data.periodo || "";
+        document.querySelector('[data-field="destaque"]').textContent = data.destaque || "";
+        document.querySelector('[data-field="chartTitle"]').textContent = data.chartTitle || "";
+        document.querySelector('[data-field="chartValue"]').textContent = data.chartValue || "";
+        document.querySelector('[data-field="mesTitulo"]').textContent = data.mesTitulo || "";
+        document.querySelector('[data-field="rodape"]').textContent = data.rodape || "";
+        document.querySelector('[data-field="operacionalTitulo"]').textContent =
+          data.operacionalTitulo || "Operacional";
+
+        const desc = document.querySelector('[data-field="descricao"]');
+        desc.innerHTML = data.descricao || "";
+
+        const comentarios = document.querySelector('[data-field="comentarios"]');
+        comentarios.innerHTML = data.comentarios || "";
+
+        const disclaimer = document.querySelector('[data-field="disclaimer"]');
+        disclaimer.textContent = data.disclaimer || "";
+
+        const metricas = document.getElementById("metricas");
+        metricas.innerHTML = (data.metricas || [])
+          .map(
+            (item) =>
+              `<div class="metrica"><span>${item.label}</span><strong>${item.value}</strong></div>`
+          )
+          .join("");
+
+        const resumo = document.getElementById("resumoMensal");
+        resumo.innerHTML = (data.resumoMensal || [])
+          .map(
+            (item) =>
+              `<div class="resumo-item"><span>${item.label}</span><strong>${item.value}</strong></div>`
+          )
+          .join("");
+
+        const tabelaHeader = document.getElementById("tabelaHeader");
+        tabelaHeader.innerHTML = (data.tabela?.headers || [])
+          .map((h) => `<th>${h}</th>`)
+          .join("");
+
+        const tabelaBody = document.getElementById("tabelaBody");
+        tabelaBody.innerHTML = (data.tabela?.rows || [])
+          .map(
+            (row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+          )
+          .join("");
+
+        const operacional = document.getElementById("operacionalLista");
+        operacional.innerHTML = (data.operacional || [])
+          .map((item) => `<li>${item}</li>`)
+          .join("");
+
+        const legenda = document.getElementById("atribLegenda");
+        legenda.innerHTML = (data.atribLegenda || [])
+          .map(
+            (item) =>
+              `<span><i class="legend-dot" style="background:${item.color}"></i>${item.label}<strong>${item.value}</strong></span>`
+          )
+          .join("");
+      }
+
+      jsonInput.value = JSON.stringify(defaultData, null, 2);
+      render(defaultData);
+
+      jsonInput.addEventListener("input", () => {
+        try {
+          const parsed = JSON.parse(jsonInput.value);
+          render(parsed);
+          jsonError.textContent = "";
+        } catch (err) {
+          jsonError.textContent = "JSON inválido.";
+        }
+      });
+
+      chartInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        chartImage.src = URL.createObjectURL(file);
+      });
+
+      logoInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        logoBox.textContent = "";
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        logoBox.appendChild(img);
+      });
+
+      atribInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        atribImage.src = URL.createObjectURL(file);
+      });
+
+      footerLogoInput.addEventListener("change", (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        footerLogo.textContent = "";
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        footerLogo.appendChild(img);
+      });
+    </script>
+  </body>
+</html>
+
+

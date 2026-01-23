@@ -1,0 +1,36 @@
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  transition: box-shadow 0.2s ease-out, background-color 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+[data-theme='light'] .card {
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.12), 0 1px 4px 0 rgb(0 0 0 / 0.08);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+[data-theme='light'] .card:hover {
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.15), 0 2px 6px 0 rgb(0 0 0 / 0.1);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+.card-content {
+  color: var(--text-secondary);
+  transition: color 0.15s ease-out;
+}
+

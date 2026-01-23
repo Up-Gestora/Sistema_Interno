@@ -1,0 +1,21 @@
+{
+  "name": "sistema-interno-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend proxy para API do Asaas",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "node-fetch": "^3.3.2"
+  }
+}
+
+
+
+

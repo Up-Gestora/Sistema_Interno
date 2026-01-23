@@ -1,0 +1,32 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  letter-spacing: -0.5px;
+}
+
+.logo-small .logo-text {
+  font-size: 1rem;
+}
+
+.logo-medium .logo-text {
+  font-size: 1.25rem;
+}
+
+.logo-large .logo-text {
+  font-size: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 1rem;
+  }
+}
+

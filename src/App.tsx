@@ -11,6 +11,8 @@ import FinanceiroContasPage from './pages/Asaas/FinanceiroContasPage';
 import FinanceiroPagamentosPage from './pages/Asaas/FinanceiroPagamentosPage';
 import LaminasPage from './pages/LaminasPage';
 import EstrategiaDiariaPage from './pages/EstrategiaDiaria/EstrategiaDiariaPage';
+import LinksUteisPage from './pages/LinksUteis/LinksUteisPage';
+import AssinafyPage from './pages/AssinafyPage';
 import { useClientes } from './hooks/useClientes';
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/laminas" element={<LaminasPage />} />
         <Route path="/estrategia-diaria" element={<EstrategiaDiariaPage />} />
         <Route path="/importacao-planilha" element={<ImportacaoPlanilhaPage />} />
+        <Route path="/links-uteis" element={<LinksUteisPage />} />
+        <Route path="/assinafy" element={<AssinafyPage />} />
         <Route path="/asaas" element={<AsaasPage />}>
           <Route path="contas" element={<FinanceiroContasPage />} />
           <Route path="pagamentos" element={<FinanceiroPagamentosPage />} />
@@ -46,4 +50,3 @@ function App() {
 }
 
 export default App;
-

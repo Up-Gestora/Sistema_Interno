@@ -23,7 +23,7 @@ const METRICAS_INICIAIS: CampoValor[] = [
 const RESUMO_MENSAL_INICIAL: CampoValor[] = [
   { label: 'Total de operações', value: '124' },
   { label: 'Operações com ganhos', value: '84,68%' },
-  { label: 'Maior ganho por operação', value: '+25%' },
+  { label: 'Fator de lucro', value: '+25%' },
 ];
 
 const PERFORMANCE_INICIAL: PerformanceRow[] = [

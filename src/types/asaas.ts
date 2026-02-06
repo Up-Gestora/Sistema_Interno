@@ -17,6 +17,8 @@ export interface AsaasPagamento {
   paymentDate?: string;
   clientPaymentDate?: string;
   installmentNumber?: number;
+  installment?: string;
+  subscription?: string;
   invoiceUrl?: string;
   bankSlipUrl?: string;
   transactionReceiptUrl?: string;
@@ -103,6 +105,9 @@ export interface AsaasRespostaCobrancas {
 
 export interface AsaasResumoFinanceiro {
   balance: number;
+  totalRecebimentos?: number;
+  totalPagamentos?: number;
+  lucro?: number;
   received: number;
   confirmed: number;
   pending: number;
@@ -132,5 +137,3 @@ export interface AsaasRespostaSubscriptions {
   offset: number;
   data: AsaasSubscription[];
 }
-
-

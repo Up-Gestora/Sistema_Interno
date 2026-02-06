@@ -120,12 +120,17 @@
 .preview-text {
   color: var(--text-primary);
   font-size: 0.9375rem;
-  line-height: 1.8;
+  line-height: 1.4;
   white-space: pre-wrap;
 }
 
 .preview-text p {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.4rem 0;
+}
+
+.preview-text .preview-spacer {
+  margin: 0 0 0.9rem 0;
+  line-height: 0.6;
 }
 
 .preview-footer {

@@ -148,6 +148,14 @@
   gap: 1rem;
 }
 
+.resumo-cards-financeiro {
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+}
+
+.resumo-card-lucro {
+  grid-column: 1 / -1;
+}
+
 
 .resumo-card {
   padding: 1.5rem;
@@ -267,6 +275,307 @@
   overflow-x: auto;
 }
 
+.pagamentos-table-actions {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.pagamentos-more-btn {
+  min-width: 160px;
+}
+
+.pagamentos-chart-card {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  --chart-admin: var(--primary-color);
+  --chart-performance: var(--primary-dark);
+  --chart-payments: #ef4444;
+  --chart-profit: #0f172a;
+  --chart-axis: var(--text-secondary);
+  --chart-grid: var(--border-color);
+}
+
+[data-theme='dark'] .pagamentos-chart-card {
+  --chart-admin: #38bdf8;
+  --chart-performance: #34d399;
+  --chart-payments: #f87171;
+  --chart-profit: #f8fafc;
+  --chart-axis: #e2e8f0;
+  --chart-grid: rgba(148, 163, 184, 0.28);
+}
+
+.pagamentos-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pagamentos-chart-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.pagamentos-chart-header span {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.pagamentos-chart-container {
+  width: 100%;
+  height: 280px;
+}
+
+.inter-manual-card {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inter-manual-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.inter-manual-stack {
+  margin-top: 1rem;
+}
+
+.inter-manual-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.inter-manual-header span {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.inter-manual-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.inter-manual-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.inter-manual-form input,
+.inter-manual-form select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.inter-manual-descricao {
+  grid-column: span 2;
+}
+
+.inter-manual-error {
+  color: var(--danger-color);
+  font-size: 0.8125rem;
+}
+
+.inter-manual-list {
+  margin-top: 0.5rem;
+}
+
+.inter-manual-table th,
+.inter-manual-table td {
+  vertical-align: middle;
+}
+
+.inter-remove-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.pagamentos-chart-card .recharts-cartesian-axis-tick-value,
+.pagamentos-chart-card .recharts-legend-item-text {
+  fill: var(--chart-axis);
+  color: var(--chart-axis);
+}
+
+.pagamentos-chart-card .recharts-cartesian-grid line {
+  stroke: var(--chart-grid);
+}
+
+.pagamentos-chart-card .recharts-text {
+  fill: var(--chart-axis);
+}
+
+.assinaturas-resumo {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.assinaturas-resumo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.assinaturas-resumo-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.assinaturas-resumo-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.assinaturas-resumo-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.assinaturas-resumo-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.assinaturas-resumo-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.assinaturas-resumo-toggle input {
+  accent-color: var(--primary-color);
+}
+
+.custom-tooltip {
+  background-color: var(--card-bg);
+  padding: 0.75rem;
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+}
+
+.tooltip-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.tooltip-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.assinaturas-resumo-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.assinaturas-resumo-header span {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.assinaturas-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+}
+
+.assinaturas-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  table-layout: fixed;
+}
+
+.assinaturas-table thead tr:first-child th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.assinaturas-table thead tr:nth-child(2) th {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.assinaturas-table th,
+.assinaturas-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.assinaturas-table tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.assinaturas-group-row td {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: left;
+}
+
+.assinaturas-group-cell {
+  padding: 0.55rem 0.75rem;
+}
+
+.assinaturas-col-cliente {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background-color: inherit;
+  min-width: 180px;
+  z-index: 1;
+}
+
+.assinaturas-col-mes {
+  min-width: 90px;
+}
+
 .pagamentos-table {
   width: 100%;
   border-collapse: collapse;
@@ -328,6 +637,11 @@
 .status-refunded {
   background-color: rgba(107, 114, 128, 0.2);
   color: var(--text-secondary);
+}
+
+.status-inter-paid {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--danger-color);
 }
 
 .status-default {
@@ -457,6 +771,10 @@
     grid-template-columns: 1fr;
   }
 
+  .resumo-cards-financeiro {
+    grid-template-columns: 1fr;
+  }
+
   .pagamentos-header {
     flex-direction: column;
     align-items: stretch;
@@ -478,5 +796,8 @@
   .pagamentos-table td {
     padding: 0.5rem;
   }
-}
 
+  .inter-manual-descricao {
+    grid-column: span 1;
+  }
+}

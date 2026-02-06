@@ -6,7 +6,7 @@ import Modal from '../components/Modal/Modal';
 import EditarClienteForm from '../components/EditarClienteForm/EditarClienteForm';
 import ClientePagamentosModal from '../components/ClientePagamentosModal/ClientePagamentosModal';
 import { Cliente } from '../types';
-import { atualizarCobrancasPendentes, criarCobranca, isAsaasConfigured } from '../services/asaasService';
+import { atualizarCobrancasPendentes, buscarSubscriptions, cancelarSubscription, criarCobranca, isAsaasConfigured } from '../services/asaasService';
 import { useMoneyVisibility } from '../contexts/MoneyVisibilityContext';
 import './ClientesPage.css';
 
@@ -16,6 +16,7 @@ export default function ClientesPage() {
   const { maskValue } = useMoneyVisibility();
   const [clienteEditando, setClienteEditando] = useState<Cliente | null>(null);
   const [mostrarModalEdicao, setMostrarModalEdicao] = useState(false);
+  const [criandoNovo, setCriandoNovo] = useState(false);
   const [clientePerformance, setClientePerformance] = useState<Cliente | null>(null);
   const [mostrarModalPerformance, setMostrarModalPerformance] = useState(false);
   const [clientePagamentos, setClientePagamentos] = useState<Cliente | null>(null);
@@ -40,23 +41,96 @@ export default function ClientesPage() {
     if (!estrategiaId) return null;
     return estrategias.find(e => e.id === estrategiaId)?.nome || null;
   };
+  const criarClienteBase = (): Cliente => ({
+    id: `cliente_${Date.now()}`,
+    nome: '',
+    email: '',
+    telefone: '',
+    empresa: '',
+    dataCadastro: new Date().toISOString().split('T')[0],
+    status: 'ativo',
+    estrategiaId: undefined,
+    valorTotalContratos: 0,
+    btg: 0,
+    xp: 0,
+    avenue: 0,
+    outros: 0,
+    taxaAdmAnual: 0,
+    taxaAdmMensal: 0,
+    assinatura: 0,
+    patrimonioTotal: 0,
+  });
+
 
   const handleEditar = (cliente: Cliente) => {
     setClienteEditando(cliente);
+    setCriandoNovo(false);
+    setMostrarModalEdicao(true);
+  };
+
+  const handleCriarNovo = () => {
+    setClienteEditando(criarClienteBase());
+    setCriandoNovo(true);
     setMostrarModalEdicao(true);
   };
 
   const handleSalvarEdicao = async (clienteAtualizado: Cliente) => {
+    const existe = clientes.some(c => c.id === clienteAtualizado.id);
     // Verificar se a assinatura mudou e se o cliente está linkado ao Asaas
     const clienteOriginal = clientes.find(c => c.id === clienteAtualizado.id);
     const assinaturaMudou = clienteOriginal?.assinatura !== clienteAtualizado.assinatura;
     const temAsaasCustomerId = clienteAtualizado.asaasCustomerId;
     const asaasConfigurado = isAsaasConfigured();
+    const statusMudouParaInativo = !!clienteOriginal &&
+      clienteOriginal.status !== 'inativo' &&
+      clienteAtualizado.status === 'inativo';
 
-    let clienteParaSalvar = clienteAtualizado;
+    let clienteParaSalvar = {
+      ...clienteAtualizado,
+      dataCadastro:
+        clienteAtualizado.dataCadastro ||
+        clienteOriginal?.dataCadastro ||
+        new Date().toISOString().split('T')[0],
+    };
+
+    if (statusMudouParaInativo && temAsaasCustomerId && !asaasConfigurado) {
+      alert('Cliente salvo, mas a API do Asaas não está configurada. Não foi possível cancelar a assinatura.');
+    }
+
+    if (statusMudouParaInativo && temAsaasCustomerId && asaasConfigurado) {
+      try {
+        let subscriptionId = clienteAtualizado.asaasSubscriptionId;
+        if (!subscriptionId) {
+          const respostaSubscriptions = await buscarSubscriptions({ customer: clienteAtualizado.asaasCustomerId, limit: 100 });
+          const lista = respostaSubscriptions.data || [];
+          const ativa = lista.find(sub => sub.status === 'ACTIVE');
+          const selecionada = ativa || lista[0];
+          if (selecionada) {
+            subscriptionId = selecionada.id;
+            if (!clienteParaSalvar.asaasSubscriptionId) {
+              clienteParaSalvar = {
+                ...clienteParaSalvar,
+                asaasSubscriptionId: subscriptionId,
+              };
+            }
+          }
+        }
+
+        if (subscriptionId) {
+          await cancelarSubscription(subscriptionId);
+        } else {
+          alert('Cliente salvo, mas nenhuma assinatura foi encontrada no Asaas para cancelar.');
+        }
+      } catch (error: any) {
+        const mensagemErro =
+          error?.message ||
+          'Erro ao cancelar assinatura no Asaas. Verifique se o cliente possui assinatura ativa e se a API está configurada.';
+        alert(`Cliente salvo, mas houve um erro ao cancelar a assinatura no Asaas: ${mensagemErro}`);
+      }
+    }
 
     // Se a assinatura mudou, o cliente está linkado e o Asaas está configurado, atualizar cobranças pendentes no Asaas
-    if (assinaturaMudou && temAsaasCustomerId && asaasConfigurado && clienteAtualizado.assinatura) {
+    if (existe && assinaturaMudou && temAsaasCustomerId && asaasConfigurado && clienteAtualizado.assinatura) {
       try {
         const resultado = await atualizarCobrancasPendentes(
           clienteAtualizado.asaasCustomerId,
@@ -91,17 +165,19 @@ export default function ClientesPage() {
       }
     }
 
-    const clientesAtualizados = clientes.map(c =>
-      c.id === clienteAtualizado.id ? clienteParaSalvar : c
-    );
+    const clientesAtualizados = existe
+      ? clientes.map(c => (c.id === clienteAtualizado.id ? clienteParaSalvar : c))
+      : [clienteParaSalvar, ...clientes];
     setClientes(clientesAtualizados);
     setMostrarModalEdicao(false);
     setClienteEditando(null);
+    setCriandoNovo(false);
   };
 
   const handleCancelarEdicao = () => {
     setMostrarModalEdicao(false);
     setClienteEditando(null);
+    setCriandoNovo(false);
   };
 
   const handleExcluir = (cliente: Cliente) => {
@@ -218,8 +294,13 @@ export default function ClientesPage() {
   return (
     <div className="clientes-page">
       <div className="page-header">
-        <h1>Clientes</h1>
-        <p className="page-subtitle">Gestão completa de clientes e seus patrimônios</p>
+        <div className="page-header-info">
+          <h1>Clientes</h1>
+          <p className="page-subtitle">Gestão completa de clientes e seus patrimônios</p>
+        </div>
+        <button className="btn-novo-cliente" onClick={handleCriarNovo}>
+          + Novo Cliente
+        </button>
       </div>
 
       <div className="clientes-content">
@@ -234,7 +315,7 @@ export default function ClientesPage() {
         <Modal
           isOpen={mostrarModalEdicao}
           onClose={handleCancelarEdicao}
-          title="Editar Cliente"
+          title={criandoNovo ? 'Novo Cliente' : 'Editar Cliente'}
           size="large"
         >
           <EditarClienteForm

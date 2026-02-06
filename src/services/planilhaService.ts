@@ -68,6 +68,15 @@ function parsearPercentual(valor: any): number | string {
   return parseFloat(limpo) || 0;
 }
 
+function normalizarStatusCliente(valor: any): Cliente['status'] {
+  const status = String(valor || '').trim().toLowerCase();
+  if (status === 'ok') return 'ativo';
+  if (status === 'ativo' || status === 'inativo' || status === 'antecipado') {
+    return status as Cliente['status'];
+  }
+  return 'ativo';
+}
+
 // Exportar template vazio para Excel
 export function exportarTemplateExcel(): void {
   const headers = [
@@ -126,10 +135,7 @@ export function exportarClientesParaExcel(clientes: Cliente[]): void {
   ];
 
   const linhas = clientes.map(cliente => {
-    // Normalizar status
-    let status = cliente.status;
-    if (status === 'ativo') status = 'ok';
-    if (status === 'inativo') status = 'ok';
+    const status = normalizarStatusCliente(cliente.status);
 
     // Usar valorTotalContratos se disponível, senão patrimonioTotal
     const plTotal = cliente.valorTotalContratos ?? cliente.patrimonioTotal ?? 0;
@@ -281,7 +287,7 @@ export function importarExcelParaClientes(
               // Criar uma cópia do cliente existente para atualizar (evita mutação direta)
               const clienteAtualizado: Cliente = {
                 ...clienteExistente,
-                status: (valores['Status'] || clienteExistente.status) as any,
+                status: normalizarStatusCliente(valores['Status'] || clienteExistente.status),
               };
               
               const btg = parsearMoeda(valores['BTG']);
@@ -325,7 +331,7 @@ export function importarExcelParaClientes(
                 email: '',
                 telefone: '',
                 dataCadastro: new Date().toISOString().split('T')[0],
-                status: (valores['Status'] || 'ok') as any,
+                status: normalizarStatusCliente(valores['Status'] || 'ativo'),
                 btg: parsearMoeda(valores['BTG']),
                 xp: parsearMoeda(valores['XP']),
                 avenue: parsearMoeda(valores['Avenue']),

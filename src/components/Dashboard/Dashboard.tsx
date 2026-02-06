@@ -17,6 +17,7 @@ interface DashboardProps {
 
 export default function Dashboard({ clientes, aplicacoes, saldos }: DashboardProps) {
   const [filtroEstrategia, setFiltroEstrategia] = useState<string>('');
+  const [filtroStatus, setFiltroStatus] = useState<string>('');
   const [pagamentosStatus, setPagamentosStatus] = useState<Record<string, 'OK' | 'Inad' | '-'>>({});
   const [asaasContato, setAsaasContato] = useState<Record<string, { email?: string; telefone?: string }>>({});
   const [showInadModal, setShowInadModal] = useState(false);
@@ -26,12 +27,27 @@ export default function Dashboard({ clientes, aplicacoes, saldos }: DashboardPro
   const DASHBOARD_CACHE_KEY = 'dashboard_asaas_cache_v1';
   const DASHBOARD_CACHE_TTL_MS = 5 * 60 * 1000;
 
-  // Filtrar clientes baseado na estratégia selecionada
+  const normalizarStatus = (status: Cliente['status'] | string) => (status === 'ok' ? 'ativo' : status);
+
+  const getStatusKey = (cliente: Cliente) => {
+    const status = normalizarStatus(cliente.status);
+    if (status === 'inativo') return 'inativo';
+    if (status === 'antecipado') return 'antecipado';
+    if (!cliente.asaasCustomerId) return 'pendente-asaas';
+    return 'ativo';
+  };
+
+  // Filtrar clientes baseado na estratégia e status selecionados
   const clientesFiltrados = useMemo(() => {
-    if (!filtroEstrategia) return clientes;
-    if (filtroEstrategia === 'sem-estrategia') return clientes.filter(c => !c.estrategiaId);
-    return clientes.filter(c => c.estrategiaId === filtroEstrategia);
-  }, [clientes, filtroEstrategia]);
+    let base = clientes;
+    if (filtroEstrategia === 'sem-estrategia') {
+      base = clientes.filter(c => !c.estrategiaId);
+    } else if (filtroEstrategia) {
+      base = clientes.filter(c => c.estrategiaId === filtroEstrategia);
+    }
+    if (!filtroStatus) return base;
+    return base.filter(cliente => getStatusKey(cliente) === filtroStatus);
+  }, [clientes, filtroEstrategia, filtroStatus]);
 
   // Filtrar aplicações e saldos baseado nos clientes filtrados
   const aplicacoesFiltradas = useMemo(() => {
@@ -239,9 +255,10 @@ export default function Dashboard({ clientes, aplicacoes, saldos }: DashboardPro
           dashboardView
           filtroEstrategia={filtroEstrategia}
           onFiltroEstrategiaChange={setFiltroEstrategia}
+          filtroStatus={filtroStatus}
+          onFiltroStatusChange={setFiltroStatus}
         />
       </div>
     </div>
   );
 }
-

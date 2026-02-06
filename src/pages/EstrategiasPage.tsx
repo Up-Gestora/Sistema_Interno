@@ -11,7 +11,7 @@ export default function EstrategiasPage() {
   const [estrategiaEditando, setEstrategiaEditando] = useState<Estrategia | null>(null);
   const [mostrarModalEdicao, setMostrarModalEdicao] = useState(false);
   const [mostrarModalNova, setMostrarModalNova] = useState(false);
-  const [novaEstrategia, setNovaEstrategia] = useState({ nome: '', descricao: '' });
+  const [novaEstrategia, setNovaEstrategia] = useState({ nome: '', descricao: '', benchmark: 'IFIX' });
   const [estrategiasExpandidas, setEstrategiasExpandidas] = useState<Set<string>>(new Set());
 
   const toggleExpandir = (estrategiaId: string) => {
@@ -52,7 +52,7 @@ export default function EstrategiasPage() {
   };
 
   const handleCriarNova = () => {
-    setNovaEstrategia({ nome: '', descricao: '' });
+    setNovaEstrategia({ nome: '', descricao: '', benchmark: 'IFIX' });
     setMostrarModalNova(true);
   };
 
@@ -60,7 +60,7 @@ export default function EstrategiasPage() {
     const estrategiasAtualizadas = [...estrategias, estrategia];
     setEstrategias(estrategiasAtualizadas);
     setMostrarModalNova(false);
-    setNovaEstrategia({ nome: '', descricao: '' });
+    setNovaEstrategia({ nome: '', descricao: '', benchmark: 'IFIX' });
   };
 
   const handleExcluir = (estrategia: Estrategia) => {
@@ -114,6 +114,9 @@ export default function EstrategiasPage() {
                       <span className="estrategia-nome">{estrategia.nome}</span>
                       <span className="estrategia-clientes-count">
                         {clientesEstrategia.length} cliente(s)
+                      </span>
+                      <span className="estrategia-benchmark">
+                        Benchmark: {estrategia.benchmark || 'IFIX'}
                       </span>
                     </div>
                   </div>
@@ -181,7 +184,7 @@ export default function EstrategiasPage() {
         isOpen={mostrarModalNova}
         onClose={() => {
           setMostrarModalNova(false);
-          setNovaEstrategia({ nome: '', descricao: '' });
+          setNovaEstrategia({ nome: '', descricao: '', benchmark: 'IFIX' });
         }}
         title="Nova Estratégia"
         size="medium"
@@ -193,7 +196,7 @@ export default function EstrategiasPage() {
           }}
           onCancel={() => {
             setMostrarModalNova(false);
-            setNovaEstrategia({ nome: '', descricao: '' });
+            setNovaEstrategia({ nome: '', descricao: '', benchmark: 'IFIX' });
           }}
           novaEstrategia={novaEstrategia}
           setNovaEstrategia={setNovaEstrategia}
@@ -207,19 +210,28 @@ interface FormEstrategiaProps {
   estrategia: Estrategia | null;
   onSave: (estrategia: Estrategia) => void;
   onCancel: () => void;
-  novaEstrategia?: { nome: string; descricao: string };
-  setNovaEstrategia?: (estrategia: { nome: string; descricao: string }) => void;
+  novaEstrategia?: { nome: string; descricao: string; benchmark: string };
+  setNovaEstrategia?: (estrategia: { nome: string; descricao: string; benchmark: string }) => void;
 }
 
 function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaEstrategia }: FormEstrategiaProps) {
   const [nome, setNome] = useState(estrategia?.nome || novaEstrategia?.nome || '');
   const [descricao, setDescricao] = useState(estrategia?.descricao || novaEstrategia?.descricao || '');
+  const [benchmark, setBenchmark] = useState(estrategia?.benchmark || novaEstrategia?.benchmark || 'IFIX');
 
   // Sincronizar quando novaEstrategia mudar externamente
   useEffect(() => {
-    if (!estrategia && novaEstrategia) {
+    if (estrategia) {
+      setNome(estrategia.nome);
+      setDescricao(estrategia.descricao);
+      setBenchmark(estrategia.benchmark || 'IFIX');
+      return;
+    }
+
+    if (novaEstrategia) {
       setNome(novaEstrategia.nome);
       setDescricao(novaEstrategia.descricao);
+      setBenchmark(novaEstrategia.benchmark || 'IFIX');
     }
   }, [novaEstrategia, estrategia]);
 
@@ -237,6 +249,7 @@ function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaE
         ...estrategia,
         nome: nome.trim(),
         descricao: descricao.trim(),
+        benchmark: benchmark.trim() || 'IFIX',
         dataAtualizacao: new Date().toISOString().split('T')[0],
       });
     } else {
@@ -245,6 +258,7 @@ function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaE
         id: `estrategia_${Date.now()}`,
         nome: nome.trim(),
         descricao: descricao.trim(),
+        benchmark: benchmark.trim() || 'IFIX',
         dataCriacao: new Date().toISOString().split('T')[0],
         dataAtualizacao: new Date().toISOString().split('T')[0],
       };
@@ -266,6 +280,13 @@ function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaE
     }
   };
 
+  const handleBenchmarkChange = (value: string) => {
+    setBenchmark(value);
+    if (!estrategia && setNovaEstrategia) {
+      setNovaEstrategia({ ...novaEstrategia!, benchmark: value });
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="form-estrategia">
       <div className="form-group">
@@ -281,6 +302,25 @@ function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaE
           required
           placeholder="Ex: Carteira Tática"
         />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="benchmark" className="form-label">
+          Benchmark <span className="required">*</span>
+        </label>
+        <select
+          id="benchmark"
+          className="form-input"
+          value={benchmark}
+          onChange={(e) => handleBenchmarkChange(e.target.value)}
+          required
+        >
+          <option value="IFIX">IFIX</option>
+          <option value="IBOV">IBOV</option>
+          <option value="CDI">CDI</option>
+          <option value="IPCA">IPCA</option>
+          <option value="SELIC">SELIC</option>
+        </select>
       </div>
 
       <div className="form-group">
@@ -308,4 +348,3 @@ function FormEstrategia({ estrategia, onSave, onCancel, novaEstrategia, setNovaE
     </form>
   );
 }
-

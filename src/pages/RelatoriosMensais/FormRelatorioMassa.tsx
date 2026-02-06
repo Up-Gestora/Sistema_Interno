@@ -16,6 +16,7 @@ interface ClienteSelecionado {
   patrimonioTotal: number;
   resultadoPercentual: number;
   resultadoValor: number;
+  selecionado: boolean;
 }
 
 export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelatorioMassaProps) {
@@ -97,6 +98,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         patrimonioTotal: 0,
         resultadoPercentual: 0,
         resultadoValor: 0,
+        selecionado: true,
       };
     });
     
@@ -138,6 +140,20 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     });
   };
 
+  const toggleClienteSelecionado = (clienteId: string) => {
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          selecionado: !cliente.selecionado,
+        },
+      };
+    });
+  };
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +173,9 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       return;
     }
 
-    const clientesIds = Object.keys(clientesSelecionados);
+    const clientesIds = Object.keys(clientesSelecionados).filter(
+      id => clientesSelecionados[id]?.selecionado
+    );
     if (clientesIds.length === 0) {
       alert('Nenhum cliente encontrado para a estratégia selecionada.');
       return;
@@ -166,7 +184,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     const relatorios: RelatorioMensal[] = clientesIds.map(clienteId => {
       const dados = clientesSelecionados[clienteId];
       const cliente = clientes.find(c => c.id === clienteId);
-      
+
+      const resultadoPercentual = typeof dados.resultadoPercentual === 'number' ? dados.resultadoPercentual : 0;
+      const cdiMensal = typeof formData.cdiMensal === 'number' ? formData.cdiMensal : 0;
+      const resumoTexto = resultadoPercentual > cdiMensal ? formData.textoAcimaCDI : formData.textoAbaixoCDI;
+
       return {
         clienteId,
         clienteNome: cliente?.nome,
@@ -175,9 +197,9 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         resumoMacro: formData.resumoMacro,
         patrimonioTotal: dados.patrimonioTotal,
         resultadoMes: dados.resultadoValor,
-        resultadoPercentual: dados.resultadoPercentual,
-        resumoTexto: '', // Será preenchido dinamicamente baseado no CDI
-        cdiMensal: formData.cdiMensal,
+        resultadoPercentual,
+        resumoTexto: resumoTexto || '',
+        cdiMensal,
         textoAcimaCDI: formData.textoAcimaCDI,
         textoAbaixoCDI: formData.textoAbaixoCDI,
         dataGeracao: new Date().toISOString(),
@@ -193,6 +215,10 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       return { id, cliente, dados: clientesSelecionados[id] };
     });
   }, [clientesSelecionados, clientes]);
+
+  const totalSelecionados = useMemo(() => {
+    return Object.values(clientesSelecionados).filter(c => c.selecionado).length;
+  }, [clientesSelecionados]);
 
   return (
     <Card title="Geração em Massa de Relatórios" className="form-relatorio-massa">
@@ -318,6 +344,9 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                 <p className="selected-count">
                   <strong>{Object.keys(clientesSelecionados).length}</strong> cliente(s) da estratégia "<strong>{estrategias.find(e => e.id === estrategiaSelecionada)?.nome}</strong>" serão incluídos no relatório.
                 </p>
+                <p className="selected-count selected-count--computed">
+                  <strong>{totalSelecionados}</strong> de <strong>{clientesEstrategiaSelecionada.length}</strong> cliente(s) selecionado(s) da estrategia "<strong>{estrategias.find(e => e.id === estrategiaSelecionada)?.nome}</strong>".
+                </p>
                 {clientesEstrategiaSelecionada.length === 0 && (
                   <p className="warning-message">
                     ⚠️ Nenhum cliente encontrado para esta estratégia.
@@ -334,8 +363,17 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             
             <div className="clientes-dados">
               {clientesSelecionadosList.map(({ id, cliente, dados }) => (
-                <div key={id} className="cliente-dados-card">
-                  <h4>{cliente?.nome}</h4>
+                <div key={id} className={`cliente-dados-card${dados.selecionado ? '' : ' is-disabled'}`}>
+                  <div className="cliente-dados-header">
+                    <label className="cliente-toggle">
+                      <input
+                        type="checkbox"
+                        checked={dados.selecionado}
+                        onChange={() => toggleClienteSelecionado(id)}
+                      />
+                      <span>{cliente?.nome}</span>
+                    </label>
+                  </div>
                   <div className="form-row">
                     <div className="form-group">
                       <label>Patrimônio Total (R$) *</label>
@@ -346,6 +384,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                         step="0.01"
                         min="0"
                         required
+                        disabled={!dados.selecionado}
                       />
                     </div>
                     <div className="form-group">
@@ -356,6 +395,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                         onChange={(e) => atualizarDadosCliente(id, 'resultadoPercentual', parseFloat(e.target.value) || 0)}
                         step="0.01"
                         required
+                        disabled={!dados.selecionado}
                       />
                     </div>
                     <div className="form-group">
@@ -365,8 +405,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                         value={dados.resultadoValor.toFixed(2)}
                         onChange={(e) => atualizarDadosCliente(id, 'resultadoValor', parseFloat(e.target.value) || 0)}
                         step="0.01"
-                        readOnly
-                        className="readonly"
+                        disabled={!dados.selecionado}
                       />
                     </div>
                   </div>
@@ -377,12 +416,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         )}
 
         <div className="form-actions">
-          <button type="submit" className="btn-primary" disabled={clientesSelecionadosList.length === 0}>
-            Gerar {clientesSelecionadosList.length} PDF(s)
+          <button type="submit" className="btn-primary" disabled={totalSelecionados === 0}>
+            Gerar {totalSelecionados} PDF(s)
           </button>
         </div>
       </form>
     </Card>
   );
 }
-

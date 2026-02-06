@@ -23,11 +23,21 @@ export default function Sidebar() {
     },
     { id: 'clientes', path: '/clientes', label: 'Clientes', icon: '👥' },
     { id: 'estrategias', path: '/estrategias', label: 'Estratégias', icon: '🎯' },
-    { id: 'relatorios', path: '/relatorios-mensais', label: 'Relatórios Mensais', icon: '📄' },
+    {
+      id: 'relatorios',
+      path: '/relatorios-mensais',
+      label: 'Relatórios Mensais',
+      icon: '📄',
+      children: [
+        { id: 'relatorios-rebalanceamento', path: '/relatorios-mensais', label: 'Rebalanceamento' },
+        { id: 'relatorios-laminas', path: '/laminas', label: 'Lâminas' },
+        { id: 'relatorios-dados-diarios', path: '/estrategia-diaria', label: 'Dados Diários' },
+      ],
+    },
     { id: 'performance', path: '/performance', label: 'Performance', icon: '📈' },
-    { id: 'estrategia-diaria', path: '/estrategia-diaria', label: 'Dados Diários', icon: '🗓️' },
-    { id: 'laminas', path: '/laminas', label: 'Lâminas', icon: '🗂️' },
-    { id: 'importacao', path: '/importacao-planilha', label: 'Importar Planilha', icon: '📋' },
+    { id: 'links-uteis', path: '/links-uteis', label: 'Links úteis', icon: '🔗' },
+    { id: 'assinafy', path: '/assinafy', label: 'Assinafy', icon: '🖊️' },
+    { id: 'importacao', path: '/importacao-planilha', label: 'Dados', icon: '📋' },
   ];
 
   const currentPath = location.pathname;
@@ -99,4 +109,3 @@ export default function Sidebar() {
     </aside>
   );
 }
-

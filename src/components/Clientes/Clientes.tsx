@@ -15,6 +15,8 @@ interface ClientesProps {
   dashboardView?: boolean;
   filtroEstrategia?: string;
   onFiltroEstrategiaChange?: (estrategia: string) => void;
+  filtroStatus?: string;
+  onFiltroStatusChange?: (status: string) => void;
 }
 
 export default function Clientes({
@@ -26,20 +28,53 @@ export default function Clientes({
   dashboardView = false,
   filtroEstrategia: filtroExterno,
   onFiltroEstrategiaChange,
+  filtroStatus: filtroStatusExterno,
+  onFiltroStatusChange,
 }: ClientesProps) {
   const { estrategias } = useEstrategias();
   const { maskValue } = useMoneyVisibility();
   const [filtroEstrategiaLocal, setFiltroEstrategiaLocal] = useState<string>('');
+  const [filtroStatusLocal, setFiltroStatusLocal] = useState<string>('');
   
   // Usar filtro externo se fornecido, senão usar estado local
   const filtroEstrategia = filtroExterno !== undefined ? filtroExterno : filtroEstrategiaLocal;
   const setFiltroEstrategia = onFiltroEstrategiaChange || setFiltroEstrategiaLocal;
+  const filtroStatus = filtroStatusExterno !== undefined ? filtroStatusExterno : filtroStatusLocal;
+  const setFiltroStatus = onFiltroStatusChange || setFiltroStatusLocal;
 
-  const clientesFiltrados = clientes.filter((cliente) => {
+  const normalizarStatus = (status: Cliente['status'] | string) => (status === 'ok' ? 'ativo' : status);
+
+  const getStatusKey = (cliente: Cliente) => {
+    const status = normalizarStatus(cliente.status);
+    if (status === 'inativo') return 'inativo';
+    if (status === 'antecipado') return 'antecipado';
+    if (dashboardView && !cliente.asaasCustomerId) return 'pendente-asaas';
+    return 'ativo';
+  };
+
+  const clientesFiltradosPorEstrategia = clientes.filter((cliente) => {
     if (!filtroEstrategia) return true;
     if (filtroEstrategia === 'sem-estrategia') return !cliente.estrategiaId;
     return cliente.estrategiaId === filtroEstrategia;
   });
+
+  const statusCounts = clientesFiltradosPorEstrategia.reduce(
+    (acc, cliente) => {
+      const key = getStatusKey(cliente);
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    },
+    { ativo: 0, inativo: 0, antecipado: 0, 'pendente-asaas': 0 } as Record<string, number>
+  );
+
+  const clientesFiltrados = clientesFiltradosPorEstrategia.filter((cliente) => {
+    if (!filtroStatus) return true;
+    return getStatusKey(cliente) === filtroStatus;
+  });
+
+  const clientesOrdenados = [...clientesFiltrados].sort((a, b) =>
+    a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+  );
 
   const getEstrategiaNome = (estrategiaId?: string) => {
     if (!estrategiaId) return '-';
@@ -47,15 +82,19 @@ export default function Clientes({
   };
 
   const getStatusLabel = (cliente: Cliente) => {
-    if (cliente.status === 'inativo') return 'Inativo';
-    if (!dashboardView) return cliente.status;
-    return cliente.asaasCustomerId ? 'OK' : 'Pendente Asaas';
+    const status = normalizarStatus(cliente.status);
+    if (status === 'inativo') return 'Inativo';
+    if (status === 'antecipado') return 'Antecipado';
+    if (dashboardView && !cliente.asaasCustomerId) return 'Pendente Asaas';
+    return 'Ativo';
   };
 
   const getStatusClass = (cliente: Cliente) => {
-    if (cliente.status === 'inativo') return 'status-inativo';
-    if (!dashboardView) return `status-${cliente.status}`;
-    return cliente.asaasCustomerId ? 'status-ok' : 'status-pendente-asaas';
+    const status = normalizarStatus(cliente.status);
+    if (status === 'inativo') return 'status-inativo';
+    if (status === 'antecipado') return 'status-antecipado';
+    if (dashboardView && !cliente.asaasCustomerId) return 'status-pendente-asaas';
+    return 'status-ativo';
   };
 
   const getPagamentoLabel = (cliente: Cliente) => {
@@ -110,6 +149,23 @@ export default function Clientes({
             </option>
           </select>
         </div>
+        <div className="filter-group">
+          <label htmlFor="filtroStatus" className="filter-label">Filtrar por Status:</label>
+          <select
+            id="filtroStatus"
+            value={filtroStatus}
+            onChange={(e) => setFiltroStatus(e.target.value)}
+            className="filter-select"
+          >
+            <option value="">Todos os status ({clientesFiltradosPorEstrategia.length})</option>
+            <option value="ativo">Ativo ({statusCounts.ativo})</option>
+            <option value="inativo">Inativo ({statusCounts.inativo})</option>
+            <option value="antecipado">Antecipado ({statusCounts.antecipado})</option>
+            {dashboardView && (
+              <option value="pendente-asaas">Pendente Asaas ({statusCounts['pendente-asaas']})</option>
+            )}
+          </select>
+        </div>
       </div>
 
       <div className="clientes-table-container">
@@ -139,7 +195,7 @@ export default function Clientes({
                 </td>
               </tr>
             ) : (
-              clientesFiltrados.map((cliente) => (
+              clientesOrdenados.map((cliente) => (
                 <tr key={cliente.id}>
                   <td className="nome-cell">{cliente.nome}</td>
                   <td>{getEmail(cliente)}</td>
@@ -197,4 +253,3 @@ export default function Clientes({
     </Card>
   );
 }
-

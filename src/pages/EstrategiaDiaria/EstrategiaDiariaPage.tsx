@@ -151,6 +151,11 @@ export default function EstrategiaDiariaPage() {
   const [exportandoPdf, setExportandoPdf] = useState(false);
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState('');
+  const estrategiaSelecionada = useMemo(
+    () => estrategias.find((estrategia) => estrategia.id === strategyId),
+    [estrategias, strategyId]
+  );
+  const benchmarkLabel = estrategiaSelecionada?.benchmark?.trim() || 'IFIX';
 
   useEffect(() => {
     const map = loadEntriesMap();
@@ -238,10 +243,24 @@ export default function EstrategiaDiariaPage() {
 
   const entriesFiltradas = useMemo(() => {
     if (periodo === 'all' || entriesOrdenadas.length === 0) return entriesOrdenadas;
-    const lastDate = entriesOrdenadas[entriesOrdenadas.length - 1]?.data;
-    if (!lastDate) return entriesOrdenadas;
+    const endIso = entriesOrdenadas[entriesOrdenadas.length - 1]?.data;
+    if (!endIso) return entriesOrdenadas;
 
-    const base = new Date(lastDate);
+    const monthKey = (iso?: string) => (iso ? iso.slice(0, 7) : '');
+    const monthKeyOffset = (iso: string, offset: number) => {
+      const [ano, mes] = iso.split('-').map(Number);
+      if (!ano || !mes) return '';
+      const base = ano * 12 + (mes - 1) - offset;
+      const targetAno = Math.floor(base / 12);
+      const targetMes = (base % 12) + 1;
+      return `${targetAno}-${String(targetMes).padStart(2, '0')}`;
+    };
+
+    const ultimoPorMes = new Map<string, EstrategiaDiariaEntry>();
+    entriesOrdenadas.forEach((item) => {
+      ultimoPorMes.set(monthKey(item.data), item);
+    });
+
     const monthsMap: Record<'1m' | '3m' | '6m' | '12m', number> = {
       '1m': 1,
       '3m': 3,
@@ -249,13 +268,9 @@ export default function EstrategiaDiariaPage() {
       '12m': 12,
     };
     const meses = monthsMap[periodo];
-    const start = new Date(base);
-    start.setMonth(start.getMonth() - meses);
+    const startIso = ultimoPorMes.get(monthKeyOffset(endIso, meses))?.data || entriesOrdenadas[0]?.data;
 
-    return entriesOrdenadas.filter((item) => {
-      const current = new Date(item.data);
-      return current >= start && current <= base;
-    });
+    return entriesOrdenadas.filter((item) => item.data >= startIso && item.data <= endIso);
   }, [entriesOrdenadas, periodo]);
 
   const totalDias = entriesFiltradas.length;
@@ -290,7 +305,6 @@ export default function EstrategiaDiariaPage() {
     }
 
     const netReturns: number[] = [];
-    const cdiDailyReturns: number[] = [];
     const chartData: Array<{ data: string; carteira: number; cdi: number; ifix: number }> = [];
 
     const firstCota = entriesFiltradas.find((item) => item.patrimonio > 0)?.patrimonio || 0;
@@ -299,6 +313,8 @@ export default function EstrategiaDiariaPage() {
     const lastCdi = [...entriesFiltradas].reverse().find((item) => item.resultadoCdi > 0)?.resultadoCdi || 0;
     const ifixBaseInicial =
       entriesFiltradas.find((item) => item.resultadoIfix > 0)?.resultadoIfix || 0;
+    const resultadoCarteira = firstCota > 0 && lastCota > 0 ? lastCota / firstCota - 1 : 0;
+    const cdiPeriodo = firstCdi > 0 && lastCdi > 0 ? (1 + lastCdi) / (1 + firstCdi) - 1 : 0;
 
     entriesFiltradas.forEach((item, idx) => {
       if (idx > 0) {
@@ -306,7 +322,6 @@ export default function EstrategiaDiariaPage() {
         if (anterior.patrimonio > 0 && item.patrimonio > 0) {
           const retornoBruto = item.patrimonio / anterior.patrimonio - 1;
           netReturns.push(retornoBruto);
-          cdiDailyReturns.push(item.resultadoCdi || 0);
         }
       }
 
@@ -352,23 +367,20 @@ export default function EstrategiaDiariaPage() {
       return Math.sqrt(variance);
     };
 
-    const media = netReturns.reduce((acc, r) => acc + r, 0) / (netReturns.length || 1);
     const desvioPadrao = calcStd(netReturns);
     const volatilidadeAnual = desvioPadrao * Math.sqrt(DIAS_UTEIS_ANO);
 
-    const excessReturns = netReturns.map((r, idx) => r - (cdiDailyReturns[idx] || 0));
-    const mediaExcesso = excessReturns.reduce((acc, r) => acc + r, 0) / (excessReturns.length || 1);
-    const desvioExcesso = calcStd(excessReturns);
-    const sharpe = desvioExcesso > 0 ? (mediaExcesso / desvioExcesso) * Math.sqrt(DIAS_UTEIS_ANO) : 0;
+    const periodoAnos = Math.max(netReturns.length, 1) / DIAS_UTEIS_ANO;
+    const retornoAnualizado = periodoAnos > 0 ? Math.pow(1 + resultadoCarteira, 1 / periodoAnos) - 1 : 0;
+    const cdiAnualizado = periodoAnos > 0 ? Math.pow(1 + cdiPeriodo, 1 / periodoAnos) - 1 : 0;
+    const excessoAnualizado = retornoAnualizado - cdiAnualizado;
+    const sharpe = volatilidadeAnual > 0 ? excessoAnualizado / volatilidadeAnual : 0;
 
-    const cdiPeriodo = firstCdi > 0 && lastCdi > 0 ? (1 + lastCdi) / (1 + firstCdi) - 1 : 0;
     const lastIfix =
       [...entriesFiltradas].reverse().find((item) => item.resultadoIfix > 0)?.resultadoIfix || 0;
     const ifixPeriodo = ifixBaseInicial > 0 && lastIfix > 0
       ? lastIfix / ifixBaseInicial - 1
       : 0;
-    const resultadoCarteira =
-      firstCota > 0 && lastCota > 0 ? lastCota / firstCota - 1 : 0;
 
     return {
       resultadoCarteira,
@@ -449,13 +461,13 @@ export default function EstrategiaDiariaPage() {
   const handleExportarPdf = async () => {
     setExportandoPdf(true);
     try {
-      const estrategiaSelecionada = estrategias.find((estrategia) => estrategia.id === strategyId);
       const estrategiaNome = estrategiaSelecionada?.nome || 'Estratégia';
       const estrategiaDescricao = estrategiaSelecionada?.descricao || '';
 
       await gerarRelatorioEstrategiaDiariaPDF({
         estrategiaNome,
         descricao: estrategiaDescricao,
+        benchmarkLabel,
         periodo:
           resumoBase.dataInicial && resumoBase.dataFinal
             ? `${formatDatePtBr(resumoBase.dataInicial)} - ${formatDatePtBr(resumoBase.dataFinal)}`
@@ -464,7 +476,7 @@ export default function EstrategiaDiariaPage() {
         resumo: [
           { titulo: 'Retorno da Carteira', valor: formatSignedPercent(resultadoCarteira * 100), detalhe: 'Variação da cota' },
           { titulo: 'CDI', valor: formatPercent(cdiPeriodo * 100), detalhe: `Alpha: ${formatSignedPercent(alphaCdi * 100)}` },
-          { titulo: 'IFIX', valor: formatPercent(ifixPeriodo * 100), detalhe: `Alpha: ${formatSignedPercent(alphaIfix * 100)}` },
+          { titulo: benchmarkLabel, valor: formatPercent(ifixPeriodo * 100), detalhe: `Alpha: ${formatSignedPercent(alphaIfix * 100)}` },
           { titulo: 'Volatilidade anualizada', valor: formatPercent(volatilidadeAnual * 100), detalhe: 'Base diária' },
           { titulo: 'Índice de Sharpe', valor: formatRatio(sharpe), detalhe: 'Retorno excedente / risco' },
           { titulo: 'Drawdown máximo', valor: formatPercent(drawdownMaximo * 100), detalhe: 'Maior queda' },
@@ -598,7 +610,7 @@ export default function EstrategiaDiariaPage() {
             <span className="resumo-sub">Alpha: {formatSignedPercent(alphaCdi * 100)}</span>
           </div>
           <div className="resumo-item">
-            <span className="resumo-label">IFIX</span>
+            <span className="resumo-label">{benchmarkLabel}</span>
             <span className="resumo-value">
               {formatPercent(ifixPeriodo * 100)}
             </span>
@@ -641,7 +653,7 @@ export default function EstrategiaDiariaPage() {
         </div>
       </Card>
 
-      <Card title="Comparação diária (Carteira x CDI x IFIX)" className="estrategia-diaria-card">
+      <Card title={`Comparação diária (Carteira x CDI x ${benchmarkLabel})`} className="estrategia-diaria-card">
         {!temDados ? (
           <div className="estrategia-empty">Sem dados</div>
         ) : chartData.length === 0 ? (
@@ -682,7 +694,7 @@ export default function EstrategiaDiariaPage() {
                 <Line
                   type="monotone"
                   dataKey="ifix"
-                  name="IFIX"
+                  name={benchmarkLabel}
                   stroke="var(--warning-color)"
                   strokeWidth={2}
                   dot={false}
@@ -761,7 +773,7 @@ export default function EstrategiaDiariaPage() {
             <small className="info-text">Fator diário = CDI + 1</small>
           </div>
           <div className="form-field">
-            <label htmlFor="ifix">IFIX (índice)</label>
+            <label htmlFor="ifix">{benchmarkLabel} (índice)</label>
             <input
               id="ifix"
               type="text"
@@ -794,7 +806,7 @@ export default function EstrategiaDiariaPage() {
                   <th>Valor da cota</th>
                   <th>CDI diário</th>
                   <th>Fator Diário</th>
-                  <th>IFIX (índice)</th>
+                  <th>{benchmarkLabel} (índice)</th>
                   <th className="col-actions">Ações</th>
                 </tr>
               </thead>

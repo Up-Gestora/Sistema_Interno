@@ -2,11 +2,21 @@ import { useState, useEffect, useCallback } from 'react';
 import { Estrategia } from '../types';
 
 // Estratégias padrão
+const DEFAULT_BENCHMARK = 'IFIX';
+
+const normalizarEstrategia = (estrategia: Estrategia): Estrategia => ({
+  ...estrategia,
+  benchmark: estrategia.benchmark?.trim() ? estrategia.benchmark : DEFAULT_BENCHMARK,
+});
+
+const normalizarEstrategias = (lista: Estrategia[]) => lista.map(normalizarEstrategia);
+
 const estrategiasIniciais: Estrategia[] = [
   {
     id: '1',
     nome: 'Carteira Tática',
     descricao: 'Estratégia focada em movimentações táticas de curto prazo, ajustando posições conforme condições de mercado.',
+    benchmark: DEFAULT_BENCHMARK,
     dataCriacao: new Date().toISOString().split('T')[0],
     dataAtualizacao: new Date().toISOString().split('T')[0],
   },
@@ -14,6 +24,7 @@ const estrategiasIniciais: Estrategia[] = [
     id: '2',
     nome: 'Carteira Multimercado',
     descricao: 'Diversificação em múltiplos mercados e classes de ativos para reduzir risco e potencializar retornos.',
+    benchmark: DEFAULT_BENCHMARK,
     dataCriacao: new Date().toISOString().split('T')[0],
     dataAtualizacao: new Date().toISOString().split('T')[0],
   },
@@ -21,6 +32,7 @@ const estrategiasIniciais: Estrategia[] = [
     id: '3',
     nome: 'Consultoria',
     descricao: 'Serviço de consultoria personalizada para orientação estratégica e tomada de decisões de investimento.',
+    benchmark: DEFAULT_BENCHMARK,
     dataCriacao: new Date().toISOString().split('T')[0],
     dataAtualizacao: new Date().toISOString().split('T')[0],
   },
@@ -28,6 +40,7 @@ const estrategiasIniciais: Estrategia[] = [
     id: '4',
     nome: 'Carteira Completa',
     descricao: 'Gestão completa de patrimônio com acompanhamento integral e estratégias abrangentes.',
+    benchmark: DEFAULT_BENCHMARK,
     dataCriacao: new Date().toISOString().split('T')[0],
     dataAtualizacao: new Date().toISOString().split('T')[0],
   },
@@ -38,7 +51,8 @@ export function useEstrategias() {
     const saved = localStorage.getItem('estrategias');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved) as Estrategia[];
+        return normalizarEstrategias(parsed);
       } catch {
         return estrategiasIniciais;
       }
@@ -49,7 +63,7 @@ export function useEstrategias() {
   // Função para atualizar estratégias e salvar no localStorage
   const setEstrategias = useCallback((novasEstrategias: Estrategia[]) => {
     try {
-      const estrategiasParaSalvar = JSON.parse(JSON.stringify(novasEstrategias));
+      const estrategiasParaSalvar = JSON.parse(JSON.stringify(normalizarEstrategias(novasEstrategias)));
       setEstrategiasState(estrategiasParaSalvar);
       const dadosSerializados = JSON.stringify(estrategiasParaSalvar);
       localStorage.setItem('estrategias', dadosSerializados);
@@ -63,9 +77,10 @@ export function useEstrategias() {
       window.dispatchEvent(new Event('estrategias-updated'));
     } catch (error) {
       console.error('❌ Erro ao salvar estratégias:', error);
-      setEstrategiasState(novasEstrategias);
+      const normalizadas = normalizarEstrategias(novasEstrategias);
+      setEstrategiasState(normalizadas);
       try {
-        localStorage.setItem('estrategias', JSON.stringify(novasEstrategias));
+        localStorage.setItem('estrategias', JSON.stringify(normalizadas));
       } catch (retryError) {
         console.error('❌ Erro ao tentar salvar novamente:', retryError);
       }
@@ -78,8 +93,8 @@ export function useEstrategias() {
       const saved = localStorage.getItem('estrategias');
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
-          setEstrategiasState(parsed);
+          const parsed = JSON.parse(saved) as Estrategia[];
+          setEstrategiasState(normalizarEstrategias(parsed));
         } catch (error) {
           console.error('Erro ao ler estratégias do localStorage:', error);
         }
@@ -93,9 +108,10 @@ export function useEstrategias() {
       const saved = localStorage.getItem('estrategias');
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
-          if (JSON.stringify(parsed) !== JSON.stringify(estrategias)) {
-            setEstrategiasState(parsed);
+          const parsed = JSON.parse(saved) as Estrategia[];
+          const normalizadas = normalizarEstrategias(parsed);
+          if (JSON.stringify(normalizadas) !== JSON.stringify(estrategias)) {
+            setEstrategiasState(normalizadas);
           }
         } catch (error) {
           console.error('Erro ao verificar estratégias:', error);
@@ -112,6 +128,8 @@ export function useEstrategias() {
 
   return { estrategias, setEstrategias };
 }
+
+
 
 
 

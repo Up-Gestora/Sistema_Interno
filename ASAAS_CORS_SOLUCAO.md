@@ -105,3 +105,5 @@ Existem proxies CORS públicos, mas:
 
 
 
+
+

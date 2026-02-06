@@ -7,10 +7,7 @@ export function calculateDashboardData(
 ): DashboardData {
   const totalClientes = clientes.length;
   
-  // Considerar 'ok' e 'ativo' como ativos
-  const clientesAtivos = clientes.filter((c) => 
-    c.status === 'ativo' || c.status === 'ok'
-  ).length;
+  const clientesAtivos = clientes.filter((c) => c.status === 'ativo').length;
   const clientesInativos = totalClientes - clientesAtivos;
 
   // Calcular aplicações a partir dos dados dos clientes (BTG, XP, Avenue, Outros)
@@ -117,4 +114,3 @@ export function calculateTotalAssinaturaMensal(clientes: Cliente[]): number {
     return total + assinatura;
   }, 0);
 }
-

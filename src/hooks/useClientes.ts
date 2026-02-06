@@ -3,9 +3,25 @@ import { Cliente, Aplicacao, SaldoCliente } from '../types';
 import { mockClientes, mockAplicacoes, mockSaldos } from '../data/mockData';
 
 export function useClientes() {
+  const normalizarStatus = (status?: string) => {
+    const normalizado = (status || '').toLowerCase();
+    if (normalizado === 'ok') return 'ativo';
+    if (normalizado === 'ativo' || normalizado === 'inativo' || normalizado === 'antecipado') {
+      return normalizado;
+    }
+    return 'ativo';
+  };
+
+  const normalizarClientes = (lista: Cliente[]) =>
+    lista.map((cliente) => ({
+      ...cliente,
+      status: normalizarStatus(cliente.status) as Cliente['status'],
+    }));
+
   const [clientes, setClientesState] = useState<Cliente[]>(() => {
     const saved = localStorage.getItem('clientes');
-    return saved ? JSON.parse(saved) : mockClientes;
+    const base = saved ? JSON.parse(saved) : mockClientes;
+    return normalizarClientes(base);
   });
 
   const [aplicacoes] = useState<Aplicacao[]>(mockAplicacoes);
@@ -15,7 +31,7 @@ export function useClientes() {
   const setClientes = useCallback((novosClientes: Cliente[]) => {
     try {
       // Criar uma cópia profunda para garantir que não há referências compartilhadas
-      const clientesParaSalvar = JSON.parse(JSON.stringify(novosClientes));
+      const clientesParaSalvar = normalizarClientes(JSON.parse(JSON.stringify(novosClientes)));
       
       // Atualizar o estado
       setClientesState(clientesParaSalvar);
@@ -45,10 +61,10 @@ export function useClientes() {
     } catch (error) {
       console.error('❌ Erro ao salvar clientes no localStorage:', error);
       // Mesmo com erro, atualizar o estado para que a UI funcione
-      setClientesState(novosClientes);
+      setClientesState(normalizarClientes(novosClientes));
       // Tentar salvar novamente
       try {
-        localStorage.setItem('clientes', JSON.stringify(novosClientes));
+        localStorage.setItem('clientes', JSON.stringify(normalizarClientes(novosClientes)));
       } catch (retryError) {
         console.error('❌ Erro ao tentar salvar novamente:', retryError);
       }
@@ -61,7 +77,11 @@ export function useClientes() {
       const saved = localStorage.getItem('clientes');
       if (saved) {
         const parsed = JSON.parse(saved);
-        setClientesState(parsed);
+        const normalizados = normalizarClientes(parsed);
+        setClientesState(normalizados);
+        if (JSON.stringify(parsed) !== JSON.stringify(normalizados)) {
+          localStorage.setItem('clientes', JSON.stringify(normalizados));
+        }
       }
     };
 
@@ -78,7 +98,11 @@ export function useClientes() {
         const parsed = JSON.parse(saved);
         // Só atualizar se realmente mudou
         if (JSON.stringify(parsed) !== JSON.stringify(clientes)) {
-          setClientesState(parsed);
+          const normalizados = normalizarClientes(parsed);
+          setClientesState(normalizados);
+          if (JSON.stringify(parsed) !== JSON.stringify(normalizados)) {
+            localStorage.setItem('clientes', JSON.stringify(normalizados));
+          }
         }
       }
     }, 500);
@@ -92,4 +116,3 @@ export function useClientes() {
 
   return { clientes, aplicacoes, saldos, setClientes };
 }
-

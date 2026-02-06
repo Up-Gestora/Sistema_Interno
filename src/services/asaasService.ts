@@ -452,6 +452,27 @@ export async function buscarSubscriptionPorId(id: string): Promise<AsaasSubscrip
 }
 
 /**
+ * Cancela uma assinatura no Asaas
+ */
+export async function cancelarSubscription(id: string): Promise<AsaasSubscription> {
+  const endpointCancel = `/subscriptions/${id}/cancel`;
+  try {
+    return await asaasRequest<AsaasSubscription>(endpointCancel, {
+      method: 'POST',
+    });
+  } catch (error: any) {
+    const mensagem = error?.message || '';
+    if (mensagem.includes('404')) {
+      const endpointDelete = `/subscriptions/${id}`;
+      return asaasRequest<AsaasSubscription>(endpointDelete, {
+        method: 'DELETE',
+      });
+    }
+    throw error;
+  }
+}
+
+/**
  * Atualiza uma assinatura no Asaas
  * Usa updatePendingPayments: true para atualizar também as cobranças pendentes
  */
@@ -576,4 +597,3 @@ export async function criarSubscription(
     body: JSON.stringify(dados),
   });
 }
-

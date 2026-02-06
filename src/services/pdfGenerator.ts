@@ -2,6 +2,7 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { RelatorioMensal } from '../types/relatorio';
+import { Cliente } from '../types';
 import { formatCurrency, formatDate } from '../utils/calculations';
 
 /**
@@ -16,7 +17,13 @@ async function carregarCapaRelatorio(): Promise<string | null> {
     const caminhosPossiveis = [
       '/capa-relatorio.png',
       '/capa-relatorio.jpg',
+      '/capa-relatorio',
       '/capa-relatorio.jpeg',
+      '/capa-relatorio.png.png',
+      '/capa-report-mensal.png',
+      '/capa-report-mensal.jpg',
+      '/capa-report-mensal.jpeg',
+      '/modelo-lamina.png.png',
     ];
     
     let tentativaAtual = 0;
@@ -62,37 +69,89 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
 
-  const mesAno = `${meses[relatorio.mes - 1]} de ${relatorio.ano}`;
+  const mesNome = meses[relatorio.mes - 1] || `Mês ${relatorio.mes}`;
+  const mesAno = `${mesNome} de ${relatorio.ano}`;
   const dataGeracao = formatDate(new Date().toISOString());
 
   // Determinar qual texto usar baseado na comparação com CDI
-  const resultadoPercentual = typeof relatorio.resultadoPercentual === 'number' ? relatorio.resultadoPercentual : 0;
-  const cdiMensal = typeof relatorio.cdiMensal === 'number' ? relatorio.cdiMensal : 0;
+  const patrimonioTotalValor = Number(relatorio.patrimonioTotal);
+  const resultadoMesValor = Number(relatorio.resultadoMes);
+  const resultadoPercentualValor = relatorio.resultadoPercentual !== undefined ? Number(relatorio.resultadoPercentual) : NaN;
+  const cdiMensalValor = relatorio.cdiMensal !== undefined ? Number(relatorio.cdiMensal) : NaN;
+
+  const patrimonioTotal = Number.isFinite(patrimonioTotalValor) ? patrimonioTotalValor : 0;
+  const resultadoMes = Number.isFinite(resultadoMesValor) ? resultadoMesValor : 0;
+  const resultadoPercentualValido = Number.isFinite(resultadoPercentualValor);
+  const resultadoPercentual = resultadoPercentualValido ? resultadoPercentualValor : 0;
+  const cdiMensalValido = Number.isFinite(cdiMensalValor);
+  const cdiMensal = cdiMensalValido ? cdiMensalValor : 0;
   const textoResultado = resultadoPercentual > cdiMensal 
     ? (relatorio.textoAcimaCDI || '')
     : (relatorio.textoAbaixoCDI || '');
+  const resumoTextoBase = relatorio.resumoTexto?.trim()
+    ? relatorio.resumoTexto
+    : textoResultado;
 
-  // Cores da identidade visual
-  const primaryColor = '#3b82f6';
-  const secondaryColor = '#64748b';
-  const textColor = '#1e293b';
-  const bgLight = '#f8fafc';
+  // Cores alinhadas com a identidade visual do sistema
+  const primaryColor = '#1d2f34';
+  const primaryDark = '#131b1d';
+  const primaryLight = '#4c5f64';
+  const textColor = '#1c2836';
+  const textSecondary = '#2a3a4d';
+  const textMuted = '#44576c';
+  const bgLight = '#f1f3f6';
+  const borderColor = '#d7e0ea';
   const successColor = '#10b981';
   const dangerColor = '#ef4444';
 
   const PAGE_WIDTH_PX = 794;
   const PAGE_HEIGHT_PX = 1123;
-  const PAGE_PADDING_PX = 76;
+  const PAGE_PADDING_PX = 44;
+  const BAR_HEIGHT_PX = 12;
+  const barPattern = 'repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 8px, rgba(255, 255, 255, 0) 8px, rgba(255, 255, 255, 0) 16px)';
+  const barGradient = `linear-gradient(90deg, ${primaryDark} 0%, ${primaryColor} 55%, ${primaryLight} 100%)`;
+  const barBackground = `${barPattern}, ${barGradient}`;
+  const barWatermarkText = 'UP GESTÃO • REPORT MENSAL • UP GESTÃO • REPORT MENSAL';
+
+  const criarMarcaDaguaBarra = () => {
+    const marca = document.createElement('div');
+    marca.style.position = 'absolute';
+    marca.style.inset = '0';
+    marca.style.display = 'flex';
+    marca.style.alignItems = 'center';
+    marca.style.justifyContent = 'center';
+    marca.style.fontSize = '9px';
+    marca.style.letterSpacing = '0.42em';
+    marca.style.textTransform = 'uppercase';
+    marca.style.color = 'rgba(255, 255, 255, 0.5)';
+    marca.style.whiteSpace = 'nowrap';
+    marca.textContent = barWatermarkText;
+    return marca;
+  };
+
+  const criarBarraMarca = (posicao: 'top' | 'bottom') => {
+    const barra = document.createElement('div');
+    barra.style.position = 'absolute';
+    barra.style.left = '0';
+    barra.style.right = '0';
+    barra.style.height = `${BAR_HEIGHT_PX}px`;
+    barra.style.background = barBackground;
+    barra.style.zIndex = '1';
+    barra.style.overflow = 'hidden';
+    barra.style[posicao] = '0';
+    barra.appendChild(criarMarcaDaguaBarra());
+    return barra;
+  };
 
   const macroParagraphos = (relatorio.resumoMacro || '')
-    .split(/\n\s*\n/)
-    .map(paragrafo => paragrafo.trim())
-    .filter(Boolean);
+    .replace(/;/g, '\n')
+    .split(/\r?\n/)
+    .map(paragrafo => paragrafo.trim());
 
-  const textoResultadoFormatado = (textoResultado || '').split(/\n\s*\n/).map(paragrafo => {
+  const textoResultadoFormatado = (resumoTextoBase || '').split(/\n\s*\n/).map(paragrafo => {
     const trimmed = paragrafo.trim();
     return trimmed
-      ? `<p style="color: ${textColor}; font-size: 14px; line-height: 1.8; margin: 0 0 16px 0; text-align: justify; text-indent: 1.5em;">${trimmed}</p>`
+      ? `<p style="color: ${textSecondary}; font-size: 13px; line-height: 1.4; margin: 0 0 6px 0; text-align: justify; text-indent: 1.2em;">${trimmed}</p>`
       : '';
   }).join('');
 
@@ -102,48 +161,112 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
     pagina.style.left = '-9999px';
     pagina.style.width = `${PAGE_WIDTH_PX}px`;
     pagina.style.height = `${PAGE_HEIGHT_PX}px`;
-    pagina.style.padding = `${PAGE_PADDING_PX}px`;
-    pagina.style.fontFamily = 'Quicksand, sans-serif';
+    pagina.style.padding = '0';
+    pagina.style.fontFamily = '\'Source Sans 3\', sans-serif';
     pagina.style.backgroundColor = '#ffffff';
     pagina.style.color = textColor;
     pagina.style.boxSizing = 'border-box';
     pagina.style.overflow = 'hidden';
 
     const container = document.createElement('div');
-    container.style.maxWidth = '800px';
-    container.style.margin = '0 auto';
     container.style.position = 'relative';
     container.style.height = '100%';
+    container.style.width = '100%';
+    container.style.boxSizing = 'border-box';
+    container.style.padding = `${PAGE_PADDING_PX}px`;
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    container.style.zIndex = '2';
 
-    const bordaTopo = document.createElement('div');
-    bordaTopo.style.position = 'absolute';
-    bordaTopo.style.top = '0';
-    bordaTopo.style.left = '0';
-    bordaTopo.style.right = '0';
-    bordaTopo.style.height = '8px';
-    bordaTopo.style.background = `repeating-linear-gradient(90deg, ${primaryColor} 0px, ${primaryColor} 40px, transparent 40px, transparent 80px)`;
-    bordaTopo.style.opacity = '0.6';
-    bordaTopo.style.zIndex = '1';
+    const inner = document.createElement('div');
+    inner.style.maxWidth = '800px';
+    inner.style.width = '100%';
+    inner.style.position = 'relative';
+    inner.style.height = '100%';
 
-    const bordaBase = document.createElement('div');
-    bordaBase.style.position = 'absolute';
-    bordaBase.style.bottom = '0';
-    bordaBase.style.left = '0';
-    bordaBase.style.right = '0';
-    bordaBase.style.height = '8px';
-    bordaBase.style.background = `repeating-linear-gradient(90deg, ${primaryColor} 0px, ${primaryColor} 40px, transparent 40px, transparent 80px)`;
-    bordaBase.style.opacity = '0.6';
-    bordaBase.style.zIndex = '1';
+    const bordaTopo = criarBarraMarca('top');
+    const bordaBase = criarBarraMarca('bottom');
 
     const conteudo = document.createElement('div');
-    conteudo.style.paddingTop = '10px';
+    conteudo.style.paddingTop = '8px';
+    conteudo.style.position = 'relative';
+    conteudo.style.zIndex = '2';
 
-    container.appendChild(bordaTopo);
-    container.appendChild(conteudo);
-    container.appendChild(bordaBase);
+    inner.appendChild(conteudo);
+    container.appendChild(inner);
+    pagina.appendChild(bordaTopo);
+    pagina.appendChild(bordaBase);
     pagina.appendChild(container);
 
     return { pagina, conteudo };
+  };
+
+  const criarCapaReport = (capaImagem: string | null) => {
+    const capa = document.createElement('div');
+    capa.style.position = 'absolute';
+    capa.style.left = '-9999px';
+    capa.style.width = `${PAGE_WIDTH_PX}px`;
+    capa.style.height = `${PAGE_HEIGHT_PX}px`;
+    capa.style.fontFamily = '\'Source Sans 3\', sans-serif';
+    capa.style.backgroundColor = '#ffffff';
+    capa.style.color = '#ffffff';
+    capa.style.boxSizing = 'border-box';
+    capa.style.overflow = 'hidden';
+
+    const fundo = document.createElement('div');
+    fundo.style.position = 'absolute';
+    fundo.style.inset = '0';
+    fundo.style.background = capaImagem
+      ? `url(${capaImagem}) center/cover no-repeat`
+      : barGradient;
+    fundo.style.filter = capaImagem ? 'saturate(0.9)' : 'none';
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.inset = '0';
+    overlay.style.background = 'linear-gradient(180deg, rgba(13, 18, 19, 0.35) 0%, rgba(13, 18, 19, 0.65) 45%, rgba(13, 18, 19, 0.85) 100%)';
+
+    const conteudo = document.createElement('div');
+    conteudo.style.position = 'relative';
+    conteudo.style.zIndex = '2';
+    conteudo.style.height = '100%';
+    conteudo.style.display = 'flex';
+    conteudo.style.flexDirection = 'column';
+    conteudo.style.justifyContent = 'space-between';
+    conteudo.style.padding = '64px 56px';
+
+    const reportTitleSize = 42;
+    const secondarySize = Math.round(reportTitleSize * 0.8);
+
+    const topo = document.createElement('div');
+    topo.innerHTML = `
+      <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; font-size: ${secondarySize}px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85);">
+        UP Gestão
+      </div>
+      <div style="margin-top: 10px; width: 140px; height: 2px; background: rgba(255, 255, 255, 0.6);"></div>
+    `;
+
+    const base = document.createElement('div');
+    base.innerHTML = `
+      <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; font-size: ${reportTitleSize}px; font-weight: 700; line-height: 1.1;">
+        Report Mensal
+      </div>
+      <div style="margin-top: 12px; font-size: ${secondarySize}px; color: rgba(255, 255, 255, 0.85);">
+        ${relatorio.clienteNome || 'Cliente'}
+      </div>
+      <div style="margin-top: 6px; font-size: ${secondarySize}px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7);">
+        ${mesAno}
+      </div>
+    `;
+
+    conteudo.appendChild(topo);
+    conteudo.appendChild(base);
+
+    capa.appendChild(fundo);
+    capa.appendChild(overlay);
+    capa.appendChild(conteudo);
+
+    return capa;
   };
 
   const criarPaginaResumoMacro = (comHeader: boolean) => {
@@ -152,31 +275,42 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
     if (comHeader) {
       const header = document.createElement('div');
       header.innerHTML = `
-        <div style="text-align: center; margin-bottom: 32px; border-bottom: 3px solid ${primaryColor}; padding-bottom: 18px;">
-          <h1 style="color: ${primaryColor}; font-size: 32px; font-weight: 700; margin: 0;">UP Gestão</h1>
-          <p style="color: ${secondaryColor}; font-size: 16px; margin: 10px 0 0 0;">Relatório Mensal de Carteira</p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 14px;">
+          <div>
+            <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; color: ${primaryColor}; font-size: 22px; font-weight: 700; margin: 0;">
+              UP Gestão
+            </div>
+            <div style="margin-top: 4px; color: ${textMuted}; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+              Report Mensal
+            </div>
+          </div>
+          <div style="background: ${bgLight}; border: 1px solid ${borderColor}; border-radius: 10px; padding: 10px 12px; text-align: right; min-width: 180px;">
+            <div style="color: ${textMuted}; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">Período</div>
+            <div style="color: ${textColor}; font-size: 14px; font-weight: 600; margin-top: 4px;">${mesAno}</div>
+            <div style="color: ${textSecondary}; font-size: 12px; margin-top: 6px;">${relatorio.clienteNome || 'Cliente'}</div>
+          </div>
         </div>
-        <div style="margin-bottom: 24px;">
-          <h2 style="color: ${textColor}; font-size: 24px; font-weight: 600; margin-bottom: 10px;">${relatorio.clienteNome || 'Cliente'}</h2>
-          <p style="color: ${secondaryColor}; font-size: 14px; margin: 0;">Período: ${mesAno}</p>
-        </div>
+        <div style="height: 2px; background: ${primaryColor}; opacity: 0.4; margin-bottom: 16px;"></div>
       `;
       conteudo.appendChild(header);
     }
 
     const box = document.createElement('div');
-    box.style.marginBottom = '20px';
-    box.style.backgroundColor = bgLight;
-    box.style.padding = '20px';
-    box.style.borderRadius = '8px';
+    box.style.marginBottom = '18px';
+    box.style.backgroundColor = '#ffffff';
+    box.style.padding = '16px';
+    box.style.borderRadius = '10px';
+    box.style.border = `1px solid ${borderColor}`;
     box.style.borderLeft = `4px solid ${primaryColor}`;
 
     const titulo = document.createElement('h3');
     titulo.textContent = 'Resumo Macro';
-    titulo.style.color = textColor;
-    titulo.style.fontSize = '18px';
+    titulo.style.color = textMuted;
+    titulo.style.fontSize = '12px';
     titulo.style.fontWeight = '600';
-    titulo.style.marginBottom = '12px';
+    titulo.style.marginBottom = '10px';
+    titulo.style.textTransform = 'uppercase';
+    titulo.style.letterSpacing = '0.12em';
 
     const corpo = document.createElement('div');
     corpo.style.textAlign = 'justify';
@@ -197,13 +331,15 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
 
     while (indiceParagrafo < macroParagraphos.length) {
       const p = document.createElement('p');
-      p.style.color = textColor;
-      p.style.fontSize = '14px';
-      p.style.lineHeight = '1.8';
-      p.style.margin = '0 0 16px 0';
+      p.style.color = textSecondary;
+      p.style.fontSize = '13px';
+      const linhaMacro = macroParagraphos[indiceParagrafo];
+      const linhaVazia = linhaMacro.length === 0;
+      p.style.lineHeight = '1.4';
+      p.style.margin = linhaVazia ? '0 0 12px 0' : '0 0 6px 0';
       p.style.textAlign = 'justify';
-      p.style.textIndent = '1.5em';
-      p.textContent = macroParagraphos[indiceParagrafo];
+      p.style.textIndent = linhaVazia ? '0' : '1.2em';
+      p.textContent = linhaVazia ? '\u00A0' : linhaMacro;
       corpo.appendChild(p);
 
       if (pagina.scrollHeight > PAGE_HEIGHT_PX) {
@@ -226,54 +362,121 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
   divResumoMes.style.left = '-9999px';
   divResumoMes.style.width = `${PAGE_WIDTH_PX}px`;
   divResumoMes.style.height = `${PAGE_HEIGHT_PX}px`;
-  divResumoMes.style.padding = `${PAGE_PADDING_PX}px`;
-  divResumoMes.style.fontFamily = 'Quicksand, sans-serif';
+  divResumoMes.style.padding = '0';
+  divResumoMes.style.fontFamily = '\'Source Sans 3\', sans-serif';
   divResumoMes.style.backgroundColor = '#ffffff';
   divResumoMes.style.color = textColor;
   divResumoMes.style.boxSizing = 'border-box';
+  const resultadoPercentualTexto = resultadoPercentualValido
+    ? `${resultadoPercentual.toFixed(2)}%`
+    : '--';
+  const cdiMensalTexto = cdiMensalValido ? `${cdiMensal.toFixed(2)}%` : '--';
+  const resultadoMesBg = resultadoMes >= 0 ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)';
+  const resultadoMesBorder = resultadoMes >= 0 ? successColor : dangerColor;
+  const resultadoMesColor = resultadoMes >= 0 ? successColor : dangerColor;
+  const resultadoPercentualColor = resultadoPercentualValido
+    ? (resultadoPercentual >= 0 ? successColor : dangerColor)
+    : textColor;
+  const resultadoPercentualBg = resultadoPercentualValido
+    ? (resultadoPercentual >= 0 ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)')
+    : bgLight;
+  const resultadoPercentualBorder = resultadoPercentualValido
+    ? (resultadoPercentual >= 0 ? successColor : dangerColor)
+    : borderColor;
+
   divResumoMes.innerHTML = `
-    <div style="max-width: 800px; margin: 0 auto; position: relative; height: 100%; display: flex; flex-direction: column;">
-      <div style="position: absolute; top: 0; left: 0; right: 0; height: 8px; background: repeating-linear-gradient(90deg, ${primaryColor} 0px, ${primaryColor} 40px, transparent 40px, transparent 80px); opacity: 0.6; z-index: 1;"></div>
-      <div style="padding-top: 10px; flex: 1;">
-        <div style="margin-bottom: 24px;">
-          <h3 style="color: ${textColor}; font-size: 18px; font-weight: 600; margin-bottom: 12px;">Resumo do Mês</h3>
+    <div style="position: relative; height: 100%;">
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: ${BAR_HEIGHT_PX}px; background: ${barBackground}; z-index: 1; overflow: hidden;">
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); white-space: nowrap;">
+          ${barWatermarkText}
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-          <div style="background-color: ${bgLight}; padding: 20px; border-radius: 8px;">
-            <p style="color: ${secondaryColor}; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0 0 10px 0; letter-spacing: 0.5px;">Patrimônio Total</p>
-            <p style="color: ${textColor}; font-size: 28px; font-weight: 700; margin: 0;">${formatCurrency(relatorio.patrimonioTotal)}</p>
+      </div>
+      <div style="position: absolute; bottom: 0; left: 0; right: 0; height: ${BAR_HEIGHT_PX}px; background: ${barBackground}; z-index: 1; overflow: hidden;">
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); white-space: nowrap;">
+          ${barWatermarkText}
+        </div>
+      </div>
+      <div style="height: 100%; box-sizing: border-box; padding: ${PAGE_PADDING_PX}px;">
+        <div style="max-width: 820px; margin: 0 auto; position: relative; height: 100%; display: flex; flex-direction: column;">
+          <div style="padding-top: 8px; flex: 1; position: relative; z-index: 2; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 14px;">
+          <div>
+            <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; color: ${primaryColor}; font-size: 22px; font-weight: 700;">
+              UP Gestão
+            </div>
+            <div style="margin-top: 4px; color: ${textMuted}; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+              Report Mensal
+            </div>
           </div>
-          <div style="background-color: ${relatorio.resultadoMes >= 0 ? '#d1fae5' : '#fee2e2'}; padding: 20px; border-radius: 8px;">
-            <p style="color: ${secondaryColor}; font-size: 12px; font-weight: 600; text-transform: uppercase; margin: 0 0 10px 0; letter-spacing: 0.5px;">Resultado do Mês</p>
-            <p style="color: ${relatorio.resultadoMes >= 0 ? successColor : dangerColor}; font-size: 28px; font-weight: 700; margin: 0;">
-              ${relatorio.resultadoMes >= 0 ? '+' : ''}${formatCurrency(relatorio.resultadoMes)}
+          <div style="background: ${bgLight}; border: 1px solid ${borderColor}; border-radius: 10px; padding: 10px 12px; text-align: right; min-width: 180px;">
+            <div style="color: ${textMuted}; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">Período</div>
+            <div style="color: ${textColor}; font-size: 14px; font-weight: 600; margin-top: 4px;">${mesAno}</div>
+            <div style="color: ${textSecondary}; font-size: 12px; margin-top: 6px;">${relatorio.clienteNome || 'Cliente'}</div>
+          </div>
+        </div>
+        <div style="height: 2px; background: ${primaryColor}; opacity: 0.4; margin-bottom: 16px;"></div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+          <div style="background-color: #ffffff; border: 1px solid ${borderColor}; padding: 14px; border-radius: 10px;">
+            <p style="color: ${textMuted}; font-size: 10px; font-weight: 600; text-transform: uppercase; margin: 0 0 8px 0; letter-spacing: 0.12em;">Patrimônio Total</p>
+            <p style="color: ${textColor}; font-size: 22px; font-weight: 700; margin: 0;">${formatCurrency(patrimonioTotal)}</p>
+          </div>
+          <div style="background-color: ${resultadoMesBg}; border: 1px solid ${resultadoMesBorder}; padding: 14px; border-radius: 10px;">
+            <p style="color: ${textMuted}; font-size: 10px; font-weight: 600; text-transform: uppercase; margin: 0 0 8px 0; letter-spacing: 0.12em;">Resultado do Mês</p>
+            <p style="color: ${resultadoMesColor}; font-size: 22px; font-weight: 700; margin: 0;">
+              ${resultadoMes >= 0 ? '+' : ''}${formatCurrency(resultadoMes)}
+            </p>
+          </div>
+          <div style="background-color: ${resultadoPercentualBg}; border: 1px solid ${resultadoPercentualBorder}; padding: 14px; border-radius: 10px;">
+            <p style="color: ${textMuted}; font-size: 10px; font-weight: 600; text-transform: uppercase; margin: 0 0 8px 0; letter-spacing: 0.12em;">Resultado % do Mês</p>
+            <p style="color: ${resultadoPercentualColor}; font-size: 22px; font-weight: 700; margin: 0;">
+              ${resultadoPercentualTexto}
             </p>
           </div>
         </div>
-        <div style="margin-bottom: 24px;">
-          <div style="background-color: ${bgLight}; padding: 20px; border-radius: 8px; border-left: 4px solid ${primaryColor};">
+        <div style="margin-bottom: 16px;">
+          <div style="background-color: #ffffff; border: 1px solid ${borderColor}; padding: 16px; border-radius: 10px; border-left: 4px solid ${primaryColor};">
+            <div style="color: ${textMuted}; font-size: 11px; font-weight: 600; text-transform: uppercase; margin: 0 0 10px 0; letter-spacing: 0.12em;">Resumo do Mês</div>
             <div style="text-align: justify;">
-              ${textoResultadoFormatado || `<p style="color: ${textColor}; font-size: 14px; line-height: 1.8; margin: 0; text-align: justify;">${textoResultado || 'Nenhum resumo disponível.'}</p>`}
+              ${textoResultadoFormatado || `<p style="color: ${textSecondary}; font-size: 13px; line-height: 1.4; margin: 0 0 6px 0; text-align: justify;">${resumoTextoBase || 'Nenhum resumo disponível.'}</p>`}
             </div>
-            ${cdiMensal > 0 && typeof resultadoPercentual === 'number' ? `
-            <p style="color: ${secondaryColor}; font-size: 12px; margin-top: 15px; margin-bottom: 0;">
-              Resultado: ${resultadoPercentual.toFixed(2)}% | CDI Mensal: ${cdiMensal.toFixed(2)}%
+            ${cdiMensalValido && resultadoPercentualValido ? `
+            <p style="color: ${textMuted}; font-size: 11px; margin-top: 12px; margin-bottom: 0;">
+              Resultado: ${resultadoPercentualTexto} | CDI Mensal: ${cdiMensalTexto}
             </p>
             ` : ''}
           </div>
         </div>
       </div>
-      <div style="padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; margin-top: auto;">
-        <p style="color: ${secondaryColor}; font-size: 12px; margin: 0 0 25px 0;">Gerado em ${dataGeracao} | UP Gestão</p>
-        <div style="height: 8px; background: repeating-linear-gradient(90deg, ${primaryColor} 0px, ${primaryColor} 40px, transparent 40px, transparent 80px); opacity: 0.6;"></div>
+          <div style="padding-top: 14px; border-top: 1px solid ${borderColor}; text-align: center; margin-top: auto; position: relative; z-index: 2;">
+            <p style="color: ${textMuted}; font-size: 11px; margin: 0;">Gerado em ${dataGeracao} | UP Gestão</p>
+          </div>
+        </div>
       </div>
     </div>
   `;
 
+  const capaData = await carregarCapaRelatorio();
+  const paginaCapa = criarCapaReport(capaData);
+
+  document.body.appendChild(paginaCapa);
   paginasMacro.forEach(pagina => document.body.appendChild(pagina));
   document.body.appendChild(divResumoMes);
 
   try {
+    let imgCapa: string | null = null;
+    try {
+      const canvasCapa = await html2canvas(paginaCapa, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: PAGE_WIDTH_PX,
+        height: PAGE_HEIGHT_PX,
+      });
+      imgCapa = canvasCapa.toDataURL('image/png');
+    } catch (error) {
+      imgCapa = capaData || null;
+    }
+
     const canvasesMacro = [];
     for (const pagina of paginasMacro) {
       const canvas = await html2canvas(pagina, {
@@ -300,15 +503,9 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
     // @ts-ignore
     const pdf = new jsPDF('p', 'mm', 'a4');
 
-    // Tentar adicionar capa como primeira página
-    try {
-      const capaData = await carregarCapaRelatorio();
-      if (capaData) {
-        pdf.addImage(capaData, 'PNG', 0, 0, 210, 297);
-        pdf.addPage();
-      }
-    } catch (error) {
-      // Continuar sem capa se houver erro
+    if (imgCapa) {
+      pdf.addImage(imgCapa, 'PNG', 0, 0, 210, 297);
+      pdf.addPage();
     }
 
     imgMacro.forEach((img, index) => {
@@ -321,11 +518,20 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
     pdf.addPage();
     pdf.addImage(imgResumo, 'PNG', 0, 0, 210, 297);
 
-    const fileName = `Relatorio_${relatorio.clienteNome?.replace(/\s/g, '_') || 'Cliente'}_${mesAno.replace(/\s/g, '_')}.pdf`;
+    const fileName = `Report_Mensal_${relatorio.clienteNome?.replace(/\s/g, '_') || 'Cliente'}_${mesAno.replace(/\s/g, '_')}.pdf`;
     pdf.save(fileName);
   } finally {
-    paginasMacro.forEach(pagina => document.body.removeChild(pagina));
-    document.body.removeChild(divResumoMes);
+    if (paginaCapa.parentNode) {
+      paginaCapa.parentNode.removeChild(paginaCapa);
+    }
+    paginasMacro.forEach(pagina => {
+      if (pagina.parentNode) {
+        pagina.parentNode.removeChild(pagina);
+      }
+    });
+    if (divResumoMes.parentNode) {
+      divResumoMes.parentNode.removeChild(divResumoMes);
+    }
   }
 }
 
@@ -346,6 +552,7 @@ export interface RelatorioEstrategiaDiariaPDF {
   periodo: string;
   dataGeracao: string;
   descricao?: string;
+  benchmarkLabel?: string;
   resumo: Array<{ titulo: string; valor: string; detalhe?: string }>;
   chartData: Array<{ data: string; carteira: number; cdi: number; ifix: number }>;
 }
@@ -362,6 +569,7 @@ export async function gerarRelatorioEstrategiaDiariaPDF(
   const textColor = '#1f2a2d';
   const bgLight = '#f3f6f7';
   const borderColor = '#d5dde0';
+  const benchmarkLabel = relatorio.benchmarkLabel || 'IFIX';
 
   const criarPaginaBase = () => {
     const pagina = document.createElement('div');
@@ -580,7 +788,7 @@ export async function gerarRelatorioEstrategiaDiariaPDF(
         <span style="width:10px; height:10px; background:${secondaryColor}; border-radius:2px;"></span>CDI
       </span>
       <span style="display:flex; align-items:center; gap:6px;">
-        <span style="width:10px; height:10px; background:#f59e0b; border-radius:2px;"></span>IFIX
+        <span style="width:10px; height:10px; background:#f59e0b; border-radius:2px;"></span>${benchmarkLabel}
       </span>
     `;
 
@@ -643,5 +851,214 @@ export async function gerarRelatorioEstrategiaDiariaPDF(
     pdf.save(`relatorio_estrategia_${new Date().toISOString().split('T')[0]}.pdf`);
   } finally {
     pages.forEach((page) => document.body.removeChild(page));
+  }
+}
+
+type DashboardClientesPdfOptions = {
+  titulo?: string;
+  nomeArquivo?: string;
+  estrategiaMap?: Record<string, string>;
+};
+
+export async function gerarDashboardClientesPDF(
+  clientes: Cliente[],
+  options: DashboardClientesPdfOptions = {}
+): Promise<void> {
+  const PAGE_WIDTH_PX = 794;
+  const PAGE_HEIGHT_PX = 1123;
+  const PAGE_PADDING_PX = 44;
+  const primaryColor = '#1d2f34';
+  const textColor = '#1c2836';
+  const textMuted = '#5b6b76';
+  const borderColor = '#d7e0ea';
+  const bgLight = '#f1f3f6';
+
+  const titulo = options.titulo || 'Dados de Clientes';
+  const dataGeracao = formatDate(new Date().toISOString());
+  const clientesOrdenados = [...clientes].sort((a, b) =>
+    a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+  );
+  const getEstrategiaNome = (id?: string) => {
+    if (!id) return '-';
+    return options.estrategiaMap?.[id] || '-';
+  };
+  const getStatusLabel = (status: Cliente['status']) => {
+    if (status === 'inativo') return 'Inativo';
+    if (status === 'antecipado') return 'Antecipado';
+    return 'Ativo';
+  };
+
+  const criarPaginaBase = (pageNumber: number, totalPages: number) => {
+    const pagina = document.createElement('div');
+    pagina.style.position = 'absolute';
+    pagina.style.left = '-9999px';
+    pagina.style.width = `${PAGE_WIDTH_PX}px`;
+    pagina.style.height = `${PAGE_HEIGHT_PX}px`;
+    pagina.style.padding = '0';
+    pagina.style.fontFamily = '\'Source Sans 3\', sans-serif';
+    pagina.style.backgroundColor = '#ffffff';
+    pagina.style.color = textColor;
+    pagina.style.boxSizing = 'border-box';
+    pagina.style.overflow = 'hidden';
+
+    const container = document.createElement('div');
+    container.style.height = '100%';
+    container.style.boxSizing = 'border-box';
+    container.style.padding = `${PAGE_PADDING_PX}px`;
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.gap = '14px';
+
+    const header = document.createElement('div');
+    const pageCounter = document.createElement('div');
+    pageCounter.style.textAlign = 'right';
+    pageCounter.style.color = textMuted;
+    pageCounter.style.fontSize = '12px';
+    pageCounter.textContent = `Página ${pageNumber} de ${totalPages}`;
+
+    const headerRow = document.createElement('div');
+    headerRow.style.display = 'flex';
+    headerRow.style.alignItems = 'flex-start';
+    headerRow.style.justifyContent = 'space-between';
+    headerRow.style.gap = '16px';
+    headerRow.innerHTML = `
+      <div>
+        <div style="color:${primaryColor}; font-size:22px; font-weight:700; letter-spacing:0.02em;">${titulo}</div>
+        <div style="margin-top:6px; color:${textMuted}; font-size:12px;">Gerado em ${dataGeracao}</div>
+      </div>
+    `;
+    headerRow.appendChild(pageCounter);
+
+    const headerLine = document.createElement('div');
+    headerLine.style.height = '2px';
+    headerLine.style.background = primaryColor;
+    headerLine.style.opacity = '0.25';
+    headerLine.style.marginTop = '12px';
+
+    header.appendChild(headerRow);
+    header.appendChild(headerLine);
+
+    const resumo = document.createElement('div');
+    resumo.style.display = 'flex';
+    resumo.style.gap = '12px';
+    resumo.style.flexWrap = 'wrap';
+    resumo.innerHTML = `
+      <div style="background:${bgLight}; border:1px solid ${borderColor}; border-radius:8px; padding:10px 12px; font-size:12px; color:${textMuted};">
+        Total de clientes: <strong style="color:${textColor};">${clientesOrdenados.length}</strong>
+      </div>
+    `;
+
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+    table.style.fontSize = '11px';
+    table.style.tableLayout = 'fixed';
+
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+      <tr style="background:${bgLight}; color:${textMuted}; text-transform:uppercase; letter-spacing:0.08em;">
+        <th style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left; width:34%;">Cliente</th>
+        <th style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left; width:14%;">Status</th>
+        <th style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left; width:22%;">Estratégia</th>
+        <th style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:right; width:15%;">Assinatura</th>
+        <th style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:right; width:15%;">PL Total</th>
+      </tr>
+    `;
+
+    const tbody = document.createElement('tbody');
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    container.appendChild(header);
+    container.appendChild(resumo);
+    container.appendChild(table);
+    pagina.appendChild(container);
+
+    return { pagina, tbody, pageCounter };
+  };
+
+  const paginas: HTMLElement[] = [];
+  let indice = 0;
+
+  while (indice < clientesOrdenados.length || paginas.length === 0) {
+    const pageNumber = paginas.length + 1;
+    const { pagina, tbody, pageCounter } = criarPaginaBase(pageNumber, 1);
+    document.body.appendChild(pagina);
+
+    while (indice < clientesOrdenados.length) {
+      const cliente = clientesOrdenados[indice];
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left; word-break:break-word;">
+          ${cliente.nome || '-'}
+        </td>
+        <td style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left;">
+          ${getStatusLabel(cliente.status)}
+        </td>
+        <td style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:left; word-break:break-word;">
+          ${getEstrategiaNome(cliente.estrategiaId)}
+        </td>
+        <td style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:right;">
+          ${cliente.assinatura ? formatCurrency(cliente.assinatura) : '-'}
+        </td>
+        <td style="padding:8px; border-bottom:1px solid ${borderColor}; text-align:right;">
+          ${cliente.valorTotalContratos || cliente.patrimonioTotal
+            ? formatCurrency(cliente.valorTotalContratos || cliente.patrimonioTotal || 0)
+            : '-'}
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+      if (pagina.scrollHeight > PAGE_HEIGHT_PX) {
+        tbody.removeChild(tr);
+        if (tbody.childElementCount === 0) {
+          tbody.appendChild(tr);
+          indice++;
+        }
+        break;
+      }
+      indice++;
+    }
+
+    paginas.push(pagina);
+    pagina.dataset.pageCounterIndex = String(paginas.length - 1);
+    (pagina as any)._pageCounter = pageCounter;
+  }
+
+  // Atualizar numeração final de páginas
+  paginas.forEach((pagina, idx) => {
+    const pageCounter = (pagina as any)._pageCounter as HTMLDivElement | undefined;
+    if (pageCounter) {
+      pageCounter.textContent = `Página ${idx + 1} de ${paginas.length}`;
+    }
+  });
+
+  try {
+    const canvases = [];
+    for (const pagina of paginas) {
+      const canvas = await html2canvas(pagina, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: PAGE_WIDTH_PX,
+        height: PAGE_HEIGHT_PX,
+      });
+      canvases.push(canvas);
+    }
+
+    // @ts-ignore
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    canvases.forEach((canvas, index) => {
+      if (index > 0) pdf.addPage();
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+    });
+
+    const nomeArquivo = options.nomeArquivo || `dados_clientes_${new Date().toISOString().split('T')[0]}.pdf`;
+    pdf.save(nomeArquivo);
+  } finally {
+    paginas.forEach((pagina) => {
+      if (pagina.parentNode) pagina.parentNode.removeChild(pagina);
+    });
   }
 }

@@ -225,6 +225,14 @@
   font-weight: 500;
 }
 
+.estrategia-info .selected-count {
+  display: none;
+}
+
+.estrategia-info .selected-count--computed {
+  display: block;
+}
+
 
 .clientes-dados {
   display: flex;
@@ -237,6 +245,33 @@
   background-color: var(--card-bg);
   border-radius: 8px;
   border: 1px solid var(--border-color);
+}
+
+.cliente-dados-card.is-disabled {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.cliente-dados-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cliente-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.cliente-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
 }
 
 .cliente-dados-card h4 {
@@ -294,4 +329,3 @@
     width: 100%;
   }
 }
-

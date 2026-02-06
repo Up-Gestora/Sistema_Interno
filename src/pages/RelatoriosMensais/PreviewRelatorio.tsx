@@ -17,6 +17,18 @@ export default function PreviewRelatorio({ relatorio, onGerarPDF, onVoltar }: Pr
 
   const mesAno = `${meses[relatorio.mes - 1]} de ${relatorio.ano}`;
   const dataGeracao = relatorio.dataGeracao ? formatDate(relatorio.dataGeracao) : formatDate(new Date().toISOString());
+  const resultadoPercentual = typeof relatorio.resultadoPercentual === 'number' ? relatorio.resultadoPercentual : null;
+  const cdiMensal = typeof relatorio.cdiMensal === 'number' ? relatorio.cdiMensal : null;
+  const resumoTexto =
+    relatorio.resumoTexto?.trim()
+      ? relatorio.resumoTexto
+      : resultadoPercentual !== null && cdiMensal !== null
+        ? (resultadoPercentual > cdiMensal ? relatorio.textoAcimaCDI : relatorio.textoAbaixoCDI) || ''
+        : '';
+  const resumoMacroLinhas = (relatorio.resumoMacro || '')
+    .replace(/;/g, '\n')
+    .split(/\r?\n/)
+    .map((linha) => linha.trim());
 
   return (
     <Card title="Preview do Relatório" className="preview-relatorio">
@@ -35,7 +47,14 @@ export default function PreviewRelatorio({ relatorio, onGerarPDF, onVoltar }: Pr
 
         <div className="preview-section">
           <h3>Resumo Macro</h3>
-          <p>{relatorio.resumoMacro}</p>
+          <div className="preview-text">
+            {(resumoMacroLinhas.length ? resumoMacroLinhas : ['Nenhum resumo disponível.'])
+              .map((line, index) => (
+                <p key={index} className={line ? undefined : 'preview-spacer'}>
+                  {line || '\u00A0'}
+                </p>
+              ))}
+          </div>
         </div>
 
         <div className="preview-metrics">
@@ -54,9 +73,11 @@ export default function PreviewRelatorio({ relatorio, onGerarPDF, onVoltar }: Pr
         <div className="preview-section">
           <h3>Resumo do Mês</h3>
           <div className="preview-text">
-            {relatorio.resumoTexto.split('\n').map((line, index) => (
-              <p key={index}>{line || '\u00A0'}</p>
-            ))}
+            {(resumoTexto || 'Nenhum resumo disponível.')
+              .split('\n')
+              .map((line, index) => (
+                <p key={index}>{line || '\u00A0'}</p>
+              ))}
           </div>
         </div>
 

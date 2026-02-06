@@ -232,6 +232,13 @@ export default function EditarClienteForm({ cliente, onSave, onCancel }: EditarC
   }, [formData.status]);
 
   const handleChange = (field: keyof Cliente, value: any) => {
+    if (field === 'status' && value === 'inativo' && formData.status !== 'inativo') {
+      const confirmar = window.confirm(
+        'Tem certeza que deseja marcar este cliente como Inativo?\n\nIsso também irá cancelar a assinatura no Asaas.'
+      );
+      if (!confirmar) return;
+    }
+
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -410,7 +417,6 @@ export default function EditarClienteForm({ cliente, onSave, onCancel }: EditarC
           >
             <option value="ativo">Ativo</option>
             <option value="inativo">Inativo</option>
-            <option value="ok">OK</option>
             <option value="antecipado">Antecipado</option>
           </select>
         </div>
@@ -677,4 +683,3 @@ export default function EditarClienteForm({ cliente, onSave, onCancel }: EditarC
     </form>
   );
 }
-

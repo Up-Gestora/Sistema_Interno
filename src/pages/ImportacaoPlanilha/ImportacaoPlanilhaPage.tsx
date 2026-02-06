@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { exportarClientesParaExcel, exportarTemplateExcel, importarExcelParaClientes } from '../../services/planilhaService';
+import { gerarDashboardClientesPDF } from '../../services/pdfGenerator';
 import { useClientes } from '../../hooks/useClientes';
+import { useEstrategias } from '../../hooks/useEstrategias';
 import Card from '../../components/Card/Card';
 import './ImportacaoPlanilhaPage.css';
 
 export default function ImportacaoPlanilhaPage() {
   const { clientes, setClientes } = useClientes();
+  const { estrategias } = useEstrategias();
   const [importando, setImportando] = useState(false);
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState<string>('');
@@ -27,6 +30,24 @@ export default function ImportacaoPlanilhaPage() {
       setTimeout(() => setSucesso(''), 3000);
     } catch (error) {
       alert('Erro ao exportar template: ' + (error instanceof Error ? error.message : 'Erro desconhecido'));
+    }
+  };
+
+  const handleExportarPdf = async () => {
+    try {
+      const estrategiaMap = estrategias.reduce<Record<string, string>>((acc, estrategia) => {
+        acc[estrategia.id] = estrategia.nome;
+        return acc;
+      }, {});
+      await gerarDashboardClientesPDF(clientes, {
+        titulo: 'Dados de Clientes',
+        nomeArquivo: `dados_clientes_${new Date().toISOString().split('T')[0]}.pdf`,
+        estrategiaMap,
+      });
+      setSucesso('PDF com dados exportado com sucesso!');
+      setTimeout(() => setSucesso(''), 3000);
+    } catch (error) {
+      alert('Erro ao exportar PDF: ' + (error instanceof Error ? error.message : 'Erro desconhecido'));
     }
   };
 
@@ -99,9 +120,9 @@ export default function ImportacaoPlanilhaPage() {
   return (
     <div className="importacao-planilha-page">
       <div className="page-header">
-        <h1>Importação e Exportação de Planilha</h1>
+        <h1>Dados</h1>
         <p className="page-subtitle">
-          Exporte os dados dos clientes para edição ou importe uma planilha atualizada
+          Exporte os dados dos clientes ou importe uma planilha atualizada
         </p>
       </div>
 
@@ -130,6 +151,19 @@ export default function ImportacaoPlanilhaPage() {
             disabled={clientes.length === 0}
           >
             📥 Exportar Excel com Dados
+          </button>
+        </Card>
+
+        <Card title="Exportar Dados em PDF" className="action-card">
+          <p className="card-description">
+            Gere um PDF simples com a situação dos clientes para apresentar a parceiros.
+          </p>
+          <button
+            onClick={handleExportarPdf}
+            className="btn-export"
+            disabled={clientes.length === 0}
+          >
+            🧾 Exportar PDF com Dados
           </button>
         </Card>
 
@@ -183,7 +217,7 @@ export default function ImportacaoPlanilhaPage() {
           <h3>Formato da Planilha</h3>
           <p>A planilha deve conter as seguintes colunas (nesta ordem):</p>
           <ul>
-            <li><strong>Status:</strong> ok, antecipado, ativo, inativo</li>
+            <li><strong>Status:</strong> ativo, inativo, antecipado (OK sera tratado como ativo)</li>
             <li><strong>Cliente:</strong> Nome do cliente</li>
             <li><strong>BTG:</strong> Valor em R$ (ex: R$ 1.000.000,00 ou 1000000)</li>
             <li><strong>XP:</strong> Valor em R$</li>
@@ -215,4 +249,3 @@ export default function ImportacaoPlanilhaPage() {
     </div>
   );
 }
-

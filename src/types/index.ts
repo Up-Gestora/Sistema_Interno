@@ -5,7 +5,7 @@ export interface Cliente {
   telefone: string;
   empresa?: string;
   dataCadastro: string;
-  status: 'ativo' | 'inativo' | 'ok' | 'antecipado';
+  status: 'ativo' | 'inativo' | 'antecipado';
   estrategiaId?: string; // ID da estratégia de gestão
   valorTotalContratos?: number;
   // Dados de corretoras
@@ -59,7 +59,7 @@ export interface Estrategia {
   id: string;
   nome: string;
   descricao: string;
+  benchmark: string;
   dataCriacao: string;
   dataAtualizacao: string;
 }
-

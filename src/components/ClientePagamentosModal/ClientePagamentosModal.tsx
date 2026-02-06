@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Cliente } from '../../types';
 import { AsaasPagamento, AsaasSubscription } from '../../types/asaas';
-import { buscarPagamentos, buscarSubscriptions, atualizarCobranca, atualizarSubscription, cancelarCobranca } from '../../services/asaasService';
+import { buscarPagamentosPaginados, buscarSubscriptions, atualizarCobranca, atualizarSubscription, cancelarCobranca } from '../../services/asaasService';
 import { formatCurrency, formatDate } from '../../utils/calculations';
 import { useMoneyVisibility } from '../../contexts/MoneyVisibilityContext';
 import Modal from '../Modal/Modal';
@@ -39,10 +39,10 @@ export default function ClientePagamentosModal({ isOpen, onClose, cliente }: Cli
     setErro('');
     try {
       const [pagamentosResposta, subscriptionsResposta] = await Promise.all([
-        buscarPagamentos({ customer: cliente.asaasCustomerId, limit: 100 }),
+        buscarPagamentosPaginados({ customer: cliente.asaasCustomerId }),
         buscarSubscriptions({ customer: cliente.asaasCustomerId, limit: 100 }),
       ]);
-      setPagamentos(pagamentosResposta.data || []);
+      setPagamentos(pagamentosResposta || []);
       setSubscriptions(subscriptionsResposta.data || []);
     } catch (error: any) {
       setErro(error.message || 'Erro ao carregar dados de pagamento');
@@ -210,6 +210,7 @@ export default function ClientePagamentosModal({ isOpen, onClose, cliente }: Cli
                     <tr>
                       <th>Descrição</th>
                       <th>Valor</th>
+                      <th>Valor líquido</th>
                       <th>Vencimento</th>
                       <th>Status</th>
                       <th>Tipo</th>
@@ -221,6 +222,11 @@ export default function ClientePagamentosModal({ isOpen, onClose, cliente }: Cli
                       <tr key={pagamento.id}>
                         <td>{pagamento.description || '-'}</td>
                         <td className="valor-cell">{maskValue(formatCurrency(pagamento.value))}</td>
+                        <td className="valor-cell">
+                          {pagamento.netValue !== undefined && pagamento.netValue !== null
+                            ? maskValue(formatCurrency(pagamento.netValue))
+                            : '-'}
+                        </td>
                         <td>{formatDate(pagamento.dueDate)}</td>
                         <td>
                           <span className={`status-badge ${getStatusBadgeClass(pagamento.status)}`}>
@@ -398,4 +404,3 @@ export default function ClientePagamentosModal({ isOpen, onClose, cliente }: Cli
     </Modal>
   );
 }
-

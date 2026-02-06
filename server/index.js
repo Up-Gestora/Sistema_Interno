@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fetch from 'node-fetch';
+import multer from 'multer';
 
 // Carregar variáveis de ambiente
 dotenv.config();
@@ -13,6 +14,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const upload = multer({ storage: multer.memoryStorage() });
 
 const DASHBOARD_CACHE_TTL_MS = 5 * 60 * 1000;
 let dashboardCache = {
@@ -140,6 +142,134 @@ app.post('/api/asaas/proxy', async (req, res) => {
       error: 'Erro ao fazer requisição à API do Asaas',
       message: error.message,
       details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
+  }
+});
+
+// Endpoint proxy para API do Assinafy
+app.post('/api/assinafy/proxy', async (req, res) => {
+  try {
+    const { endpoint, method = 'GET', params, body: requestBody } = req.body || {};
+    const apiKey = req.headers['x-assinafy-api-key'] || process.env.ASSINAFY_API_KEY;
+    const ambiente = req.headers['x-assinafy-ambiente'] || process.env.ASSINAFY_AMBIENTE || 'production';
+
+    if (!apiKey) {
+      return res.status(400).json({
+        error: 'API Key do Assinafy não fornecida. Configure via header X-Assinafy-Api-Key ou variável de ambiente ASSINAFY_API_KEY',
+      });
+    }
+
+    if (!endpoint || typeof endpoint !== 'string') {
+      return res.status(400).json({ error: 'Endpoint é obrigatório' });
+    }
+
+    const baseUrls = {
+      sandbox: 'https://api-staging.assinafy.com.br/v1',
+      production: 'https://api.assinafy.com.br/v1',
+    };
+
+    const baseUrl = baseUrls[ambiente] || baseUrls.production;
+
+    let url = `${baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+
+    if (params && Object.keys(params).length > 0) {
+      const queryParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          queryParams.append(key, String(value));
+        }
+      });
+      const queryString = queryParams.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+    }
+
+    const fetchOptions = {
+      method: method.toUpperCase(),
+      headers: {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json',
+        'User-Agent': 'Sistema-Interno/1.0.0',
+      },
+    };
+
+    if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase()) && requestBody) {
+      fetchOptions.body = JSON.stringify(requestBody);
+    }
+
+    const response = await fetch(url, fetchOptions);
+    const contentType = response.headers.get('content-type');
+    const data = contentType && contentType.includes('application/json')
+      ? await response.json()
+      : { message: await response.text() };
+
+    return res.status(response.status).json(data);
+  } catch (error) {
+    console.error('❌ Erro no proxy Assinafy:', error);
+    return res.status(500).json({
+      error: 'Erro ao fazer requisição à API do Assinafy',
+      message: error.message,
+    });
+  }
+});
+
+// Endpoint upload de documento para Assinafy
+app.post('/api/assinafy/upload', upload.single('file'), async (req, res) => {
+  try {
+    const apiKey = req.headers['x-assinafy-api-key'] || process.env.ASSINAFY_API_KEY;
+    const ambiente = req.headers['x-assinafy-ambiente'] || process.env.ASSINAFY_AMBIENTE || 'production';
+    const accountId = req.body?.accountId;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        error: 'API Key do Assinafy não fornecida. Configure via header X-Assinafy-Api-Key ou variável de ambiente ASSINAFY_API_KEY',
+      });
+    }
+
+    if (!accountId) {
+      return res.status(400).json({ error: 'Workspace Account ID é obrigatório.' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'Arquivo não enviado.' });
+    }
+
+    const baseUrls = {
+      sandbox: 'https://api-staging.assinafy.com.br/v1',
+      production: 'https://api.assinafy.com.br/v1',
+    };
+
+    const baseUrl = baseUrls[ambiente] || baseUrls.production;
+    const url = `${baseUrl}/accounts/${accountId}/documents`;
+
+    const formData = new FormData();
+    const blob = new Blob([req.file.buffer], { type: req.file.mimetype });
+    formData.append('file', blob, req.file.originalname);
+    if (req.body?.name) {
+      formData.append('name', req.body.name);
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-Api-Key': apiKey,
+        'User-Agent': 'Sistema-Interno/1.0.0',
+      },
+      body: formData,
+    });
+
+    const contentType = response.headers.get('content-type');
+    const data = contentType && contentType.includes('application/json')
+      ? await response.json()
+      : { message: await response.text() };
+
+    return res.status(response.status).json(data);
+  } catch (error) {
+    console.error('❌ Erro no upload Assinafy:', error);
+    return res.status(500).json({
+      error: 'Erro ao enviar documento para o Assinafy',
+      message: error.message,
     });
   }
 });
@@ -292,4 +422,3 @@ app.listen(PORT, () => {
   console.log(`📡 Endpoint proxy: http://localhost:${PORT}/api/asaas/proxy`);
   console.log(`💡 Configure a API Key do Asaas via variável de ambiente ASAAS_API_KEY ou header X-Asaas-Api-Key`);
 });
-

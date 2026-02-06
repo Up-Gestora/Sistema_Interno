@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { getAsaasConfig, saveAsaasConfig, isAsaasConfigured, testarConexao, buscarPagamentosPaginados } from '../services/asaasService';
 import { AsaasConfig, AsaasPagamento, AsaasResumoFinanceiro } from '../types/asaas';
+import { Cliente } from '../types';
 import { formatCurrency } from '../utils/calculations';
 import { useMoneyVisibility } from '../contexts/MoneyVisibilityContext';
 import { useClientes } from '../hooks/useClientes';
@@ -10,58 +11,214 @@ import Modal from '../components/Modal/Modal';
 import './AsaasPage.css';
 
 let pagamentosCache: AsaasPagamento[] | null = null;
+const INTER_LANCAMENTOS_KEY = 'inter_manual_lancamentos_v1';
+const SAIDAS_LANCAMENTOS_KEY = 'saidas_manual_lancamentos_v1';
+const ASAAS_PAGAMENTOS_CACHE_KEY = 'asaas_pagamentos_cache_v1';
+
+type AsaasPagamentosCache = {
+  updatedAt: string;
+  pagamentos: AsaasPagamento[];
+};
+
+const lerPagamentosCache = (): AsaasPagamentosCache | null => {
+  const saved = localStorage.getItem(ASAAS_PAGAMENTOS_CACHE_KEY);
+  if (!saved) return null;
+  try {
+    const parsed = JSON.parse(saved);
+    if (Array.isArray(parsed)) {
+      return { updatedAt: '', pagamentos: parsed as AsaasPagamento[] };
+    }
+    if (parsed && Array.isArray(parsed.pagamentos)) {
+      return parsed as AsaasPagamentosCache;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+};
+
+const salvarPagamentosCache = (pagamentos: AsaasPagamento[]) => {
+  const payload: AsaasPagamentosCache = {
+    updatedAt: new Date().toISOString(),
+    pagamentos,
+  };
+  localStorage.setItem(ASAAS_PAGAMENTOS_CACHE_KEY, JSON.stringify(payload));
+};
+
+const mergePagamentos = (base: AsaasPagamento[], novos: AsaasPagamento[]) => {
+  const map = new Map(base.map((pagamento) => [pagamento.id, pagamento]));
+  novos.forEach((pagamento) => {
+    map.set(pagamento.id, pagamento);
+  });
+  return Array.from(map.values());
+};
 
 export interface FinanceiroOutletContext {
+  pagamentos: AsaasPagamento[];
   pagamentosFiltrados: AsaasPagamento[];
   carregando: boolean;
   filtroStatus: string;
   setFiltroStatus: (status: string) => void;
   clientesPorAsaasId: Record<string, string>;
+  clientes: Cliente[];
+  interLancamentos: InterManualLancamento[];
+  onAdicionarLancamentoInter: (lancamento: InterManualLancamento) => void;
+  onRemoverLancamentoInter: (id: string) => void;
+  saidasLancamentos: SaidaManualLancamento[];
+  onAdicionarSaida: (lancamento: SaidaManualLancamento) => void;
+  onRemoverSaida: (id: string) => void;
   getStatusBadgeClass: (status: string) => string;
   getStatusLabel: (status: string) => string;
   maskValue: (value: string) => string;
 }
 
+export type InterManualLancamento = {
+  id: string;
+  clienteId: string;
+  tipo: 'recebimento' | 'pagamento';
+  valor: number;
+  data: string;
+  descricao?: string;
+};
+
+export type SaidaManualLancamento = {
+  id: string;
+  recebedor: string;
+  valor: number;
+  data: string;
+  descricao?: string;
+};
+
 export default function AsaasPage() {
   const { maskValue } = useMoneyVisibility();
   const { clientes } = useClientes();
+  const location = useLocation();
   const [config, setConfig] = useState<AsaasConfig | null>(null);
   const [mostrarModalConfig, setMostrarModalConfig] = useState(false);
   const [configForm, setConfigForm] = useState<AsaasConfig>({
     apiKey: '',
     ambiente: 'production',
   });
-  const [pagamentos, setPagamentos] = useState<AsaasPagamento[]>([]);
+  const [pagamentos, setPagamentos] = useState<AsaasPagamento[]>(() => {
+    const cache = lerPagamentosCache();
+    return cache?.pagamentos || [];
+  });
+  const [interLancamentos, setInterLancamentos] = useState<InterManualLancamento[]>(() => {
+    const saved = localStorage.getItem(INTER_LANCAMENTOS_KEY);
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved) as InterManualLancamento[];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [saidasLancamentos, setSaidasLancamentos] = useState<SaidaManualLancamento[]>(() => {
+    const saved = localStorage.getItem(SAIDAS_LANCAMENTOS_KEY);
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved) as SaidaManualLancamento[];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState<string>('');
   const [filtroStatus, setFiltroStatus] = useState<string>('');
   const [filtroPeriodo, setFiltroPeriodo] = useState<'mes' | 'ano' | 'inicio'>('mes');
 
   useEffect(() => {
+    localStorage.setItem(INTER_LANCAMENTOS_KEY, JSON.stringify(interLancamentos));
+  }, [interLancamentos]);
+
+  useEffect(() => {
+    localStorage.setItem(SAIDAS_LANCAMENTOS_KEY, JSON.stringify(saidasLancamentos));
+  }, [saidasLancamentos]);
+
+  useEffect(() => {
     const savedConfig = getAsaasConfig();
     if (savedConfig) {
       setConfig(savedConfig);
       setConfigForm(savedConfig);
-      if (pagamentosCache) {
-        setPagamentos(pagamentosCache);
-      } else {
-        carregarDados();
+      const cache = lerPagamentosCache();
+      if (cache?.pagamentos?.length) {
+        pagamentosCache = cache.pagamentos;
+        setPagamentos(cache.pagamentos);
       }
+      carregarDados();
     } else {
       setMostrarModalConfig(true);
     }
   }, []);
 
+  const adicionarLancamentoInter = (lancamento: InterManualLancamento) => {
+    setInterLancamentos((prev) => [lancamento, ...prev]);
+  };
+
+  const removerLancamentoInter = (id: string) => {
+    setInterLancamentos((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const adicionarSaida = (lancamento: SaidaManualLancamento) => {
+    setSaidasLancamentos((prev) => [lancamento, ...prev]);
+  };
+
+  const removerSaida = (id: string) => {
+    setSaidasLancamentos((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const pagamentosInter = useMemo<AsaasPagamento[]>(() => {
+    return interLancamentos
+      .filter((item) => item.tipo === 'recebimento')
+      .map((item) => ({
+        id: item.id,
+        customer: `manual:${item.clienteId}`,
+        billingType: 'INTER',
+        value: item.valor,
+        netValue: item.valor,
+      originalValue: item.valor,
+      interestValue: 0,
+      description: item.descricao?.trim() || 'Recebimento Inter (manual)',
+      status: 'INTER_RECEIVED',
+      dueDate: item.data,
+      originalDueDate: item.data,
+      paymentDate: item.data,
+      clientPaymentDate: item.data,
+      installmentNumber: 1,
+      installment: '1',
+      subscription: '',
+      invoiceUrl: '',
+      bankSlipUrl: '',
+      transactionReceiptUrl: '',
+      invoiceNumber: '',
+      externalReference: '',
+      deleted: false,
+      anticipated: false,
+      anticipable: false,
+      refunds: undefined,
+        dateCreated: item.data,
+      }));
+  }, [interLancamentos]);
+
+  const pagamentosCombinados = useMemo(
+    () => [...pagamentosInter, ...pagamentos],
+    [pagamentosInter, pagamentos]
+  );
+
   const pagamentosFiltrados = useMemo(() => {
-    if (!filtroStatus) return pagamentos;
-    return pagamentos.filter((pagamento) => pagamento.status === filtroStatus);
-  }, [pagamentos, filtroStatus]);
+    if (!filtroStatus) return pagamentosCombinados;
+    return pagamentosCombinados.filter((pagamento) => pagamento.status === filtroStatus);
+  }, [pagamentosCombinados, filtroStatus]);
+
+  const mostrarResumoCards = location.pathname.includes('/asaas/contas');
 
   const clientesPorAsaasId = useMemo(() => {
     return clientes.reduce<Record<string, string>>((acc, cliente) => {
       if (cliente.asaasCustomerId) {
         acc[cliente.asaasCustomerId] = cliente.nome;
       }
+      acc[`manual:${cliente.id}`] = cliente.nome;
       return acc;
     }, {});
   }, [clientes]);
@@ -133,15 +290,24 @@ export default function AsaasPage() {
     setCarregando(true);
     setErro('');
 
+    const cacheAtual = lerPagamentosCache();
+
     try {
       const resposta = await buscarPagamentosPaginados();
       const lista = resposta || [];
-      pagamentosCache = lista;
-      setPagamentos(lista);
+      const base = cacheAtual?.pagamentos || [];
+      const mesclado = mergePagamentos(base, lista);
+      pagamentosCache = mesclado;
+      setPagamentos(mesclado);
+      salvarPagamentosCache(mesclado);
     } catch (error: any) {
       const errorMessage = error.message || 'Erro ao carregar dados do Asaas';
       setErro(errorMessage);
       console.error('Erro completo:', error);
+      if (cacheAtual?.pagamentos?.length) {
+        pagamentosCache = cacheAtual.pagamentos;
+        setPagamentos(cacheAtual.pagamentos);
+      }
       
       // Se for erro de CORS, dar dica mais específica
       if (errorMessage.includes('Failed to fetch') || errorMessage.includes('CORS')) {
@@ -182,6 +348,8 @@ export default function AsaasPage() {
       PENDING: 'status-pending',
       OVERDUE: 'status-overdue',
       REFUNDED: 'status-refunded',
+      INTER_RECEIVED: 'status-received',
+      INTER_PAID: 'status-inter-paid',
       RECEIVED_IN_CASH_UNDONE: 'status-received-cash',
       CHARGEBACK_REQUESTED: 'status-chargeback',
       CHARGEBACK_DISPUTE: 'status-chargeback',
@@ -199,6 +367,8 @@ export default function AsaasPage() {
       PENDING: 'Pendente',
       OVERDUE: 'Vencido',
       REFUNDED: 'Reembolsado',
+      INTER_RECEIVED: 'Recebido (Inter)',
+      INTER_PAID: 'Pagamento (Inter)',
       RECEIVED_IN_CASH_UNDONE: 'Recebido em Dinheiro',
       CHARGEBACK_REQUESTED: 'Chargeback Solicitado',
       CHARGEBACK_DISPUTE: 'Chargeback em Disputa',
@@ -281,100 +451,94 @@ export default function AsaasPage() {
         </Card>
       ) : (
         <>
-          <div className="resumo-cards">
-            <Card className="resumo-card">
-              <h3>Saldo</h3>
-              <p className="valor">
-                {carregando ? (
-                  <span className="loading-dots" aria-label="Carregando">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : resumo ? (
-                  maskValue(formatCurrency(resumo.balance))
-                ) : (
-                  '—'
-                )}
-              </p>
-            </Card>
-            <Card className="resumo-card">
-              <h3>Recebidos</h3>
-              <p className="valor positivo">
-                {carregando ? (
-                  <span className="loading-dots" aria-label="Carregando">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : resumo ? (
-                  maskValue(formatCurrency(resumo.received))
-                ) : (
-                  '—'
-                )}
-              </p>
-            </Card>
-            <Card className="resumo-card">
-              <h3>Confirmados</h3>
-              <p className="valor">
-                {carregando ? (
-                  <span className="loading-dots" aria-label="Carregando">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : resumo ? (
-                  maskValue(formatCurrency(resumo.confirmed))
-                ) : (
-                  '—'
-                )}
-              </p>
-            </Card>
-            <Card className="resumo-card">
-              <h3>Aguardando</h3>
-              <p className="valor">
-                {carregando ? (
-                  <span className="loading-dots" aria-label="Carregando">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : resumo ? (
-                  maskValue(formatCurrency(resumo.pending))
-                ) : (
-                  '—'
-                )}
-              </p>
-            </Card>
-            <Card className="resumo-card">
-              <h3>Vencido</h3>
-              <p className="valor negativo">
-                {carregando ? (
-                  <span className="loading-dots" aria-label="Carregando">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                ) : resumo ? (
-                  maskValue(formatCurrency(resumo.overdue))
-                ) : (
-                  '—'
-                )}
-              </p>
-            </Card>
-          </div>
-          <Outlet
-            context={{
-              pagamentosFiltrados,
-              carregando,
-              filtroStatus,
-              setFiltroStatus,
-              clientesPorAsaasId,
-              getStatusBadgeClass,
-              getStatusLabel,
-              maskValue,
-            }}
-          />
+          {mostrarResumoCards && (
+            <div className="resumo-cards resumo-cards-financeiro">
+              <Card className="resumo-card">
+                <h3>Recebidas</h3>
+                <p className="valor positivo">
+                  {carregando ? (
+                    <span className="loading-dots" aria-label="Carregando">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  ) : resumo ? (
+                    maskValue(formatCurrency(resumo.received))
+                  ) : (
+                    "-"
+                  )}
+                </p>
+              </Card>
+              <Card className="resumo-card">
+                <h3>Confirmadas</h3>
+                <p className="valor positivo">
+                  {carregando ? (
+                    <span className="loading-dots" aria-label="Carregando">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  ) : resumo ? (
+                    maskValue(formatCurrency(resumo.confirmed))
+                  ) : (
+                    "-"
+                  )}
+                </p>
+              </Card>
+              <Card className="resumo-card">
+                <h3>Aguardando</h3>
+                <p className="valor">
+                  {carregando ? (
+                    <span className="loading-dots" aria-label="Carregando">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  ) : resumo ? (
+                    maskValue(formatCurrency(resumo.pending))
+                  ) : (
+                    "-"
+                  )}
+                </p>
+              </Card>
+              <Card className="resumo-card">
+                <h3>Vencidas</h3>
+                <p className="valor negativo">
+                  {carregando ? (
+                    <span className="loading-dots" aria-label="Carregando">
+                      <span />
+                      <span />
+                      <span />
+                    </span>
+                  ) : resumo ? (
+                    maskValue(formatCurrency(resumo.overdue))
+                  ) : (
+                    "-"
+                  )}
+                </p>
+              </Card>
+            </div>
+          )}
+      <Outlet
+        context={{
+          pagamentos: pagamentosCombinados,
+          pagamentosFiltrados,
+          carregando,
+          filtroStatus,
+          setFiltroStatus,
+          clientesPorAsaasId,
+          clientes,
+          interLancamentos,
+          onAdicionarLancamentoInter: adicionarLancamentoInter,
+          onRemoverLancamentoInter: removerLancamentoInter,
+          saidasLancamentos,
+          onAdicionarSaida: adicionarSaida,
+          onRemoverSaida: removerSaida,
+          getStatusBadgeClass,
+          getStatusLabel,
+          maskValue,
+        }}
+      />
         </>
       )}
 
@@ -439,4 +603,3 @@ export default function AsaasPage() {
     </div>
   );
 }
-

@@ -331,3 +331,4 @@ export function renderTextoComDestaques(texto: string, destaques?: string[]) {
 
   return nodes;
 }
+

@@ -238,7 +238,15 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  flex-wrap: wrap;
 }
+
+.financeiro-export-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 
 .filtro-select {
   padding: 0.5rem 0.75rem;
@@ -563,6 +571,102 @@
   padding: 0.55rem 0.75rem;
 }
 
+.assinaturas-group-total {
+  background-color: var(--bg-tertiary);
+  font-weight: 600;
+}
+
+.assinaturas-group-total td {
+  background-color: inherit;
+}
+
+.assinaturas-result-row td {
+  background-color: rgba(59, 130, 246, 0.06);
+  font-weight: 700;
+}
+
+.assinaturas-result-row .assinaturas-col-cliente {
+  background-color: rgba(59, 130, 246, 0.06);
+}
+
+.assinaturas-result-positivo {
+  color: var(--success-color);
+}
+
+.assinaturas-result-negativo {
+  color: var(--danger-color);
+}
+
+.assinaturas-novo-gasto {
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background-color: var(--bg-secondary);
+}
+
+.assinaturas-gastos-custom-list {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.assinaturas-gastos-custom-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-bg);
+}
+
+.assinaturas-gastos-custom-nome {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.assinaturas-gastos-custom-categoria {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.assinaturas-gastos-custom-remove {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.assinaturas-resumo-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.assinaturas-table-editing td {
+  cursor: text;
+}
+
+.assinaturas-table-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  text-align: center;
+  padding: 0.35rem 0.4rem;
+}
+
+.assinaturas-table-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: var(--bg-secondary);
+}
+
 .assinaturas-col-cliente {
   text-align: left;
   position: sticky;
@@ -764,6 +868,207 @@
 
 .btn-secondary:hover {
   background-color: var(--bg-tertiary);
+}
+
+.financeiro-report-export {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 794px;
+  height: auto;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.financeiro-report {
+  width: 794px;
+  color: #1c2836;
+  font-family: 'Source Sans 3', 'Quicksand', sans-serif;
+  --chart-admin: var(--primary-color);
+  --chart-performance: var(--primary-dark);
+  --chart-payments: #ef4444;
+  --chart-profit: #0f172a;
+  --chart-axis: #5b6b76;
+  --chart-grid: #d7e0ea;
+}
+
+.financeiro-report-page {
+  width: 794px;
+  height: 1123px;
+  padding: 44px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.financeiro-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.financeiro-report-logo {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.financeiro-report-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0.25rem;
+}
+
+.financeiro-report-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.financeiro-report-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.financeiro-report-section {
+  background-color: #f1f3f6;
+  border-left: 4px solid var(--primary-color);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.financeiro-report-section h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.financeiro-report-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.financeiro-report-section-header span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.financeiro-report-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.financeiro-report-metric {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.financeiro-report-metric.positivo {
+  border-left: 4px solid var(--success-color);
+}
+
+.financeiro-report-metric.negativo {
+  border-left: 4px solid var(--danger-color);
+}
+
+.financeiro-report-metric-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.financeiro-report-metric-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.financeiro-report-chart {
+  width: 100%;
+  height: 220px;
+}
+
+.financeiro-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  table-layout: fixed;
+}
+
+.financeiro-report-table th,
+.financeiro-report-table td {
+  padding: 0.4rem 0.45rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.financeiro-report-table th:first-child,
+.financeiro-report-table td:first-child {
+  text-align: left;
+}
+
+.financeiro-report-table thead tr:first-child th {
+  background-color: #e7edf2;
+  font-weight: 600;
+}
+
+.financeiro-report-table thead tr:nth-child(2) th {
+  background-color: #f1f4f7;
+  font-weight: 600;
+}
+
+.financeiro-report-group-row td {
+  background-color: #eef2f6;
+  font-weight: 600;
+  text-align: left;
+}
+
+.financeiro-report-total-row td {
+  background-color: #f7f9fb;
+  font-weight: 600;
+}
+
+.financeiro-report-empty {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.financeiro-report-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
 }
 
 @media (max-width: 768px) {

@@ -1,0 +1,49 @@
+.venture-capital-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.venture-capital-page .page-header h1 {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.venture-capital-page .page-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.venture-card {
+  max-width: 840px;
+}
+
+.venture-status {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.venture-status-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.venture-status p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}

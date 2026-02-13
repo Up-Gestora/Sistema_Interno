@@ -495,8 +495,9 @@ export async function atualizarSubscription(
 }
 
 /**
- * Atualiza todas as cobranças pendentes de um cliente no Asaas
- * Atualiza a subscription com updatePendingPayments: true para atualizar todas as cobranças pendentes
+ * Atualiza apenas as cobranças pendentes vinculadas à assinatura (subscription) do cliente no Asaas.
+ *
+ * Importante: não deve alterar cobranças avulsas ou parcelamentos, mesmo que estejam pendentes.
  */
 export async function atualizarCobrancasPendentes(
   customerId: string,
@@ -506,13 +507,17 @@ export async function atualizarCobrancasPendentes(
   try {
     let subscriptionParaAtualizar = subscriptionId;
 
-    const atualizarPendentesDireto = async () => {
+    const atualizarPendentesDireto = async (subscriptionIdAlvo: string) => {
       const resposta = await buscarPagamentos({
         customer: customerId,
+        subscription: subscriptionIdAlvo,
         status: 'PENDING',
         limit: 100,
       });
-      const cobrancasPendentes = resposta.data || [];
+      // Segurança: garantir que só cobranças da assinatura sejam alteradas.
+      const cobrancasPendentes = (resposta.data || []).filter(
+        cobranca => cobranca.subscription === subscriptionIdAlvo
+      );
       let atualizadas = 0;
       let erros = 0;
 
@@ -547,31 +552,33 @@ export async function atualizarCobrancasPendentes(
       subscriptionParaAtualizar = selecionada.id;
     }
 
-    // Atualizar a subscription (isso atualiza todas as cobranças pendentes)
-    if (subscriptionParaAtualizar) {
-      try {
-        const subscriptionAtual = await buscarSubscriptionPorId(subscriptionParaAtualizar);
-        await atualizarSubscription(subscriptionParaAtualizar, {
-          value: novoValor,
-          billingType: subscriptionAtual.billingType,
-          description: subscriptionAtual.description,
-          cycle: subscriptionAtual.cycle,
-          nextDueDate: subscriptionAtual.nextDueDate,
-          updatePendingPayments: true, // Atualiza todas as cobranças pendentes
-        });
-      } catch (error: any) {
-        console.error('Erro ao atualizar subscription:', error);
-        // Fallback: tenta atualizar cobranças pendentes individualmente
-        const fallback = await atualizarPendentesDireto();
-        if (fallback.atualizadas > 0 || fallback.erros > 0) {
-          return { ...fallback, subscriptionId: subscriptionParaAtualizar };
-        }
-        throw error;
-      }
-
-      const resultado = await atualizarPendentesDireto();
-      return { ...resultado, subscriptionId: subscriptionParaAtualizar };
+    if (!subscriptionParaAtualizar) {
+      throw new Error('Nenhuma assinatura encontrada no Asaas para este cliente.');
     }
+
+    // Atualizar a subscription (isso atualiza as cobranças pendentes da assinatura)
+    try {
+      const subscriptionAtual = await buscarSubscriptionPorId(subscriptionParaAtualizar);
+      await atualizarSubscription(subscriptionParaAtualizar, {
+        value: novoValor,
+        billingType: subscriptionAtual.billingType,
+        description: subscriptionAtual.description,
+        cycle: subscriptionAtual.cycle,
+        nextDueDate: subscriptionAtual.nextDueDate,
+        updatePendingPayments: true,
+      });
+    } catch (error: any) {
+      console.error('Erro ao atualizar subscription:', error);
+      // Fallback: tenta atualizar cobranças pendentes individualmente
+      const fallback = await atualizarPendentesDireto(subscriptionParaAtualizar);
+      if (fallback.atualizadas > 0 || fallback.erros > 0) {
+        return { ...fallback, subscriptionId: subscriptionParaAtualizar };
+      }
+      throw error;
+    }
+
+    const resultado = await atualizarPendentesDireto(subscriptionParaAtualizar);
+    return { ...resultado, subscriptionId: subscriptionParaAtualizar };
   } catch (error) {
     console.error('Erro ao atualizar cobranças pendentes:', error);
     throw error;

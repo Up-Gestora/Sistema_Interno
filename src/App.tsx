@@ -13,6 +13,7 @@ import LaminasPage from './pages/LaminasPage';
 import EstrategiaDiariaPage from './pages/EstrategiaDiaria/EstrategiaDiariaPage';
 import LinksUteisPage from './pages/LinksUteis/LinksUteisPage';
 import AssinafyPage from './pages/AssinafyPage';
+import VentureCapitalPage from './pages/VentureCapitalPage';
 import { useClientes } from './hooks/useClientes';
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
         />
         <Route path="/clientes" element={<ClientesPage />} />
         <Route path="/estrategias" element={<EstrategiasPage />} />
+        <Route path="/private" element={<VentureCapitalPage />} />
+        <Route path="/venture-capital" element={<VentureCapitalPage />} />
         <Route path="/relatorios-mensais" element={<RelatoriosMensaisPage />} />
         <Route path="/performance" element={<PerformancePage />} />
         <Route path="/laminas" element={<LaminasPage />} />

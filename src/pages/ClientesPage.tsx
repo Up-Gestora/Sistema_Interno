@@ -133,7 +133,7 @@ export default function ClientesPage() {
     if (existe && assinaturaMudou && temAsaasCustomerId && asaasConfigurado && clienteAtualizado.assinatura) {
       try {
         const resultado = await atualizarCobrancasPendentes(
-          clienteAtualizado.asaasCustomerId,
+          temAsaasCustomerId,
           clienteAtualizado.asaasSubscriptionId,
           clienteAtualizado.assinatura
         );

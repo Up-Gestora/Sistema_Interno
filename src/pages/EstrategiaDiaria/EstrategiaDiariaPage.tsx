@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import {
   LineChart,
   Line,
@@ -207,7 +207,7 @@ export default function EstrategiaDiariaPage() {
 
     if (estrategias.length > 0) {
       const defaultId =
-        estrategias.find((estrategia) => estrategia.nome === 'Carteira Tática')?.id ||
+        estrategias.find((estrategia) => estrategia.nome === 'Carteira TÃ¡tica')?.id ||
         estrategias[0].id;
       setStrategyId(defaultId);
     }
@@ -414,7 +414,7 @@ export default function EstrategiaDiariaPage() {
     if (!data) return;
 
     if (!strategyId) {
-      alert('Selecione uma estratégia antes de salvar.');
+      alert('Selecione uma estratÃ©gia antes de salvar.');
       return;
     }
 
@@ -461,7 +461,7 @@ export default function EstrategiaDiariaPage() {
   const handleExportarPdf = async () => {
     setExportandoPdf(true);
     try {
-      const estrategiaNome = estrategiaSelecionada?.nome || 'Estratégia';
+      const estrategiaNome = estrategiaSelecionada?.nome || 'EstratÃ©gia';
       const estrategiaDescricao = estrategiaSelecionada?.descricao || '';
 
       await gerarRelatorioEstrategiaDiariaPDF({
@@ -471,15 +471,15 @@ export default function EstrategiaDiariaPage() {
         periodo:
           resumoBase.dataInicial && resumoBase.dataFinal
             ? `${formatDatePtBr(resumoBase.dataInicial)} - ${formatDatePtBr(resumoBase.dataFinal)}`
-            : 'Período não informado',
+            : 'PerÃ­odo nÃ£o informado',
         dataGeracao: formatDatePtBr(new Date().toISOString().split('T')[0]),
         resumo: [
-          { titulo: 'Retorno da Carteira', valor: formatSignedPercent(resultadoCarteira * 100), detalhe: 'Variação da cota' },
+          { titulo: 'Retorno da Carteira', valor: formatSignedPercent(resultadoCarteira * 100), detalhe: 'VariaÃ§Ã£o da cota' },
           { titulo: 'CDI', valor: formatPercent(cdiPeriodo * 100), detalhe: `Alpha: ${formatSignedPercent(alphaCdi * 100)}` },
           { titulo: benchmarkLabel, valor: formatPercent(ifixPeriodo * 100), detalhe: `Alpha: ${formatSignedPercent(alphaIfix * 100)}` },
-          { titulo: 'Volatilidade anualizada', valor: formatPercent(volatilidadeAnual * 100), detalhe: 'Base diária' },
-          { titulo: 'Índice de Sharpe', valor: formatRatio(sharpe), detalhe: 'Retorno excedente / risco' },
-          { titulo: 'Drawdown máximo', valor: formatPercent(drawdownMaximo * 100), detalhe: 'Maior queda' },
+          { titulo: 'Volatilidade anualizada', valor: formatPercent(volatilidadeAnual * 100), detalhe: 'Base diÃ¡ria' },
+          { titulo: 'Ãndice de Sharpe', valor: formatRatio(sharpe), detalhe: 'Retorno excedente / risco' },
+          { titulo: 'Drawdown mÃ¡ximo', valor: formatPercent(drawdownMaximo * 100), detalhe: 'Maior queda' },
         ],
         chartData,
       });
@@ -505,7 +505,7 @@ export default function EstrategiaDiariaPage() {
 
     try {
       if (!strategyId) {
-        alert('Selecione uma estratégia antes de importar.');
+        alert('Selecione uma estratÃ©gia antes de importar.');
         return;
       }
 
@@ -521,9 +521,9 @@ export default function EstrategiaDiariaPage() {
 
       if (resultado.erros.length > 0) {
         setErros(resultado.erros);
-        alert(`Importação concluída com ${resultado.erros.length} erro(s).`);
+        alert(`ImportaÃ§Ã£o concluÃ­da com ${resultado.erros.length} erro(s).`);
       } else {
-        setSucesso(`Importação concluída com sucesso! ${resultado.entries.length} dia(s) processado(s).`);
+        setSucesso(`ImportaÃ§Ã£o concluÃ­da com sucesso! ${resultado.entries.length} dia(s) processado(s).`);
         setTimeout(() => setSucesso(''), 4000);
       }
     } catch (error) {
@@ -549,14 +549,14 @@ export default function EstrategiaDiariaPage() {
       className={`estrategia-diaria-page${exportandoPdf ? ' exporting' : ''}`}
     >
       <div className="estrategia-diaria-header">
-        <h2>Dados Diários da Estratégia</h2>
-        <p>Informe os valores de cada dia útil para gerar um resumo simples da carteira.</p>
+        <h2>Dados DiÃ¡rios da EstratÃ©gia</h2>
+        <p>Informe os valores de cada dia Ãºtil para gerar um resumo simples da carteira.</p>
       </div>
 
-      <Card title="Identificação" className="estrategia-diaria-card">
+      <Card title="IdentificaÃ§Ã£o" className="estrategia-diaria-card">
         <div className="estrategia-identificacao">
           <div className="identificacao-item">
-            <label htmlFor="strategyId">Estratégia</label>
+            <label htmlFor="strategyId">EstratÃ©gia</label>
             <select
               id="strategyId"
               value={strategyId}
@@ -571,7 +571,7 @@ export default function EstrategiaDiariaPage() {
             </select>
           </div>
           <div className="identificacao-item">
-            <label htmlFor="periodo">Período</label>
+            <label htmlFor="periodo">PerÃ­odo</label>
             <select
               id="periodo"
               value={periodo}
@@ -579,11 +579,11 @@ export default function EstrategiaDiariaPage() {
                 setPeriodo(event.target.value as '1m' | '3m' | '6m' | '12m' | 'all')
               }
             >
-              <option value="1m">Último 1 mês</option>
-              <option value="3m">Últimos 3 meses</option>
-              <option value="6m">Últimos 6 meses</option>
-              <option value="12m">Últimos 12 meses</option>
-              <option value="all">Desde o início</option>
+              <option value="1m">Ãšltimo 1 mÃªs</option>
+              <option value="3m">Ãšltimos 3 meses</option>
+              <option value="6m">Ãšltimos 6 meses</option>
+              <option value="12m">Ãšltimos 12 meses</option>
+              <option value="all">Desde o inÃ­cio</option>
             </select>
           </div>
         </div>
@@ -595,12 +595,12 @@ export default function EstrategiaDiariaPage() {
         </Card>
       )}
 
-      <Card title="Resumo da Estratégia" className="estrategia-diaria-card resumo-card">
+      <Card title="Resumo da EstratÃ©gia" className="estrategia-diaria-card resumo-card">
         <div className="resumo-grid">
           <div className="resumo-item destaque">
             <span className="resumo-label">Retorno da Carteira</span>
             <span className="resumo-value">{formatSignedPercent(resultadoCarteira * 100)}</span>
-            <span className="resumo-sub">Variação da cota no período</span>
+            <span className="resumo-sub">VariaÃ§Ã£o da cota no perÃ­odo</span>
           </div>
           <div className="resumo-item">
             <span className="resumo-label">CDI</span>
@@ -619,15 +619,15 @@ export default function EstrategiaDiariaPage() {
           <div className="resumo-item">
             <span className="resumo-label">Volatilidade anualizada</span>
             <span className="resumo-value">{formatPercent(volatilidadeAnual * 100)}</span>
-            <span className="resumo-sub">Base diária</span>
+            <span className="resumo-sub">Base diÃ¡ria</span>
           </div>
           <div className="resumo-item">
-            <span className="resumo-label">Índice de Sharpe</span>
+            <span className="resumo-label">Ãndice de Sharpe</span>
             <span className="resumo-value">{formatRatio(sharpe)}</span>
             <span className="resumo-sub">Retorno excedente / risco</span>
           </div>
           <div className="resumo-item">
-            <span className="resumo-label">Drawdown máximo</span>
+            <span className="resumo-label">Drawdown mÃ¡ximo</span>
             <span className="resumo-value">{formatPercent(drawdownMaximo * 100)}</span>
             <span className="resumo-sub">Maior queda da curva</span>
           </div>
@@ -645,7 +645,7 @@ export default function EstrategiaDiariaPage() {
             <span className="resumo-label">Dias cadastrados</span>
             <span className="resumo-value">{totalDias}</span>
             <span className="resumo-sub">
-              Período: {resumoBase.dataInicial && resumoBase.dataFinal
+              PerÃ­odo: {resumoBase.dataInicial && resumoBase.dataFinal
                 ? `${formatDatePtBr(resumoBase.dataInicial)} - ${formatDatePtBr(resumoBase.dataFinal)}`
                 : '-'}
             </span>
@@ -653,11 +653,11 @@ export default function EstrategiaDiariaPage() {
         </div>
       </Card>
 
-      <Card title={`Comparação diária (Carteira x CDI x ${benchmarkLabel})`} className="estrategia-diaria-card">
+      <Card title={`ComparaÃ§Ã£o diÃ¡ria (Carteira x CDI x ${benchmarkLabel})`} className="estrategia-diaria-card">
         {!temDados ? (
           <div className="estrategia-empty">Sem dados</div>
         ) : chartData.length === 0 ? (
-          <div className="estrategia-empty">Cadastre ao menos dois dias para ver o gráfico.</div>
+          <div className="estrategia-empty">Cadastre ao menos dois dias para ver o grÃ¡fico.</div>
         ) : (
           <div className="estrategia-diaria-chart">
             <ResponsiveContainer width="100%" height={320}>
@@ -707,19 +707,31 @@ export default function EstrategiaDiariaPage() {
 
       <Card title="Importar / Exportar Excel" className="estrategia-diaria-card">
         <div className="estrategia-excel-actions">
-          <button type="button" className="btn btn-secondary" onClick={handleExportarTemplate}>
-            📋 Baixar Template
+          <button
+            type="button"
+            className="btn btn-secondary btn-action btn-action--export"
+            onClick={handleExportarTemplate}
+            aria-label="Exportar template da estratÃ©gia"
+          >
+            Exportar
           </button>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary btn-action btn-action--export"
             onClick={handleExportar}
             disabled={entriesOrdenadas.length === 0}
+            aria-label="Exportar dados da estratÃ©gia"
           >
-            📥 Exportar Dados
+            Exportar
           </button>
-          <button type="button" className="btn btn-secondary" onClick={handleExportarPdf} disabled={exportandoPdf}>
-            📄 Exportar PDF
+          <button
+            type="button"
+            className="btn btn-secondary btn-action btn-action--report"
+            onClick={handleExportarPdf}
+            disabled={exportandoPdf}
+            aria-label="Gerar relatÃ³rio em PDF da estratÃ©gia"
+          >
+            Relatório
           </button>
           <div className="file-input-wrapper">
             <input
@@ -731,7 +743,7 @@ export default function EstrategiaDiariaPage() {
               className="file-input"
             />
             <label htmlFor="file-input-estrategia" className="file-input-label">
-              {importando ? '⏳ Importando...' : '📤 Importar Excel'}
+              {importando ? 'â³ Importando...' : 'ðŸ“¤ Importar Excel'}
             </label>
           </div>
         </div>
@@ -741,7 +753,7 @@ export default function EstrategiaDiariaPage() {
       <Card title="Inserir dados do dia" className="estrategia-diaria-card">
         <form className="estrategia-diaria-form" onSubmit={handleAdd}>
           <div className="form-field">
-            <label htmlFor="data">Dia útil</label>
+            <label htmlFor="data">Dia Ãºtil</label>
             <input
               id="data"
               type="date"
@@ -762,7 +774,7 @@ export default function EstrategiaDiariaPage() {
             />
           </div>
           <div className="form-field">
-            <label htmlFor="cdi">CDI diário</label>
+            <label htmlFor="cdi">CDI diÃ¡rio</label>
             <input
               id="cdi"
               type="text"
@@ -770,10 +782,10 @@ export default function EstrategiaDiariaPage() {
               onChange={(event) => setCdiInput(event.target.value.replace(/[^\d.,%]/g, ''))}
               placeholder="0,05% ou 0,0005"
             />
-            <small className="info-text">Fator diário = CDI + 1</small>
+            <small className="info-text">Fator diÃ¡rio = CDI + 1</small>
           </div>
           <div className="form-field">
-            <label htmlFor="ifix">{benchmarkLabel} (índice)</label>
+            <label htmlFor="ifix">{benchmarkLabel} (Ã­ndice)</label>
             <input
               id="ifix"
               type="text"
@@ -794,7 +806,7 @@ export default function EstrategiaDiariaPage() {
         </form>
       </Card>
 
-      <Card title="Histórico dos dias" className="estrategia-diaria-card">
+      <Card title="HistÃ³rico dos dias" className="estrategia-diaria-card">
         {entriesFiltradas.length === 0 ? (
           <div className="estrategia-empty">Sem dados</div>
         ) : (
@@ -802,12 +814,12 @@ export default function EstrategiaDiariaPage() {
             <table>
               <thead>
                 <tr>
-                  <th>Dia útil</th>
+                  <th>Dia Ãºtil</th>
                   <th>Valor da cota</th>
-                  <th>CDI diário</th>
-                  <th>Fator Diário</th>
-                  <th>{benchmarkLabel} (índice)</th>
-                  <th className="col-actions">Ações</th>
+                  <th>CDI diÃ¡rio</th>
+                  <th>Fator DiÃ¡rio</th>
+                  <th>{benchmarkLabel} (Ã­ndice)</th>
+                  <th className="col-actions">AÃ§Ãµes</th>
                 </tr>
               </thead>
               <tbody>
@@ -826,7 +838,7 @@ export default function EstrategiaDiariaPage() {
                     <td>{item.resultadoIfix > 0 ? formatNumber(item.resultadoIfix) : '-'}</td>
                     <td className="col-actions">
                       <button className="action-btn delete-btn" onClick={() => handleRemove(item.id)}>
-                        🗑️
+                        ðŸ—‘ï¸
                       </button>
                     </td>
                   </tr>
@@ -838,11 +850,11 @@ export default function EstrategiaDiariaPage() {
       </Card>
 
       {erros.length > 0 && (
-        <Card title="Erros na Importação" className="estrategia-diaria-card hide-on-pdf">
+        <Card title="Erros na ImportaÃ§Ã£o" className="estrategia-diaria-card hide-on-pdf">
           <div className="estrategia-erros">
             {erros.map((erro, index) => (
               <div key={index} className="error-item">
-                ⚠️ {erro}
+                âš ï¸ {erro}
               </div>
             ))}
           </div>
@@ -851,4 +863,6 @@ export default function EstrategiaDiariaPage() {
     </div>
   );
 }
+
+
 

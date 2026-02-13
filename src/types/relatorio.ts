@@ -12,7 +12,17 @@ export interface RelatorioMensal {
   cdiMensal?: number; // CDI mensal para comparação
   textoAcimaCDI?: string; // Texto quando resultado > CDI
   textoAbaixoCDI?: string; // Texto quando resultado <= CDI
+  estrategias?: RelatorioMensalEstrategia[];
   dataGeracao?: string;
+}
+
+export interface RelatorioMensalEstrategia {
+  titulo: string;
+  patrimonioTotal: number;
+  resultadoMes: number;
+  resultadoPercentual?: number;
+  resumoTexto?: string;
+  resumoImagens?: Array<{ id: string; src: string }>;
 }
 
 export interface TemplateRelatorio {
@@ -24,4 +34,3 @@ export interface TemplateRelatorio {
   resumoTexto: string;
   dataGeracao: string;
 }
-

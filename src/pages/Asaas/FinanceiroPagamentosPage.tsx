@@ -1,4 +1,8 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+// @ts-ignore
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 import {
   Bar,
   CartesianGrid,
@@ -15,6 +19,51 @@ import { formatCurrency, formatDate } from '../../utils/calculations';
 import Card from '../../components/Card/Card';
 import { FinanceiroOutletContext } from '../AsaasPage';
 import { AsaasPagamento } from '../../types/asaas';
+
+type CategoriaSaida = 'impostos' | 'distribuicao' | 'custos';
+
+type RecebedorSaidaCustom = {
+  nome: string;
+  categoria: CategoriaSaida;
+};
+
+const RECEBEDORES_SAIDAS_CUSTOM_KEY = 'financeiro_recebedores_saidas_custom_v1';
+
+const RECEBEDORES_SAIDAS_PADRAO = [
+  'PIS',
+  'COFINS',
+  'ISS',
+  'Lucro presumido',
+  'Profit Ultra',
+  'DLL',
+  'Email UP',
+  'Grupo FIIs',
+  'Material de limpeza/escritorio',
+  'Limpeza mensal',
+  'Temviewer',
+  'D4Sign',
+  'Trafego pago',
+  'Recarga celular',
+  'Investimentos',
+  'Distribuições',
+  'Matheus',
+  'Vinicius',
+  'Igor',
+  'Mário',
+  'Cartao',
+  'Grana Capital',
+  'Contabilidade',
+];
+
+const IMPOSTOS_SAIDAS_PADRAO = ['PIS', 'COFINS', 'ISS', 'Lucro presumido'];
+
+const DISTRIBUICAO_LUCROS_SAIDAS_PADRAO = [
+  'Distribuições',
+  'Igor',
+  'Mário',
+  'Matheus',
+  'Vinicius',
+];
 
 export default function FinanceiroPagamentosPage() {
   const [mostrarValorLiquido, setMostrarValorLiquido] = useState(false);
@@ -52,7 +101,37 @@ export default function FinanceiroPagamentosPage() {
   const [saidaData, setSaidaData] = useState('');
   const [saidaDescricao, setSaidaDescricao] = useState('');
   const [saidaErro, setSaidaErro] = useState('');
+  const [mostrarNovoGasto, setMostrarNovoGasto] = useState(false);
+  const [novoGastoNome, setNovoGastoNome] = useState('');
+  const [novoGastoCategoria, setNovoGastoCategoria] = useState<CategoriaSaida>('custos');
+  const [novoGastoErro, setNovoGastoErro] = useState('');
+  const [recebedoresSaidasCustom, setRecebedoresSaidasCustom] = useState<RecebedorSaidaCustom[]>(() => {
+    const saved = localStorage.getItem(RECEBEDORES_SAIDAS_CUSTOM_KEY);
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+      return parsed
+        .map((item: any) => {
+          const nome = typeof item?.nome === 'string' ? item.nome.trim() : '';
+          const categoria: CategoriaSaida =
+            item?.categoria === 'impostos' || item?.categoria === 'distribuicao' || item?.categoria === 'custos'
+              ? item.categoria
+              : 'custos';
+          if (!nome) return null;
+          return { nome, categoria } as RecebedorSaidaCustom;
+        })
+        .filter(Boolean) as RecebedorSaidaCustom[];
+    } catch {
+      return [];
+    }
+  });
   const [mostrarLancamentosManuais, setMostrarLancamentosManuais] = useState(false);
+  const [modoPlanilhaSaidas, setModoPlanilhaSaidas] = useState(false);
+  const [edicaoSaidas, setEdicaoSaidas] = useState<Record<string, string>>({});
+  const [exportandoPdf, setExportandoPdf] = useState(false);
+  const [exportandoExcel, setExportandoExcel] = useState(false);
+  const reportRef = useRef<HTMLDivElement | null>(null);
   const COL_WIDTH_CLIENTE = 220;
   const COL_WIDTH_MES = 110;
 
@@ -67,50 +146,129 @@ export default function FinanceiroPagamentosPage() {
     return normalizado;
   };
 
-  const recebedoresSaidas = [
-    'PIS',
-    'COFINS',
-    'ISS',
-    'Lucro presumido',
-    'Profit Ultra',
-    'DLL',
-    'Email UP',
-    'Grupo FIIs',
-    'Material de limpeza/escritorio',
-    'Limpeza mensal',
-    'Temviewer',
-    'D4Sign',
-    'Trafego pago',
-    'Recarga celular',
-    'Investimentos',
-    'Distribuições',
-    'Matheus',
-    'Vinicius',
-    'Igor',
-    'Mário',
-    'Cartao',
-    'Grana Capital',
-    'Contabilidade',
-  ];
+  useEffect(() => {
+    localStorage.setItem(RECEBEDORES_SAIDAS_CUSTOM_KEY, JSON.stringify(recebedoresSaidasCustom));
+  }, [recebedoresSaidasCustom]);
 
-  const impostosSaidas = ['PIS', 'COFINS', 'ISS', 'Lucro presumido'];
-  const distribuicaoLucrosSaidas = [
-    'Distribuições',
-    'Igor',
-    'Mário',
-    'Matheus',
-    'Vinicius',
-  ];
-  const impostosSet = new Set(impostosSaidas.map(normalizarSaida));
-  const distribuicaoSet = new Set(distribuicaoLucrosSaidas.map(normalizarSaida));
-  const custosGeraisSaidas = recebedoresSaidas.filter(
-    (nome) => !impostosSet.has(normalizarSaida(nome)) && !distribuicaoSet.has(normalizarSaida(nome))
+  const uniquePorNormalizado = (nomes: string[]) => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    nomes.forEach((nome) => {
+      const key = normalizarSaida(nome || '');
+      if (!key) return;
+      if (seen.has(key)) return;
+      seen.add(key);
+      out.push(nome);
+    });
+    return out;
+  };
+
+  const recebedoresSaidas = useMemo(() => {
+    return uniquePorNormalizado([
+      ...RECEBEDORES_SAIDAS_PADRAO,
+      ...recebedoresSaidasCustom.map((item) => item.nome),
+    ]);
+  }, [recebedoresSaidasCustom]);
+
+  const impostosSaidas = useMemo(() => {
+    return uniquePorNormalizado([
+      ...IMPOSTOS_SAIDAS_PADRAO,
+      ...recebedoresSaidasCustom
+        .filter((item) => item.categoria === 'impostos')
+        .map((item) => item.nome),
+    ]);
+  }, [recebedoresSaidasCustom]);
+
+  const distribuicaoLucrosSaidas = useMemo(() => {
+    return uniquePorNormalizado([
+      ...DISTRIBUICAO_LUCROS_SAIDAS_PADRAO,
+      ...recebedoresSaidasCustom
+        .filter((item) => item.categoria === 'distribuicao')
+        .map((item) => item.nome),
+    ]);
+  }, [recebedoresSaidasCustom]);
+
+  const impostosSet = useMemo(() => new Set(impostosSaidas.map(normalizarSaida)), [impostosSaidas]);
+  const distribuicaoSet = useMemo(
+    () => new Set(distribuicaoLucrosSaidas.map(normalizarSaida)),
+    [distribuicaoLucrosSaidas]
   );
-  const gruposSaidas = [
-    { titulo: 'Impostos', itens: impostosSaidas },
-    { titulo: 'Distribuição de Lucros', itens: distribuicaoLucrosSaidas },
-    { titulo: 'Custos Gerais', itens: custosGeraisSaidas },
-  ];
+
+  const custosGeraisSaidas = useMemo(
+    () =>
+      recebedoresSaidas.filter(
+        (nome) => !impostosSet.has(normalizarSaida(nome)) && !distribuicaoSet.has(normalizarSaida(nome))
+      ),
+    [recebedoresSaidas, impostosSet, distribuicaoSet]
+  );
+
+  const recebedoresSaidasNaoCategorizados = useMemo(() => {
+    const knownSet = new Set(recebedoresSaidas.map(normalizarSaida));
+    const extras = new Map<string, string>();
+
+    saidasLancamentos.forEach((item) => {
+      const key = normalizarSaida(item.recebedor || '');
+      if (!key) return;
+      if (knownSet.has(key)) return;
+      if (!extras.has(key)) extras.set(key, item.recebedor);
+    });
+
+    return Array.from(extras.values()).sort((a, b) => a.localeCompare(b));
+  }, [saidasLancamentos, recebedoresSaidas]);
+
+  const gruposSaidas = useMemo(
+    () => {
+      const grupos = [
+        { titulo: 'Impostos', itens: impostosSaidas },
+        { titulo: 'Distribuição de Lucros', itens: distribuicaoLucrosSaidas },
+        { titulo: 'Custos Gerais', itens: custosGeraisSaidas },
+      ];
+
+      if (recebedoresSaidasNaoCategorizados.length) {
+        grupos.push({ titulo: 'Outros', itens: recebedoresSaidasNaoCategorizados });
+      }
+
+      return grupos;
+    },
+    [impostosSaidas, distribuicaoLucrosSaidas, custosGeraisSaidas, recebedoresSaidasNaoCategorizados]
+  );
+
+  const labelCategoriaSaida = (categoria: CategoriaSaida) => {
+    if (categoria === 'impostos') return 'Impostos';
+    if (categoria === 'distribuicao') return 'Distribuição de Lucros';
+    return 'Custos Gerais';
+  };
+
+  const removerGastoCustom = (nome: string) => {
+    const key = normalizarSaida(nome);
+    setRecebedoresSaidasCustom((prev) => prev.filter((item) => normalizarSaida(item.nome) !== key));
+  };
+
+  const handleAdicionarGastoCustom = () => {
+    const nome = novoGastoNome.trim();
+    if (!nome) {
+      setNovoGastoErro('Informe o nome do recebedor.');
+      return;
+    }
+
+    const key = normalizarSaida(nome);
+    if (!key) {
+      setNovoGastoErro('Informe um nome válido.');
+      return;
+    }
+
+    const existe = recebedoresSaidas.some((recebedor) => normalizarSaida(recebedor) === key);
+    if (existe) {
+      setNovoGastoErro('Esse recebedor já existe.');
+      return;
+    }
+
+    setRecebedoresSaidasCustom((prev) => [...prev, { nome, categoria: novoGastoCategoria }]);
+    setNovoGastoNome('');
+    setNovoGastoErro('');
+    setMostrarNovoGasto(false);
+    setSaidaRecebedor(nome);
+  };
 
   const getMesKey = (dateString?: string) => {
     if (!dateString) return null;
@@ -316,12 +474,23 @@ export default function FinanceiroPagamentosPage() {
 
   const parseValorMonetario = (valorTexto: string) => {
     if (!valorTexto) return 0;
-    const normalizado = valorTexto.includes(',')
-      ? valorTexto.replace(/\./g, '').replace(',', '.')
-      : valorTexto;
+    const sanitizado = valorTexto.replace(/[^0-9,.-]/g, '').trim();
+    if (!sanitizado) return 0;
+    const normalizado = sanitizado.includes(',')
+      ? sanitizado.replace(/\./g, '').replace(',', '.')
+      : sanitizado;
     const valor = Number(normalizado);
     return Number.isFinite(valor) ? valor : 0;
   };
+
+  const formatarValorPlanilha = (valor: number) =>
+    new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(valor);
+
+  const buildPlanilhaKey = (recebedor: string, mes: string) =>
+    `${normalizarSaida(recebedor)}|${mes}`;
 
   const handleAdicionarInter = () => {
     if (!interClienteId) {
@@ -380,6 +549,270 @@ export default function FinanceiroPagamentosPage() {
     setSaidaData('');
     setSaidaDescricao('');
     setSaidaErro('');
+  };
+
+  const gerarNomeArquivo = (extensao: 'pdf' | 'xlsx') =>
+    `financeiro_${new Date().toISOString().split('T')[0]}.${extensao}`;
+
+  const handleExportarExcel = () => {
+    setExportandoExcel(true);
+    try {
+      const mesesExport = mesesResumo;
+      const mesesLabel = mesesExport.map((mes) => formatarMesLabel(mes));
+
+      const wb = XLSX.utils.book_new();
+
+      const resumoRecebimentosHeaders = ['Cliente', ...mesesLabel];
+      const resumoRecebimentosRows = [
+        [
+          rotuloTotal,
+          ...mesesExport.map((mes) => resumoRecebimentos.totaisPorMes[mes] || 0),
+        ],
+        [
+          'Resultado',
+          ...mesesExport.map((mes) => (resumoRecebimentos.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0)),
+        ],
+        ...resumoRecebimentos.clientes.map((cliente) => [
+          cliente.nome,
+          ...mesesExport.map((mes) => cliente.valores[mes] || 0),
+        ]),
+      ];
+      const wsRecebimentos = XLSX.utils.aoa_to_sheet([
+        resumoRecebimentosHeaders,
+        ...resumoRecebimentosRows,
+      ]);
+      wsRecebimentos['!cols'] = resumoRecebimentosHeaders.map((header) => ({
+        wch: Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsRecebimentos, 'Resumo_Recebimentos');
+
+      const resumoMensalHeaders = [
+        'Mês',
+        'Receita Administração',
+        'Receita Performance',
+        'Receita Total',
+        'Despesa Total',
+        'Lucro',
+      ];
+      const resumoMensalRows = dadosGrafico.map((item) => {
+        const receitaTotal = (item.administracao || 0) + (item.performance || 0);
+        return [
+          item.mes,
+          item.administracao,
+          item.performance,
+          receitaTotal,
+          item.pagamentos,
+          item.lucro,
+        ];
+      });
+      const wsResumoMensal = XLSX.utils.aoa_to_sheet([
+        resumoMensalHeaders,
+        ...resumoMensalRows,
+      ]);
+      wsResumoMensal['!cols'] = resumoMensalHeaders.map((header) => ({
+        wch: Math.max(14, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsResumoMensal, 'Resumo_Mensal');
+
+      const resumoSaidasHeaders = ['Grupo', 'Recebedor', ...mesesLabel];
+      const resumoSaidasRows: (string | number)[][] = [];
+      gruposSaidas.forEach((grupo) => {
+        resumoSaidasRows.push([
+          grupo.titulo,
+          `Total ${grupo.titulo}`,
+          ...mesesExport.map((mes) => obterTotalGrupoMes(grupo, mes)),
+        ]);
+        grupo.itens.forEach((nome) => {
+          const item = obterRecebedorSaida(nome);
+          resumoSaidasRows.push([
+            grupo.titulo,
+            item.recebedor,
+            ...mesesExport.map((mes) => item.valores[mes] || 0),
+          ]);
+        });
+      });
+      const wsSaidas = XLSX.utils.aoa_to_sheet([resumoSaidasHeaders, ...resumoSaidasRows]);
+      wsSaidas['!cols'] = resumoSaidasHeaders.map((header) => ({
+        wch: Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsSaidas, 'Resumo_Saidas');
+
+      const pagamentosHeaders = [
+        'Cliente',
+        'Mês Referência',
+        'Descricao',
+        'Valor',
+        'Valor Liquido',
+        'Vencimento',
+        'Pagamento',
+        'Status',
+        'Tipo',
+      ];
+      const pagamentosExport = [...pagamentos].sort((a, b) => {
+        const dataA = getDataReferencia(a);
+        const dataB = getDataReferencia(b);
+        const timeA = dataA ? new Date(dataA).getTime() : 0;
+        const timeB = dataB ? new Date(dataB).getTime() : 0;
+        return timeB - timeA;
+      });
+      const pagamentosRows = pagamentosExport.map((pagamento) => {
+        const clienteNome = clientesPorAsaasId[pagamento.customer] || pagamento.customer || '-';
+        const dataPagamento =
+          pagamento.paymentDate || pagamento.clientPaymentDate || '';
+        const mesReferencia = getMesKey(getDataReferencia(pagamento)) || '';
+        return [
+          clienteNome,
+          mesReferencia,
+          pagamento.description || '',
+          pagamento.value ?? 0,
+          pagamento.netValue ?? '',
+          pagamento.dueDate ? formatDate(pagamento.dueDate) : '',
+          dataPagamento ? formatDate(dataPagamento) : '',
+          getStatusLabel(pagamento.status),
+          pagamento.billingType || '',
+        ];
+      });
+      const wsPagamentos = XLSX.utils.aoa_to_sheet([pagamentosHeaders, ...pagamentosRows]);
+      wsPagamentos['!cols'] = pagamentosHeaders.map((header, index) => ({
+        wch: index === 2 ? 40 : Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsPagamentos, 'Pagamentos');
+
+      const saidasHeaders = ['Recebedor', 'Valor', 'Data', 'Descricao'];
+      const saidasRows = saidasLancamentos.map((item) => [
+        item.recebedor,
+        item.valor,
+        item.data ? formatDate(item.data) : '',
+        item.descricao || '',
+      ]);
+      const wsSaidasLanc = XLSX.utils.aoa_to_sheet([saidasHeaders, ...saidasRows]);
+      wsSaidasLanc['!cols'] = saidasHeaders.map((header, index) => ({
+        wch: index === 3 ? 40 : Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsSaidasLanc, 'Saidas_Lancamentos');
+
+      const interHeaders = ['Tipo', 'Cliente', 'Valor', 'Data', 'Descricao'];
+      const interRows = interLancamentos.map((item) => [
+        item.tipo,
+        clientesPorId[item.clienteId] || item.clienteId,
+        item.valor,
+        item.data ? formatDate(item.data) : '',
+        item.descricao || '',
+      ]);
+      const wsInter = XLSX.utils.aoa_to_sheet([interHeaders, ...interRows]);
+      wsInter['!cols'] = interHeaders.map((header, index) => ({
+        wch: index === 4 ? 40 : Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsInter, 'Inter_Lancamentos');
+
+      XLSX.writeFile(wb, gerarNomeArquivo('xlsx'));
+    } catch (error) {
+      alert('Erro ao exportar Excel: ' + (error instanceof Error ? error.message : 'Erro desconhecido'));
+    } finally {
+      setExportandoExcel(false);
+    }
+  };
+
+  const handleExportarPdf = async () => {
+    setExportandoPdf(true);
+    try {
+      const aguardarFrame = () =>
+        new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+      await aguardarFrame();
+      await aguardarFrame();
+
+      const container = reportRef.current;
+      if (!container) {
+        throw new Error('Area de exportacao nao encontrada.');
+      }
+      const pages = Array.from(container.querySelectorAll('.financeiro-report-page')) as HTMLElement[];
+      if (!pages.length) {
+        throw new Error('Nenhuma pagina disponivel para exportacao.');
+      }
+
+      const aguardarImagens = async (elemento: HTMLElement) => {
+        const imagensPendentes = Array.from(elemento.querySelectorAll('img')).filter((img) => !img.complete);
+        if (!imagensPendentes.length) return;
+        await Promise.all(
+          imagensPendentes.map(
+            (img) =>
+              new Promise<void>((resolve) => {
+                const concluir = () => resolve();
+                img.addEventListener('load', concluir, { once: true });
+                img.addEventListener('error', concluir, { once: true });
+              })
+          )
+        );
+      };
+
+      await aguardarFrame();
+      if (document.fonts?.status !== 'loaded') {
+        await document.fonts.ready;
+      }
+      await Promise.all(pages.map((page) => aguardarImagens(page)));
+      await aguardarFrame();
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const scale = Math.min(3, Math.max(2.5, window.devicePixelRatio || 1));
+
+      for (let i = 0; i < pages.length; i += 1) {
+        const page = pages[i];
+        const pageWidth = page.scrollWidth || page.clientWidth;
+        const pageHeight = page.scrollHeight || page.clientHeight;
+        const canvas = await html2canvas(page, {
+          scale,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+          width: pageWidth,
+          height: pageHeight,
+          windowWidth: pageWidth,
+          windowHeight: pageHeight,
+        });
+        const imgData = canvas.toDataURL('image/png');
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+      }
+
+      pdf.save(gerarNomeArquivo('pdf'));
+    } catch (error) {
+      alert('Erro ao exportar PDF: ' + (error instanceof Error ? error.message : 'Erro desconhecido'));
+    } finally {
+      setExportandoPdf(false);
+    }
+  };
+  const handleTogglePlanilhaSaidas = () => {
+    setModoPlanilhaSaidas((prev) => {
+      const next = !prev;
+      if (prev) {
+        setEdicaoSaidas({});
+      }
+      return next;
+    });
+  };
+
+  const atualizarSaidaPlanilha = (recebedor: string, mes: string, valorTexto: string) => {
+    const valor = parseValorMonetario(valorTexto);
+    const recebedorKey = normalizarSaida(recebedor);
+    const existentes = saidasLancamentos.filter(
+      (item) => normalizarSaida(item.recebedor) === recebedorKey && getMesKey(item.data) === mes
+    );
+
+    existentes.forEach((item) => onRemoverSaida(item.id));
+
+    if (valor > 0) {
+      onAdicionarSaida({
+        id: `saida_planilha_${recebedorKey}_${mes}`,
+        recebedor,
+        valor,
+        data: `${mes}-01`,
+        descricao: 'Planilha',
+      });
+    }
   };
 
   const getDataReferencia = (pagamento: AsaasPagamento) =>
@@ -462,6 +895,24 @@ export default function FinanceiroPagamentosPage() {
                 </tr>
               </thead>
               <tbody>
+                <tr className="assinaturas-result-row">
+                  <td className="assinaturas-col-cliente">Resultado</td>
+                  {mesesParaMostrar.map((mes) => {
+                    const resultadoMes =
+                      (resumo.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0);
+                    const classeResultado =
+                      resultadoMes > 0
+                        ? 'assinaturas-result-positivo'
+                        : resultadoMes < 0
+                        ? 'assinaturas-result-negativo'
+                        : '';
+                    return (
+                      <td key={`resultado-${titulo}-${mes}`} className={`assinaturas-col-mes ${classeResultado}`}>
+                        {resultadoMes ? maskValue(formatCurrency(resultadoMes)) : '-'}
+                      </td>
+                    );
+                  })}
+                </tr>
                 {resumo.clientes.map((cliente) => (
                   <tr key={`${titulo}-${cliente.clienteId}`}>
                     <td className="assinaturas-col-cliente">{cliente.nome}</td>
@@ -574,17 +1025,246 @@ export default function FinanceiroPagamentosPage() {
 
   const obterRecebedorSaida = (nome: string) =>
     resumoSaidas.porRecebedor[normalizarSaida(nome)] || { recebedor: nome, valores: {} };
+
+  const obterValorPlanilhaInput = (nome: string, mes: string) => {
+    const key = buildPlanilhaKey(nome, mes);
+    if (edicaoSaidas[key] !== undefined) return edicaoSaidas[key];
+    const valorAtual = obterRecebedorSaida(nome).valores[mes] || 0;
+    return valorAtual ? formatarValorPlanilha(valorAtual) : '';
+  };
+
+  const handleChangePlanilhaInput = (nome: string, mes: string, valor: string) => {
+    const key = buildPlanilhaKey(nome, mes);
+    setEdicaoSaidas((prev) => ({
+      ...prev,
+      [key]: valor,
+    }));
+  };
+
+  const handleCommitPlanilhaInput = (nome: string, mes: string, valorAtualInput?: string) => {
+    const key = buildPlanilhaKey(nome, mes);
+    const valorTexto = valorAtualInput ?? edicaoSaidas[key];
+    if (valorTexto === undefined) return;
+    const valorAtual = obterRecebedorSaida(nome).valores[mes] || 0;
+    const novoValor = parseValorMonetario(valorTexto);
+    const mudou = Math.abs(novoValor - valorAtual) > 0.0001;
+    if (mudou || (!valorTexto.trim() && valorAtual > 0)) {
+      atualizarSaidaPlanilha(nome, mes, valorTexto);
+    }
+    setEdicaoSaidas((prev) => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const handleCancelarPlanilhaInput = (nome: string, mes: string) => {
+    const key = buildPlanilhaKey(nome, mes);
+    setEdicaoSaidas((prev) => {
+      if (!(key in prev)) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
+
+  const obterTotalGrupoMes = (grupo: { titulo: string; itens: string[] }, mes: string) =>
+    grupo.itens.reduce((sum, nome) => sum + (obterRecebedorSaida(nome).valores[mes] || 0), 0);
+
+  const periodoRelatorio = mesesResumo.length
+    ? `${formatarMesLabel(mesesResumo[0])} - ${formatarMesLabel(mesesResumo[mesesResumo.length - 1])}`
+    : 'Periodo nao definido';
+  const dataGeracaoRelatorio = formatDate(new Date().toISOString());
+
+  const formatarValorRelatorio = (valor: number) => maskValue(formatCurrency(valor));
+  const formatarPercentualRelatorio = (valor: number) =>
+    `${valor >= 0 ? '+' : ''}${(valor * 100).toFixed(1).replace('.', ',')}%`;
+
+  type ResumoMensalRelatorio = {
+    mes: string;
+    recebimentos: number;
+    saidas: number;
+    resultado: number;
+    margem: number;
+  };
+
+  type ClienteResumoRelatorio = {
+    clienteId: string;
+    nome: string;
+    total: number;
+    media: number;
+    participacao: number;
+    valores: Record<string, number>;
+  };
+
+  const resumoMensalRelatorio: ResumoMensalRelatorio[] = mesesResumo.map((mes) => {
+    const recebimentos = resumoRecebimentos.totaisPorMes[mes] || 0;
+    const saidas = resumoSaidas.totaisPorMes[mes] || 0;
+    const resultado = recebimentos - saidas;
+    const margem = recebimentos > 0 ? resultado / recebimentos : 0;
+    return { mes, recebimentos, saidas, resultado, margem };
+  });
+  const resumoMensalRelatorioMap = resumoMensalRelatorio.reduce<Record<string, ResumoMensalRelatorio>>(
+    (acc, item) => {
+      acc[item.mes] = item;
+      return acc;
+    },
+    {}
+  );
+
+  const totaisRelatorio = resumoMensalRelatorio.reduce(
+    (acc, item) => ({
+      recebimentos: acc.recebimentos + item.recebimentos,
+      saidas: acc.saidas + item.saidas,
+      resultado: acc.resultado + item.resultado,
+    }),
+    { recebimentos: 0, saidas: 0, resultado: 0 }
+  );
+  const margemTotalRelatorio =
+    totaisRelatorio.recebimentos > 0 ? totaisRelatorio.resultado / totaisRelatorio.recebimentos : 0;
+  const mediaRecebimentos =
+    resumoMensalRelatorio.length > 0 ? totaisRelatorio.recebimentos / resumoMensalRelatorio.length : 0;
+  const mediaSaidas = resumoMensalRelatorio.length > 0 ? totaisRelatorio.saidas / resumoMensalRelatorio.length : 0;
+
+  const melhorMesRelatorio = resumoMensalRelatorio.reduce<ResumoMensalRelatorio | null>(
+    (melhor, item) => (melhor === null || item.resultado > melhor.resultado ? item : melhor),
+    null
+  );
+  const piorMesRelatorio = resumoMensalRelatorio.reduce<ResumoMensalRelatorio | null>(
+    (pior, item) => (pior === null || item.resultado < pior.resultado ? item : pior),
+    null
+  );
+
+  const dividirEmChunks = <T,>(lista: T[], tamanho: number): T[][] => {
+    if (!lista.length) return [];
+    if (tamanho <= 0) return [lista];
+    return Array.from({ length: Math.ceil(lista.length / tamanho) }, (_, index) =>
+      lista.slice(index * tamanho, (index + 1) * tamanho)
+    );
+  };
+
+  const mesesPorPaginaRelatorio = 8;
+  const mesesChunksRelatorio = dividirEmChunks(mesesResumo, mesesPorPaginaRelatorio);
+
+  const clientesResumoRelatorio: ClienteResumoRelatorio[] = resumoRecebimentos.clientes
+    .map((cliente) => {
+      const total = mesesResumo.reduce((acc, mes) => acc + (cliente.valores[mes] || 0), 0);
+      const media = mesesResumo.length > 0 ? total / mesesResumo.length : 0;
+      const participacao = totaisRelatorio.recebimentos > 0 ? total / totaisRelatorio.recebimentos : 0;
+      return {
+        clienteId: cliente.clienteId,
+        nome: cliente.nome,
+        total,
+        media,
+        participacao,
+        valores: cliente.valores,
+      };
+    })
+    .sort((a, b) => b.total - a.total || a.nome.localeCompare(b.nome));
+
+  const clientesPorPaginaRelatorio = 18;
+  const clientesChunksRelatorio = dividirEmChunks(clientesResumoRelatorio, clientesPorPaginaRelatorio);
+
+  const topClientesParaDetalhe = clientesResumoRelatorio.slice(0, 12);
+  const clientesTopChunksRelatorio = dividirEmChunks(topClientesParaDetalhe, 12);
+  const mesesPorPaginaClienteRelatorio = 6;
+  const mesesChunksClienteRelatorio = dividirEmChunks(mesesResumo, mesesPorPaginaClienteRelatorio);
+
+  const renderReportHeader = (titulo: string, subtitulo?: string) => (
+    <div className="financeiro-report-header">
+      <div>
+        <div className="financeiro-report-logo">UP Gestao</div>
+        <div className="financeiro-report-title">{titulo}</div>
+        {subtitulo && <div className="financeiro-report-subtitle">{subtitulo}</div>}
+      </div>
+      <div className="financeiro-report-meta">
+        <span>Periodo: {periodoRelatorio}</span>
+        <span>Gerado em {dataGeracaoRelatorio}</span>
+      </div>
+    </div>
+  );
   const renderResumoSaidas = () => (
     <div className="assinaturas-resumo-section">
       <div className="assinaturas-resumo-header">
-        <h3>Saidas por mes</h3>
-        <span>Valores pagos por recebedor</span>
+        <div className="assinaturas-resumo-header-top">
+          <div>
+            <h3>Saidas por mes</h3>
+            <span>Valores pagos por recebedor</span>
+          </div>
+          <div className="assinaturas-resumo-controls">
+            <button type="button" className="btn-secondary" onClick={handleTogglePlanilhaSaidas}>
+              {modoPlanilhaSaidas ? 'Finalizar edicao' : 'Editar planilha'}
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => {
+                setMostrarNovoGasto((prev) => !prev);
+                setNovoGastoErro('');
+              }}
+            >
+              {mostrarNovoGasto ? 'Cancelar' : 'Novo gasto'}
+            </button>
+          </div>
+        </div>
+        {modoPlanilhaSaidas && (
+          <span className="assinaturas-resumo-hint">
+            Clique na celula para digitar. Enter confirma, Esc cancela.
+          </span>
+        )}
+        {mostrarNovoGasto && (
+          <div className="assinaturas-novo-gasto">
+            <div className="inter-manual-form">
+              <label>
+                Nome
+                <input
+                  type="text"
+                  placeholder="Ex.: Hosting, Marketing..."
+                  value={novoGastoNome}
+                  onChange={(e) => setNovoGastoNome(e.target.value)}
+                />
+              </label>
+              <label>
+                Categoria
+                <select
+                  value={novoGastoCategoria}
+                  onChange={(e) => setNovoGastoCategoria(e.target.value as CategoriaSaida)}
+                >
+                  <option value="custos">Custos Gerais</option>
+                  <option value="impostos">Impostos</option>
+                  <option value="distribuicao">Distribuicao de Lucros</option>
+                </select>
+              </label>
+              <button type="button" className="btn-secondary" onClick={handleAdicionarGastoCustom}>
+                Adicionar linha
+              </button>
+            </div>
+            {novoGastoErro && <span className="inter-manual-error">{novoGastoErro}</span>}
+            {recebedoresSaidasCustom.length > 0 && (
+              <div className="assinaturas-gastos-custom-list">
+                {recebedoresSaidasCustom.map((item) => (
+                  <div key={`custom-${item.nome}`} className="assinaturas-gastos-custom-item">
+                    <span className="assinaturas-gastos-custom-nome">{item.nome}</span>
+                    <span className="assinaturas-gastos-custom-categoria">{labelCategoriaSaida(item.categoria)}</span>
+                    <button
+                      type="button"
+                      className="btn-secondary assinaturas-gastos-custom-remove"
+                      onClick={() => removerGastoCustom(item.nome)}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       {mesesResumo.length === 0 ? (
         <div className="empty-state">Nenhuma saida registrada no periodo.</div>
       ) : (
         <div className="assinaturas-table-container">
-          <table className="assinaturas-table">
+          <table className={modoPlanilhaSaidas ? 'assinaturas-table assinaturas-table-editing' : 'assinaturas-table'}>
             <colgroup>
               <col style={{ width: `${COL_WIDTH_CLIENTE}px` }} />
               {mesesResumo.map((mes) => (
@@ -610,12 +1290,41 @@ export default function FinanceiroPagamentosPage() {
               </tr>
             </thead>
             <tbody>
+              <tr className="assinaturas-result-row">
+                <td className="assinaturas-col-cliente">Resultado</td>
+                {mesesResumo.map((mes) => {
+                  const resultadoMes =
+                    (resumoRecebimentos.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0);
+                  const classeResultado =
+                    resultadoMes > 0
+                      ? 'assinaturas-result-positivo'
+                      : resultadoMes < 0
+                      ? 'assinaturas-result-negativo'
+                      : '';
+                  return (
+                    <td key={`saida-resultado-${mes}`} className={`assinaturas-col-mes ${classeResultado}`}>
+                      {resultadoMes ? maskValue(formatCurrency(resultadoMes)) : '-'}
+                    </td>
+                  );
+                })}
+              </tr>
               {gruposSaidas.map((grupo) => (
                 <Fragment key={grupo.titulo}>
                   <tr className="assinaturas-group-row">
                     <td className="assinaturas-group-cell" colSpan={mesesResumo.length + 1}>
                       {grupo.titulo}
                     </td>
+                  </tr>
+                  <tr className="assinaturas-group-total">
+                    <td className="assinaturas-col-cliente">Total {grupo.titulo}</td>
+                    {mesesResumo.map((mes) => {
+                      const totalGrupo = obterTotalGrupoMes(grupo, mes);
+                      return (
+                        <td key={`saida-${grupo.titulo}-total-${mes}`} className="assinaturas-col-mes">
+                          {totalGrupo ? maskValue(formatCurrency(totalGrupo)) : '-'}
+                        </td>
+                      );
+                    })}
                   </tr>
                   {grupo.itens.map((nome) => {
                     const item = obterRecebedorSaida(nome);
@@ -624,9 +1333,35 @@ export default function FinanceiroPagamentosPage() {
                         <td className="assinaturas-col-cliente">{item.recebedor}</td>
                         {mesesResumo.map((mes) => (
                           <td key={`saida-${grupo.titulo}-${nome}-${mes}`} className="assinaturas-col-mes">
-                            {item.valores[mes]
-                              ? maskValue(formatCurrency(item.valores[mes]))
-                              : '-'}
+                            {modoPlanilhaSaidas ? (
+                              <input
+                                className="assinaturas-table-input"
+                                inputMode="decimal"
+                                value={obterValorPlanilhaInput(nome, mes)}
+                                onChange={(e) => handleChangePlanilhaInput(nome, mes, e.target.value)}
+                                onBlur={(e) => {
+                                  if (e.currentTarget.dataset.cancelled === '1') {
+                                    delete e.currentTarget.dataset.cancelled;
+                                    return;
+                                  }
+                                  handleCommitPlanilhaInput(nome, mes, e.currentTarget.value);
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.currentTarget.blur();
+                                  }
+                                  if (e.key === 'Escape') {
+                                    e.currentTarget.dataset.cancelled = '1';
+                                    handleCancelarPlanilhaInput(nome, mes);
+                                    e.currentTarget.blur();
+                                  }
+                                }}
+                              />
+                            ) : item.valores[mes] ? (
+                              maskValue(formatCurrency(item.valores[mes]))
+                            ) : (
+                              '-'
+                            )}
                           </td>
                         ))}
                       </tr>
@@ -640,6 +1375,249 @@ export default function FinanceiroPagamentosPage() {
       )}
     </div>
   );
+
+  const reportPages: { key: string; content: JSX.Element }[] = [
+    {
+      key: 'financeiro-executivo',
+      content: (
+        <>
+          {renderReportHeader('Relatorio Financeiro', 'Modelo executivo para apresentacao interna')}
+          <div className="financeiro-report-section">
+            <h3>Painel executivo</h3>
+            <div className="financeiro-report-metrics">
+              <div className="financeiro-report-metric">
+                <span className="financeiro-report-metric-label">Recebimentos acumulados</span>
+                <span className="financeiro-report-metric-value">{formatarValorRelatorio(totaisRelatorio.recebimentos)}</span>
+              </div>
+              <div className="financeiro-report-metric">
+                <span className="financeiro-report-metric-label">Saidas acumuladas</span>
+                <span className="financeiro-report-metric-value">{formatarValorRelatorio(totaisRelatorio.saidas)}</span>
+              </div>
+              <div className={`financeiro-report-metric ${totaisRelatorio.resultado >= 0 ? 'positivo' : 'negativo'}`}>
+                <span className="financeiro-report-metric-label">Resultado acumulado</span>
+                <span className="financeiro-report-metric-value">{formatarValorRelatorio(totaisRelatorio.resultado)}</span>
+              </div>
+              <div className={`financeiro-report-metric ${margemTotalRelatorio >= 0 ? 'positivo' : 'negativo'}`}>
+                <span className="financeiro-report-metric-label">Margem do periodo</span>
+                <span className="financeiro-report-metric-value">{formatarPercentualRelatorio(margemTotalRelatorio)}</span>
+              </div>
+            </div>
+          </div>
+          <div className="financeiro-report-section">
+            <div className="financeiro-report-section-header">
+              <h3>Destaques para apresentacao</h3>
+              <span>{resumoMensalRelatorio.length} meses analisados</span>
+            </div>
+            <table className="financeiro-report-table">
+              <tbody>
+                <tr>
+                  <td>Media de recebimentos</td>
+                  <td>{formatarValorRelatorio(mediaRecebimentos)}</td>
+                </tr>
+                <tr>
+                  <td>Media de saidas</td>
+                  <td>{formatarValorRelatorio(mediaSaidas)}</td>
+                </tr>
+                <tr>
+                  <td>Melhor mes (resultado)</td>
+                  <td>
+                    {melhorMesRelatorio
+                      ? `${formatarMesLabel(melhorMesRelatorio.mes)} - ${formatarValorRelatorio(melhorMesRelatorio.resultado)}`
+                      : '-'}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pior mes (resultado)</td>
+                  <td>
+                    {piorMesRelatorio
+                      ? `${formatarMesLabel(piorMesRelatorio.mes)} - ${formatarValorRelatorio(piorMesRelatorio.resultado)}`
+                      : '-'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </>
+      ),
+    },
+  ];
+
+  if (mesesChunksRelatorio.length === 0) {
+    reportPages.push({
+      key: 'financeiro-tabelas-vazio',
+      content: (
+        <>
+          {renderReportHeader('Relatorio Financeiro', 'Tabelas mensais')}
+          <div className="financeiro-report-section">
+            <h3>Recebimentos por mes</h3>
+            <div className="financeiro-report-empty">Nenhum recebimento disponivel.</div>
+          </div>
+          <div className="financeiro-report-section">
+            <h3>Saidas por mes</h3>
+            <div className="financeiro-report-empty">Nenhuma saida disponivel.</div>
+          </div>
+        </>
+      ),
+    });
+  } else {
+    mesesChunksRelatorio.forEach((chunk, index) => {
+      reportPages.push({
+        key: `financeiro-tabelas-${index}`,
+        content: (
+          <>
+            {renderReportHeader('Relatorio Financeiro', `Tabelas mensais - Parte ${index + 1}`)}
+            <div className="financeiro-report-section">
+              <h3>Recebimentos por mes</h3>
+              <table className="financeiro-report-table">
+                <thead>
+                  <tr>
+                    <th>Mes</th>
+                    <th>Total de recebimentos</th>
+                    <th>Resultado do mes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {chunk.map((mes) => {
+                    const item = resumoMensalRelatorioMap[mes];
+                    return (
+                      <tr key={`pdf-recebimentos-${index}-${mes}`}>
+                        <td>{formatarMesLabel(mes)}</td>
+                        <td>{formatarValorRelatorio(item?.recebimentos || 0)}</td>
+                        <td>{formatarValorRelatorio(item?.resultado || 0)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="financeiro-report-section">
+              <h3>Saidas por mes</h3>
+              <table className="financeiro-report-table">
+                <thead>
+                  <tr>
+                    <th>Mes</th>
+                    <th>Total de saidas</th>
+                    <th>Margem do mes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {chunk.map((mes) => {
+                    const item = resumoMensalRelatorioMap[mes];
+                    return (
+                      <tr key={`pdf-saidas-${index}-${mes}`}>
+                        <td>{formatarMesLabel(mes)}</td>
+                        <td>{formatarValorRelatorio(item?.saidas || 0)}</td>
+                        <td>{formatarPercentualRelatorio(item?.margem || 0)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ),
+      });
+    });
+  }
+
+  if (clientesChunksRelatorio.length === 0) {
+    reportPages.push({
+      key: 'financeiro-clientes-vazio',
+      content: (
+        <>
+          {renderReportHeader('Relatorio Financeiro', 'Tabelas por cliente')}
+          <div className="financeiro-report-section">
+            <h3>Recebimentos por cliente</h3>
+            <div className="financeiro-report-empty">Nenhum cliente com recebimento no periodo.</div>
+          </div>
+        </>
+      ),
+    });
+  } else {
+    clientesChunksRelatorio.forEach((clientesChunk, index) => {
+      reportPages.push({
+        key: `financeiro-clientes-resumo-${index}`,
+        content: (
+          <>
+            {renderReportHeader('Relatorio Financeiro', `Recebimentos por cliente - Parte ${index + 1}`)}
+            <div className="financeiro-report-section">
+              <div className="financeiro-report-section-header">
+                <h3>Resumo por cliente</h3>
+                <span>{clientesResumoRelatorio.length} clientes no periodo</span>
+              </div>
+              <table className="financeiro-report-table">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Total recebido</th>
+                    <th>Media mensal</th>
+                    <th>Participacao</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clientesChunk.map((cliente) => (
+                    <tr key={`pdf-cliente-resumo-${cliente.clienteId}-${index}`}>
+                      <td>{cliente.nome}</td>
+                      <td>{formatarValorRelatorio(cliente.total)}</td>
+                      <td>{formatarValorRelatorio(cliente.media)}</td>
+                      <td>{formatarPercentualRelatorio(cliente.participacao)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ),
+      });
+    });
+
+    if (mesesChunksClienteRelatorio.length > 0 && clientesTopChunksRelatorio.length > 0) {
+      mesesChunksClienteRelatorio.forEach((mesesChunk, mesIndex) => {
+        clientesTopChunksRelatorio.forEach((clientesChunk, clienteIndex) => {
+          reportPages.push({
+            key: `financeiro-clientes-mensal-${mesIndex}-${clienteIndex}`,
+            content: (
+              <>
+                {renderReportHeader('Relatorio Financeiro', `Recebimentos mensais por cliente - Parte ${mesIndex + 1}`)}
+                <div className="financeiro-report-section">
+                  <div className="financeiro-report-section-header">
+                    <h3>Detalhe mensal por cliente</h3>
+                    <span>Top {topClientesParaDetalhe.length} clientes por recebimento</span>
+                  </div>
+                  <table className="financeiro-report-table">
+                    <thead>
+                      <tr>
+                        <th>Cliente</th>
+                        {mesesChunk.map((mes) => (
+                          <th key={`pdf-cliente-mes-head-${mesIndex}-${clienteIndex}-${mes}`}>{formatarMesLabel(mes)}</th>
+                        ))}
+                        <th>Total periodo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {clientesChunk.map((cliente) => (
+                        <tr key={`pdf-cliente-mensal-${mesIndex}-${clienteIndex}-${cliente.clienteId}`}>
+                          <td>{cliente.nome}</td>
+                          {mesesChunk.map((mes) => (
+                            <td key={`pdf-cliente-mensal-${cliente.clienteId}-${mes}`}>
+                              {formatarValorRelatorio(cliente.valores[mes] || 0)}
+                            </td>
+                          ))}
+                          <td>{formatarValorRelatorio(cliente.total)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ),
+          });
+        });
+      });
+    }
+  }
+
+  const totalReportPages = reportPages.length;
 
   return (
     <div className="financeiro-subpage">
@@ -698,6 +1676,26 @@ export default function FinanceiroPagamentosPage() {
               <option value="REFUNDED">Reembolsados</option>
               <option value="INTER_RECEIVED">Recebidos (Inter)</option>
             </select>
+            <div className="financeiro-export-actions">
+              <button
+                type="button"
+                className="btn-secondary btn-action btn-action--report"
+                onClick={handleExportarPdf}
+                disabled={exportandoPdf}
+                aria-label="Gerar relatório financeiro em PDF"
+              >
+                {exportandoPdf ? 'Gerando...' : 'Relatório'}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary btn-action btn-action--export"
+                onClick={handleExportarExcel}
+                disabled={exportandoExcel}
+                aria-label="Exportar dados financeiros em Excel"
+              >
+                {exportandoExcel ? 'Exportando...' : 'Exportar'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -972,9 +1970,24 @@ export default function FinanceiroPagamentosPage() {
           </div>
         )}
       </Card>
+      <div className="financeiro-report-export" aria-hidden="true" ref={reportRef}>
+        <div className="financeiro-report">
+          {reportPages.map((page, index) => (
+            <div key={page.key} className="financeiro-report-page">
+              {page.content}
+              <div className="financeiro-report-footer">
+                <span>UP Gestão</span>
+                <span>Página {index + 1} de {totalReportPages}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
+
+
 
 
 

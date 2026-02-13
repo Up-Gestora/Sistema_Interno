@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Cliente } from '../../types';
 import { RelatorioMensal } from '../../types/relatorio';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import { buscarCDI } from '../../services/cdiIfixService';
 import Card from '../../components/Card/Card';
+import { formatDecimalInput, parseDecimalInput } from '../../utils/numberInput';
 import './FormRelatorioMassa.css';
 
 interface FormRelatorioMassaProps {
@@ -13,10 +14,19 @@ interface FormRelatorioMassaProps {
 
 interface ClienteSelecionado {
   clienteId: string;
-  patrimonioTotal: number;
-  resultadoPercentual: number;
-  resultadoValor: number;
   selecionado: boolean;
+  estrategias: EstrategiaSelecionada[];
+}
+
+interface EstrategiaSelecionada {
+  estrategiaId: string;
+  titulo: string;
+  tituloPersonalizado: string;
+  patrimonioTotal: string;
+  resultadoPercentual: string;
+  resultadoValor: string;
+  comentario: string;
+  comentarioImagens: Array<{ id: string; src: string }>;
 }
 
 export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelatorioMassaProps) {
@@ -25,7 +35,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     mes: new Date().getMonth() + 1,
     ano: new Date().getFullYear(),
     resumoMacro: '',
-    cdiMensal: 0,
+    cdiMensal: '',
     textoAcimaCDI: '',
     textoAbaixoCDI: '',
   });
@@ -34,11 +44,38 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   const [estrategiaSelecionada, setEstrategiaSelecionada] = useState<string>('');
   const [carregandoCDI, setCarregandoCDI] = useState(false);
   const [erroCDI, setErroCDI] = useState<string>('');
+  const [uploadContexto, setUploadContexto] = useState<{
+    clienteId: string;
+    estrategiaIndex: number;
+    selectionStart: number;
+    selectionEnd: number;
+  } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const comentarioRefs = useRef<Record<string, HTMLTextAreaElement | null>>({});
 
   const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
+
+  const obterNomeEstrategia = (estrategiaId?: string) => {
+    if (!estrategiaId) return 'Estratégia principal';
+    return estrategias.find(estrategia => estrategia.id === estrategiaId)?.nome || 'Estratégia principal';
+  };
+
+  const criarEstrategiaPadrao = (cliente?: Cliente): EstrategiaSelecionada => {
+    const estrategiaId = cliente?.estrategiaId || '';
+    return {
+      estrategiaId,
+      titulo: obterNomeEstrategia(estrategiaId),
+      tituloPersonalizado: '',
+      patrimonioTotal: '',
+      resultadoPercentual: '',
+      resultadoValor: '',
+      comentario: '',
+      comentarioImagens: [],
+    };
+  };
 
   // Buscar CDI automaticamente quando mês/ano mudar
   useEffect(() => {
@@ -61,7 +98,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         if (cdiAnual !== null) {
           // Converter CDI anual para mensal (dividir por 12)
           const cdiMensal = cdiAnual / 12;
-          setFormData(prev => ({ ...prev, cdiMensal }));
+          setFormData(prev => ({ ...prev, cdiMensal: formatDecimalInput(cdiMensal) }));
         } else {
           setErroCDI('CDI não encontrado para o período selecionado. Preencha manualmente.');
         }
@@ -95,10 +132,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     clientesEstrategia.forEach(cliente => {
       novosSelecionados[cliente.id] = {
         clienteId: cliente.id,
-        patrimonioTotal: 0,
-        resultadoPercentual: 0,
-        resultadoValor: 0,
         selecionado: true,
+        estrategias: [criarEstrategiaPadrao(cliente)],
       };
     });
     
@@ -111,31 +146,104 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     return clientes.filter(c => c.estrategiaId === estrategiaSelecionada);
   }, [clientes, estrategiaSelecionada]);
 
-  const atualizarDadosCliente = (clienteId: string, campo: keyof ClienteSelecionado, valor: number) => {
+  const atualizarDadosCliente = (
+    clienteId: string,
+    estrategiaIndex: number,
+    campo: keyof EstrategiaSelecionada,
+    valor: string
+  ) => {
     setClientesSelecionados(prev => {
       const cliente = prev[clienteId];
       if (!cliente) return prev;
 
-      const atualizado = { ...cliente, [campo]: valor };
-
-      // Calcular resultado em valor se o percentual mudar
-      if (campo === 'resultadoPercentual') {
-        atualizado.resultadoValor = (atualizado.patrimonioTotal * valor) / 100;
-      }
-      // Recalcular percentual se o valor mudar
-      else if (campo === 'resultadoValor') {
-        atualizado.resultadoPercentual = atualizado.patrimonioTotal > 0
-          ? (valor / atualizado.patrimonioTotal) * 100
-          : 0;
-      }
-      // Recalcular resultado em valor se patrimônio mudar
-      else if (campo === 'patrimonioTotal') {
-        atualizado.resultadoValor = (valor * atualizado.resultadoPercentual) / 100;
-      }
+      const estrategiasAtualizadas = cliente.estrategias.map((estrategia, index) => {
+        if (index !== estrategiaIndex) return estrategia;
+        return { ...estrategia, [campo]: valor };
+      });
 
       return {
         ...prev,
-        [clienteId]: atualizado,
+        [clienteId]: {
+          ...cliente,
+          estrategias: estrategiasAtualizadas,
+        },
+      };
+    });
+  };
+
+  const atualizarComentarioCliente = (clienteId: string, estrategiaIndex: number, comentario: string) => {
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.map((estrategia, index) => (
+            index === estrategiaIndex
+              ? { ...estrategia, comentario }
+              : estrategia
+          )),
+        },
+      };
+    });
+  };
+
+  const atualizarEstrategiaCliente = (clienteId: string, estrategiaIndex: number, estrategiaId: string) => {
+    const titulo = obterNomeEstrategia(estrategiaId);
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.map((estrategia, index) => (
+            index === estrategiaIndex
+              ? { ...estrategia, estrategiaId, titulo }
+              : estrategia
+          )),
+        },
+      };
+    });
+  };
+
+  const adicionarEstrategiaCliente = (clienteId: string) => {
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: [
+            ...cliente.estrategias,
+            {
+              estrategiaId: '',
+              titulo: 'Estratégia manual',
+              tituloPersonalizado: '',
+              patrimonioTotal: '',
+              resultadoPercentual: '',
+              resultadoValor: '',
+              comentario: '',
+              comentarioImagens: [],
+            },
+          ],
+        },
+      };
+    });
+  };
+
+  const removerEstrategiaCliente = (clienteId: string, estrategiaIndex: number) => {
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.filter((_, index) => index !== estrategiaIndex),
+        },
       };
     });
   };
@@ -152,6 +260,147 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         },
       };
     });
+  };
+
+  const adicionarImagemComentario = (
+    clienteId: string,
+    estrategiaIndex: number,
+    dataUrl: string,
+    selectionStart?: number,
+    selectionEnd?: number
+  ) => {
+    const idImagem = `img_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const token = `[[img:${idImagem}]]`;
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.map((estrategia, index) => (
+            index === estrategiaIndex
+              ? {
+                ...estrategia,
+                comentarioImagens: [...(estrategia.comentarioImagens || []), { id: idImagem, src: dataUrl }],
+                comentario: (() => {
+                  const comentarioAtual = estrategia.comentario || '';
+                  const start = selectionStart ?? comentarioAtual.length;
+                  const end = selectionEnd ?? comentarioAtual.length;
+                  const before = comentarioAtual.slice(0, start);
+                  const after = comentarioAtual.slice(end);
+                  const prefix = before && !before.endsWith('\n') ? '\n' : '';
+                  const suffix = after && !after.startsWith('\n') ? '\n' : '';
+                  return `${before}${prefix}${token}${suffix}${after}`;
+                })(),
+              }
+              : estrategia
+          )),
+        },
+      };
+    });
+  };
+
+  const inserirTokenNoComentario = (clienteId: string, estrategiaIndex: number, token: string) => {
+    const key = `${clienteId}-${estrategiaIndex}`;
+    const textarea = comentarioRefs.current[key];
+    const selectionStart = textarea?.selectionStart ?? (textarea?.value.length || 0);
+    const selectionEnd = textarea?.selectionEnd ?? (textarea?.value.length || 0);
+
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.map((estrategia, index) => {
+            if (index !== estrategiaIndex) return estrategia;
+            const comentarioAtual = estrategia.comentario || '';
+            const before = comentarioAtual.slice(0, selectionStart);
+            const after = comentarioAtual.slice(selectionEnd);
+            const prefix = before && !before.endsWith('\n') ? '\n' : '';
+            const suffix = after && !after.startsWith('\n') ? '\n' : '';
+            return {
+              ...estrategia,
+              comentario: `${before}${prefix}${token}${suffix}${after}`,
+            };
+          }),
+        },
+      };
+    });
+
+    if (textarea) {
+      textarea.focus();
+    }
+  };
+
+  const removerImagemComentario = (clienteId: string, estrategiaIndex: number, imagemIndex: number) => {
+    setClientesSelecionados(prev => {
+      const cliente = prev[clienteId];
+      if (!cliente) return prev;
+      return {
+        ...prev,
+        [clienteId]: {
+          ...cliente,
+          estrategias: cliente.estrategias.map((estrategia, index) => {
+            if (index !== estrategiaIndex) return estrategia;
+            const imagensAtualizadas = (estrategia.comentarioImagens || []).filter((_, idx) => idx !== imagemIndex);
+            const imagemRemovida = (estrategia.comentarioImagens || [])[imagemIndex];
+            const tokenRemover = imagemRemovida ? `[[img:${imagemRemovida.id}]]` : '';
+            const comentarioAtualizado = tokenRemover
+              ? (estrategia.comentario || '').replaceAll(tokenRemover, '').replace(/\n{3,}/g, '\n\n').trim()
+              : estrategia.comentario;
+            return {
+              ...estrategia,
+              comentarioImagens: imagensAtualizadas,
+              comentario: comentarioAtualizado,
+            };
+          }),
+        },
+      };
+    });
+  };
+
+  const abrirSeletorImagem = (clienteId: string, estrategiaIndex: number) => {
+    const key = `${clienteId}-${estrategiaIndex}`;
+    const textarea = comentarioRefs.current[key];
+    const selectionStart = textarea?.selectionStart ?? (textarea?.value.length || 0);
+    const selectionEnd = textarea?.selectionEnd ?? (textarea?.value.length || 0);
+    setUploadContexto({ clienteId, estrategiaIndex, selectionStart, selectionEnd });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImagemSelecionada = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !uploadContexto) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Selecione um arquivo de imagem.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = typeof reader.result === 'string' ? reader.result : '';
+      if (dataUrl) {
+        adicionarImagemComentario(
+          uploadContexto.clienteId,
+          uploadContexto.estrategiaIndex,
+          dataUrl,
+          uploadContexto.selectionStart,
+          uploadContexto.selectionEnd
+        );
+      }
+      setUploadContexto(null);
+    };
+    reader.onerror = () => {
+      alert('Não foi possível carregar a imagem.');
+      setUploadContexto(null);
+    };
+    reader.readAsDataURL(file);
   };
 
 
@@ -185,9 +434,34 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       const dados = clientesSelecionados[clienteId];
       const cliente = clientes.find(c => c.id === clienteId);
 
-      const resultadoPercentual = typeof dados.resultadoPercentual === 'number' ? dados.resultadoPercentual : 0;
-      const cdiMensal = typeof formData.cdiMensal === 'number' ? formData.cdiMensal : 0;
-      const resumoTexto = resultadoPercentual > cdiMensal ? formData.textoAcimaCDI : formData.textoAbaixoCDI;
+      const cdiMensal = parseDecimalInput(formData.cdiMensal);
+      const estrategiasRelatorio = dados.estrategias.map((estrategia) => {
+        const tituloResolvido =
+          estrategia.tituloPersonalizado?.trim() ||
+          estrategia.titulo ||
+          obterNomeEstrategia(estrategia.estrategiaId) ||
+          'Estratégia manual';
+        const resultadoPercentual = parseDecimalInput(estrategia.resultadoPercentual);
+        const patrimonioTotal = parseDecimalInput(estrategia.patrimonioTotal);
+        const resultadoValor = parseDecimalInput(estrategia.resultadoValor);
+        const resumoTextoPadrao = resultadoPercentual > cdiMensal
+          ? formData.textoAcimaCDI
+          : formData.textoAbaixoCDI;
+        const comentarioIndividual = estrategia.comentario?.trim();
+        const resumoTextoFinal = comentarioIndividual
+          ? (resumoTextoPadrao ? `${resumoTextoPadrao}\n\n${comentarioIndividual}` : comentarioIndividual)
+          : (resumoTextoPadrao || '');
+
+        return {
+          titulo: tituloResolvido,
+          patrimonioTotal,
+          resultadoMes: resultadoValor,
+          resultadoPercentual,
+          resumoTexto: resumoTextoFinal,
+          resumoImagens: estrategia.comentarioImagens,
+        };
+      });
+      const estrategiaPrincipal = estrategiasRelatorio[0];
 
       return {
         clienteId,
@@ -195,13 +469,14 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         mes: formData.mes,
         ano: formData.ano,
         resumoMacro: formData.resumoMacro,
-        patrimonioTotal: dados.patrimonioTotal,
-        resultadoMes: dados.resultadoValor,
-        resultadoPercentual,
-        resumoTexto: resumoTexto || '',
+        patrimonioTotal: estrategiaPrincipal?.patrimonioTotal || 0,
+        resultadoMes: estrategiaPrincipal?.resultadoMes || 0,
+        resultadoPercentual: estrategiaPrincipal?.resultadoPercentual || 0,
+        resumoTexto: estrategiaPrincipal?.resumoTexto || '',
         cdiMensal,
         textoAcimaCDI: formData.textoAcimaCDI,
         textoAbaixoCDI: formData.textoAbaixoCDI,
+        estrategias: estrategiasRelatorio,
         dataGeracao: new Date().toISOString(),
       };
     });
@@ -223,6 +498,13 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   return (
     <Card title="Geração em Massa de Relatórios" className="form-relatorio-massa">
       <form onSubmit={handleSubmit} className="relatorio-massa-form">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImagemSelecionada}
+          style={{ display: 'none' }}
+        />
         <div className="form-section">
           <h3>Período e Resumos Padrão</h3>
           
@@ -276,12 +558,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                 {carregandoCDI && <span className="loading-indicator">Carregando...</span>}
               </label>
               <input
-                type="number"
+                type="text"
+                inputMode="decimal"
                 id="cdiMensal"
-                value={formData.cdiMensal || ''}
-                onChange={(e) => setFormData({ ...formData, cdiMensal: parseFloat(e.target.value) || 0 })}
-                step="0.01"
-                min="0"
+                value={formData.cdiMensal}
+                onChange={(e) => setFormData({ ...formData, cdiMensal: e.target.value })}
                 placeholder="Será preenchido automaticamente"
                 disabled={carregandoCDI}
               />
@@ -373,42 +654,158 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                       />
                       <span>{cliente?.nome}</span>
                     </label>
+                    <button
+                      type="button"
+                      className="btn-add-estrategia"
+                      onClick={() => adicionarEstrategiaCliente(id)}
+                      disabled={!dados.selecionado}
+                    >
+                      + Estratégia
+                    </button>
                   </div>
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>Patrimônio Total (R$) *</label>
-                      <input
-                        type="number"
-                        value={dados.patrimonioTotal || ''}
-                        onChange={(e) => atualizarDadosCliente(id, 'patrimonioTotal', parseFloat(e.target.value) || 0)}
-                        step="0.01"
-                        min="0"
-                        required
-                        disabled={!dados.selecionado}
-                      />
+                  {dados.estrategias.map((estrategia, estrategiaIndex) => {
+                    const tituloExibido =
+                      estrategia.tituloPersonalizado?.trim() ||
+                      estrategia.titulo ||
+                      'Estratégia manual';
+                    return (
+                    <div key={`${id}-estrategia-${estrategiaIndex}`} className="cliente-estrategia-block">
+                      <div className="cliente-estrategia-header">
+                        <div className="cliente-estrategia-title">
+                          {tituloExibido}
+                        </div>
+                        {estrategiaIndex > 0 && (
+                          <button
+                            type="button"
+                            className="btn-remove-estrategia"
+                            onClick={() => removerEstrategiaCliente(id, estrategiaIndex)}
+                            disabled={!dados.selecionado}
+                          >
+                            Remover
+                          </button>
+                        )}
+                      </div>
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Estratégia *</label>
+                          <select
+                            value={estrategia.estrategiaId}
+                            onChange={(e) => atualizarEstrategiaCliente(id, estrategiaIndex, e.target.value)}
+                            disabled={!dados.selecionado}
+                          >
+                            <option value="">Selecione uma estratégia</option>
+                            {estrategias.map((estrategiaDisponivel) => (
+                              <option key={estrategiaDisponivel.id} value={estrategiaDisponivel.id}>
+                                {estrategiaDisponivel.nome}
+                              </option>
+                            ))}
+                          </select>
+                          <label>Título personalizado (opcional)</label>
+                          <input
+                            type="text"
+                            value={estrategia.tituloPersonalizado}
+                            onChange={(e) => atualizarDadosCliente(id, estrategiaIndex, 'tituloPersonalizado', e.target.value)}
+                            placeholder="Ex.: Carteira Balanceada - RF"
+                            disabled={!dados.selecionado}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Patrimônio Total (R$) *</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            value={estrategia.patrimonioTotal}
+                            onChange={(e) => atualizarDadosCliente(id, estrategiaIndex, 'patrimonioTotal', e.target.value)}
+                            required
+                            disabled={!dados.selecionado}
+                          />
+                          <label htmlFor={`comentario-${id}-${estrategiaIndex}`}>Comentário individual (opcional)</label>
+                          <textarea
+                            id={`comentario-${id}-${estrategiaIndex}`}
+                            value={estrategia.comentario}
+                            onChange={(e) => atualizarComentarioCliente(id, estrategiaIndex, e.target.value)}
+                            rows={3}
+                            placeholder="Observação específica para este cliente..."
+                            disabled={!dados.selecionado}
+                            ref={(el) => {
+                              comentarioRefs.current[`${id}-${estrategiaIndex}`] = el;
+                            }}
+                          />
+                          <div className="comentario-actions">
+                            <button
+                              type="button"
+                              className="btn-anexo"
+                              onClick={() => abrirSeletorImagem(id, estrategiaIndex)}
+                              disabled={!dados.selecionado}
+                            >
+                              Adicionar imagem
+                            </button>
+                            {estrategia.comentarioImagens?.length ? (
+                              <span className="comentario-count">
+                                {estrategia.comentarioImagens.length} imagem(ns)
+                              </span>
+                            ) : null}
+                          </div>
+                          <p className="comentario-hint">
+                            Posicione o marcador <code>[[img:ID]]</code> no texto para inserir a imagem antes/depois do comentário desejado.
+                          </p>
+                          {estrategia.comentarioImagens?.length ? (
+                            <div className="comentario-imagens">
+                              {estrategia.comentarioImagens.map((imagem, imagemIndex) => (
+                                <div
+                                  key={`comentario-imagem-${id}-${estrategiaIndex}-${imagemIndex}`}
+                                  className="comentario-imagem"
+                                >
+                                  <img src={imagem.src} alt={`Comentário imagem ${imagemIndex + 1}`} />
+                                  <div className="comentario-imagem-meta">
+                                    <span className="comentario-token">[[img:{imagem.id}]]</span>
+                                    <button
+                                      type="button"
+                                      className="btn-inserir-token"
+                                      onClick={() => inserirTokenNoComentario(id, estrategiaIndex, `[[img:${imagem.id}]]`)}
+                                      disabled={!dados.selecionado}
+                                    >
+                                      Inserir no texto
+                                    </button>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="btn-remover-imagem"
+                                    onClick={() => removerImagemComentario(id, estrategiaIndex, imagemIndex)}
+                                    disabled={!dados.selecionado}
+                                  >
+                                    Remover
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className="form-group">
+                          <label>Resultado do Mês (%) *</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            value={estrategia.resultadoPercentual}
+                            onChange={(e) => atualizarDadosCliente(id, estrategiaIndex, 'resultadoPercentual', e.target.value)}
+                            required
+                            disabled={!dados.selecionado}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Resultado do Mês (R$)</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            value={estrategia.resultadoValor}
+                            onChange={(e) => atualizarDadosCliente(id, estrategiaIndex, 'resultadoValor', e.target.value)}
+                            disabled={!dados.selecionado}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label>Resultado do Mês (%) *</label>
-                      <input
-                        type="number"
-                        value={dados.resultadoPercentual || ''}
-                        onChange={(e) => atualizarDadosCliente(id, 'resultadoPercentual', parseFloat(e.target.value) || 0)}
-                        step="0.01"
-                        required
-                        disabled={!dados.selecionado}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Resultado do Mês (R$)</label>
-                      <input
-                        type="number"
-                        value={dados.resultadoValor.toFixed(2)}
-                        onChange={(e) => atualizarDadosCliente(id, 'resultadoValor', parseFloat(e.target.value) || 0)}
-                        step="0.01"
-                        disabled={!dados.selecionado}
-                      />
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               ))}
             </div>
@@ -416,8 +813,13 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         )}
 
         <div className="form-actions">
-          <button type="submit" className="btn-primary" disabled={totalSelecionados === 0}>
-            Gerar {totalSelecionados} PDF(s)
+          <button
+            type="submit"
+            className="btn-primary btn-action btn-action--report"
+            disabled={totalSelecionados === 0}
+            aria-label={`Gerar ${totalSelecionados} relatório(s) em PDF`}
+          >
+            Relatório
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react';
 import type { Estrategia } from '../../types';
 import type { LaminaBlockItem, LaminaTemplate } from './types';
+import { normalizarTexto } from './utils';
 
 type LaminasEditorPanelProps = {
   estrategias: Estrategia[];
@@ -123,7 +124,7 @@ export default function LaminasEditorPanel({
               className={`layout-chip${isBlocoVisivel(block.id) ? ' is-active' : ''}`}
               onClick={() => onToggleBloco(block.id)}
             >
-              {block.label}
+              {normalizarTexto(block.label)}
             </button>
           ))}
         </div>

@@ -1,6 +1,11 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { exportarClientesParaExcel, exportarTemplateExcel, importarExcelParaClientes } from '../../services/planilhaService';
 import { gerarDashboardClientesPDF } from '../../services/pdfGenerator';
+import {
+  exportarTemplateFinanceiroExcel,
+  importarExcelParaFinanceiro,
+  RECEBEDORES_SAIDAS,
+} from '../../services/financeiroPlanilhaService';
 import { useClientes } from '../../hooks/useClientes';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import Card from '../../components/Card/Card';
@@ -12,6 +17,40 @@ export default function ImportacaoPlanilhaPage() {
   const [importando, setImportando] = useState(false);
   const [erros, setErros] = useState<string[]>([]);
   const [sucesso, setSucesso] = useState<string>('');
+  const [importandoFinanceiro, setImportandoFinanceiro] = useState(false);
+  const [errosFinanceiro, setErrosFinanceiro] = useState<string[]>([]);
+  const [sucessoFinanceiro, setSucessoFinanceiro] = useState<string>('');
+  const [substituirFinanceiro, setSubstituirFinanceiro] = useState(false);
+
+  const INTER_LANCAMENTOS_KEY = 'inter_manual_lancamentos_v1';
+  const SAIDAS_LANCAMENTOS_KEY = 'saidas_manual_lancamentos_v1';
+
+  const safeParseArray = <T,>(valor: string | null): T[] => {
+    if (!valor) return [];
+    try {
+      const parsed = JSON.parse(valor);
+      return Array.isArray(parsed) ? (parsed as T[]) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const sortByDateDesc = (a: any, b: any) => {
+    const ta = a?.data ? new Date(a.data).getTime() : 0;
+    const tb = b?.data ? new Date(b.data).getTime() : 0;
+    return tb - ta;
+  };
+
+  const mergeById = <T extends { id: string }>(existentes: T[], novos: T[]) => {
+    const map = new Map<string, T>();
+    existentes.forEach((item) => {
+      if (item && item.id) map.set(item.id, item);
+    });
+    novos.forEach((item) => {
+      if (item && item.id) map.set(item.id, item);
+    });
+    return Array.from(map.values()).sort(sortByDateDesc);
+  };
 
   const handleExportar = () => {
     try {
@@ -117,12 +156,79 @@ export default function ImportacaoPlanilhaPage() {
     }
   };
 
+  const handleExportarTemplateFinanceiro = () => {
+    try {
+      exportarTemplateFinanceiroExcel();
+      setSucessoFinanceiro('Template financeiro exportado com sucesso!');
+      setTimeout(() => setSucessoFinanceiro(''), 3000);
+    } catch (error) {
+      alert(
+        'Erro ao exportar template financeiro: ' +
+          (error instanceof Error ? error.message : 'Erro desconhecido')
+      );
+    }
+  };
+
+  const handleImportarFinanceiro = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const arquivo = event.target.files?.[0];
+    if (!arquivo) return;
+
+    if (!arquivo.name.endsWith('.xlsx') && !arquivo.name.endsWith('.xls')) {
+      alert('Por favor, selecione um arquivo Excel (.xlsx ou .xls)');
+      return;
+    }
+
+    setImportandoFinanceiro(true);
+    setErrosFinanceiro([]);
+    setSucessoFinanceiro('');
+
+    try {
+      const resultado = await importarExcelParaFinanceiro(arquivo, clientes);
+
+      const interExistentes = safeParseArray<any>(localStorage.getItem(INTER_LANCAMENTOS_KEY));
+      const saidasExistentes = safeParseArray<any>(localStorage.getItem(SAIDAS_LANCAMENTOS_KEY));
+
+      if (resultado.interEncontrado) {
+        const interFinal = substituirFinanceiro
+          ? [...resultado.interLancamentos].sort(sortByDateDesc)
+          : mergeById(interExistentes, resultado.interLancamentos);
+        localStorage.setItem(INTER_LANCAMENTOS_KEY, JSON.stringify(interFinal));
+      }
+
+      if (resultado.saidasEncontrado) {
+        const saidasFinal = substituirFinanceiro
+          ? [...resultado.saidasLancamentos].sort(sortByDateDesc)
+          : mergeById(saidasExistentes, resultado.saidasLancamentos);
+        localStorage.setItem(SAIDAS_LANCAMENTOS_KEY, JSON.stringify(saidasFinal));
+      }
+
+      window.dispatchEvent(new Event('financeiro-lancamentos-updated'));
+
+      const msgBase = `Inter: ${resultado.interLancamentos.length} | Saidas: ${resultado.saidasLancamentos.length}`;
+      if (resultado.erros.length > 0) {
+        setErrosFinanceiro(resultado.erros);
+        alert(`Importacao financeira concluida com ${resultado.erros.length} erro(s). (${msgBase})`);
+      } else {
+        setSucessoFinanceiro(`Importacao financeira concluida com sucesso! (${msgBase})`);
+        setTimeout(() => setSucessoFinanceiro(''), 5000);
+      }
+    } catch (error) {
+      alert(
+        'Erro ao importar planilha financeira: ' +
+          (error instanceof Error ? error.message : 'Erro desconhecido')
+      );
+    } finally {
+      setImportandoFinanceiro(false);
+      event.target.value = '';
+    }
+  };
+
   return (
     <div className="importacao-planilha-page">
       <div className="page-header">
         <h1>Dados</h1>
         <p className="page-subtitle">
-          Exporte os dados dos clientes ou importe uma planilha atualizada
+          Exporte e importe dados por planilha (Clientes e Financeiro)
         </p>
       </div>
 
@@ -134,9 +240,10 @@ export default function ImportacaoPlanilhaPage() {
           </p>
           <button 
             onClick={handleExportarTemplate} 
-            className="btn-export btn-template"
+            className="btn-export btn-template btn-action btn-action--export"
+            aria-label="Exportar template de clientes"
           >
-            📋 Baixar Template Excel
+            Exportar
           </button>
         </Card>
 
@@ -147,10 +254,11 @@ export default function ImportacaoPlanilhaPage() {
           </p>
           <button 
             onClick={handleExportar} 
-            className="btn-export"
+            className="btn-export btn-action btn-action--export"
             disabled={clientes.length === 0}
+            aria-label="Exportar dados de clientes"
           >
-            📥 Exportar Excel com Dados
+            Exportar
           </button>
         </Card>
 
@@ -160,10 +268,11 @@ export default function ImportacaoPlanilhaPage() {
           </p>
           <button
             onClick={handleExportarPdf}
-            className="btn-export"
+            className="btn-export btn-action btn-action--report"
             disabled={clientes.length === 0}
+            aria-label="Gerar relatório em PDF com dados"
           >
-            🧾 Exportar PDF com Dados
+            Relatório
           </button>
         </Card>
 
@@ -188,7 +297,7 @@ export default function ImportacaoPlanilhaPage() {
               className="file-input"
             />
             <label htmlFor="file-input" className="file-input-label">
-              {importando ? '⏳ Importando...' : '📤 Selecionar Arquivo Excel'}
+              {importando ? 'Importando...' : 'Selecionar Arquivo Excel'}
             </label>
           </div>
           {importando && (
@@ -198,6 +307,68 @@ export default function ImportacaoPlanilhaPage() {
             </div>
           )}
         </Card>
+
+        <Card title="Financeiro - Exportar Template" className="action-card">
+          <p className="card-description">
+            Baixe um template Excel com duas abas: "Inter_Lancamentos" e "Saidas_Lancamentos".
+            Preencha os lançamentos e importe de volta.
+          </p>
+          <button
+            onClick={handleExportarTemplateFinanceiro}
+            className="btn-export btn-template btn-action btn-action--export"
+            aria-label="Exportar template financeiro"
+          >
+            Exportar
+          </button>
+        </Card>
+
+        <Card title="Financeiro - Importar Planilha" className="action-card">
+          <p className="card-description">
+            Selecione um arquivo Excel (.xlsx ou .xls) para importar lançamentos do Inter (recebimentos)
+            e saídas.
+          </p>
+          <div className="import-section">
+            <input
+              id="file-input-financeiro"
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleImportarFinanceiro}
+              disabled={importandoFinanceiro}
+              className="file-input"
+            />
+            <label htmlFor="file-input-financeiro" className="file-input-label">
+              {importandoFinanceiro ? 'Importando...' : 'Selecionar Arquivo Excel'}
+            </label>
+            <label
+              style={{
+                display: 'flex',
+                gap: '0.5rem',
+                alignItems: 'center',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={substituirFinanceiro}
+                onChange={(e) => setSubstituirFinanceiro(e.target.checked)}
+                disabled={importandoFinanceiro}
+              />
+              Substituir lançamentos existentes ao importar
+            </label>
+          </div>
+          {importandoFinanceiro && (
+            <div className="loading-message">
+              <div className="spinner"></div>
+              <p>Processando arquivo...</p>
+            </div>
+          )}
+        </Card>
+
+        {sucessoFinanceiro && (
+          <div className="success-banner">
+            <p className="success-message">{sucessoFinanceiro}</p>
+          </div>
+        )}
       </div>
 
       {erros.length > 0 && (
@@ -205,7 +376,19 @@ export default function ImportacaoPlanilhaPage() {
           <div className="errors-list">
             {erros.map((erro, index) => (
               <div key={index} className="error-item">
-                ⚠️ {erro}
+                {erro}
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {errosFinanceiro.length > 0 && (
+        <Card title="Erros na Importação Financeira" className="errors-card">
+          <div className="errors-list">
+            {errosFinanceiro.map((erro, index) => (
+              <div key={index} className="error-item">
+                {erro}
               </div>
             ))}
           </div>
@@ -231,8 +414,8 @@ export default function ImportacaoPlanilhaPage() {
           
           <h3>Como usar:</h3>
           <ol>
-            <li><strong>Opção 1 - Template Vazio:</strong> Clique em "Baixar Template Excel" para obter um arquivo vazio com os cabeçalhos</li>
-            <li><strong>Opção 2 - Dados Existentes:</strong> Clique em "Exportar Excel com Dados" para baixar os clientes já cadastrados</li>
+            <li><strong>Opção 1 - Template Vazio:</strong> Clique em "Exportar" no card "Exportar Template Vazio" para obter um arquivo vazio com os cabeçalhos</li>
+            <li><strong>Opção 2 - Dados Existentes:</strong> Clique em "Exportar" no card "Exportar Dados Existentes" para baixar os clientes já cadastrados</li>
             <li>Abra o arquivo no Excel ou Google Sheets</li>
             <li>Preencha ou edite os dados conforme necessário (os cabeçalhos permanecerão formatados)</li>
             <li>Salve o arquivo no formato Excel (.xlsx)</li>
@@ -241,11 +424,37 @@ export default function ImportacaoPlanilhaPage() {
           </ol>
 
           <div className="warning-box">
-            <strong>⚠️ Atenção:</strong> Clientes são identificados pelo nome. 
+            <strong>Atenção:</strong> Clientes são identificados pelo nome. 
             Se o nome mudar, será criado um novo cliente.
+          </div>
+        </div>
+      </Card>
+
+      <Card title="Instruções (Financeiro - Inter e Saídas)" className="instructions-card">
+        <div className="instructions-content">
+          <h3>Abas do Template</h3>
+          <ul>
+            <li><strong>Inter_Lancamentos:</strong> Tipo, Cliente, Valor, Data, Descricao</li>
+            <li><strong>Saidas_Lancamentos:</strong> Recebedor, Valor, Data, Descricao</li>
+          </ul>
+
+          <h3>Regras</h3>
+          <ul>
+            <li><strong>Tipo (Inter):</strong> recebimento ou pagamento</li>
+            <li><strong>Cliente (Inter):</strong> deve bater com o nome do cliente cadastrado (ou informar o ID)</li>
+            <li><strong>Data:</strong> dd/mm/aaaa ou aaaa-mm-dd</li>
+            <li><strong>Valor:</strong> número (ex: 1234,56 ou 1234.56) ou com R$</li>
+            <li><strong>Recebedor (Saídas):</strong> use um recebedor existente (aba "Recebedores" no template)</li>
+          </ul>
+
+          <div className="warning-box">
+            <strong>Recebedores aceitos:</strong> {RECEBEDORES_SAIDAS.join(', ')}.
           </div>
         </div>
       </Card>
     </div>
   );
 }
+
+
+

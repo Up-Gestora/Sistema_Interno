@@ -3,8 +3,44 @@ import type { EstrategiaDiariaEntry } from '../../services/estrategiaDiariaPlani
 import { STRATEGY_DATA_KEY, TEMPLATE_PADRAO } from './constants';
 import type { DailyMetrics, LaminaChart, LaminaIntro, LaminaTemplate } from './types';
 
+const utf8MojibakePattern = /[\u00C2\u00C3\u00E2][\u0080-\u00BF]/;
+
+const recuperarTextoMojibake = (value: string): string => {
+  if (!utf8MojibakePattern.test(value)) {
+    return value;
+  }
+
+  try {
+    return new TextDecoder('utf-8').decode(new TextEncoder().encode(value));
+  } catch {
+    return value;
+  }
+};
+
+export const normalizarTexto = (value: string) => recuperarTextoMojibake(value);
+
+const normalizarTextoObjeto = <T,>(valor: T): T => {
+  if (typeof valor === 'string') {
+    return recuperarTextoMojibake(valor) as T;
+  }
+
+  if (Array.isArray(valor)) {
+    return valor.map((item) => normalizarTextoObjeto(item)) as T;
+  }
+
+  if (valor && typeof valor === 'object') {
+    const normalizado = {} as Record<string, unknown>;
+    for (const [chave, item] of Object.entries(valor)) {
+      normalizado[chave] = normalizarTextoObjeto(item);
+    }
+    return normalizado as T;
+  }
+
+  return valor;
+};
+
 export function normalizarTemplate(dados: LaminaTemplate): LaminaTemplate {
-  return {
+  const normalizado = {
     ...TEMPLATE_PADRAO,
     ...dados,
     header: { ...TEMPLATE_PADRAO.header, ...dados.header },
@@ -41,6 +77,8 @@ export function normalizarTemplate(dados: LaminaTemplate): LaminaTemplate {
     },
     rodape: { ...TEMPLATE_PADRAO.rodape, ...dados.rodape },
   };
+
+  return normalizarTextoObjeto(normalizado);
 }
 
 export const formatPercent = (value: number) =>
@@ -250,7 +288,7 @@ export const aplicarBenchmarkLabel = (base: LaminaTemplate, benchmark: string): 
 };
 
 export function renderTextoComDestaques(texto: string, destaques?: string[]) {
-  const safeTexto = typeof texto === 'string' ? texto : texto ? String(texto) : '';
+  const safeTexto = normalizarTextoObjeto(typeof texto === 'string' ? texto : texto ? String(texto) : '');
   if (!destaques || destaques.length === 0) {
     return safeTexto;
   }
@@ -293,8 +331,3 @@ export function renderTextoComDestaques(texto: string, destaques?: string[]) {
 
   return nodes;
 }
-
-
-
-
-

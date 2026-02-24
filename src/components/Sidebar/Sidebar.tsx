@@ -1,9 +1,10 @@
-﻿import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import {
   LayoutDashboard,
   Wallet,
   Users,
+  User,
   Target,
   Briefcase,
   FileText,
@@ -47,6 +48,7 @@ export default function Sidebar() {
       ],
     },
     { id: 'clientes', path: '/clientes', label: 'Clientes', icon: Users },
+    { id: 'membros', path: '/membros', label: 'Membros/Equipe', icon: User },
     { id: 'estrategias', path: '/estrategias', label: 'Estratégias', icon: Target },
     { id: 'private', path: '/private', label: 'Private', icon: Briefcase },
     {

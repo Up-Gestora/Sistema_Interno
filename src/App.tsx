@@ -14,6 +14,7 @@ import EstrategiaDiariaPage from './pages/EstrategiaDiaria/EstrategiaDiariaPage'
 import LinksUteisPage from './pages/LinksUteis/LinksUteisPage';
 import AssinafyPage from './pages/AssinafyPage';
 import VentureCapitalPage from './pages/VentureCapitalPage';
+import MembrosPage from './pages/MembrosPage';
 import { useClientes } from './hooks/useClientes';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           }
         />
         <Route path="/clientes" element={<ClientesPage />} />
+        <Route path="/membros" element={<MembrosPage />} />
         <Route path="/estrategias" element={<EstrategiasPage />} />
         <Route path="/private" element={<VentureCapitalPage />} />
         <Route path="/venture-capital" element={<VentureCapitalPage />} />

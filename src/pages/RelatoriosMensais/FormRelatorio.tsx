@@ -3,6 +3,7 @@ import { Cliente } from '../../types';
 import { RelatorioMensal } from '../../types/relatorio';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import Card from '../../components/Card/Card';
+import YearSelect from '../../components/YearSelect/YearSelect';
 import { parseDecimalInput } from '../../utils/numberInput';
 import './FormRelatorio.css';
 
@@ -261,6 +262,8 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
 
+  const anosDisponiveis = Array.from({ length: 81 }, (_, index) => 2020 + index);
+
   return (
     <Card title="Novo Relatório Mensal" className="form-relatorio">
       <form onSubmit={handleSubmit} className="relatorio-form">
@@ -327,14 +330,11 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
 
             <div className="form-group">
               <label htmlFor="ano">Ano *</label>
-              <input
-                type="number"
+              <YearSelect
                 id="ano"
-                value={formData.ano}
-                onChange={(e) => setFormData({ ...formData, ano: parseInt(e.target.value) })}
-                min="2020"
-                max="2100"
-                required
+                value={Number(formData.ano) || new Date().getFullYear()}
+                years={anosDisponiveis}
+                onChange={(ano) => setFormData({ ...formData, ano })}
               />
             </div>
           </div>

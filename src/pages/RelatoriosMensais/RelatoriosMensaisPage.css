@@ -24,6 +24,401 @@
   margin-top: 2rem;
 }
 
+.capa-relatorio-card {
+  margin-bottom: 0.5rem;
+}
+
+.capa-relatorio-content {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.capa-relatorio-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 794 / 1123;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.capa-relatorio-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.capa-relatorio-preview-image--custom {
+  object-fit: initial;
+  z-index: 1;
+}
+
+.capa-relatorio-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.capa-relatorio-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3%;
+  padding: 0 1.5% 5%;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 55%, rgba(15, 23, 42, 0.58) 100%);
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.capa-relatorio-preview.is-editable:hover .capa-relatorio-overlay,
+.capa-relatorio-preview.is-editable:focus-within .capa-relatorio-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.capa-relatorio-overlay-btn {
+  position: relative;
+  flex: 0 0 44%;
+  max-width: 44%;
+  height: 44px;
+  padding: 0.6rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(17, 24, 39, 0.78);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.capa-relatorio-overlay-btn:hover {
+  background: rgba(17, 24, 39, 0.92);
+  transform: translateY(-1px);
+}
+
+.capa-relatorio-overlay-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.capa-relatorio-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.capa-relatorio-input {
+  display: none;
+}
+
+.capa-relatorio-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-view--secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-view--secondary:hover:not(:disabled) {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+.btn-view:disabled,
+.btn-view--secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.capa-relatorio-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.capa-relatorio-info {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.capa-relatorio-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.capa-galeria {
+  width: 100%;
+  display: flex;
+  gap: 0.7rem;
+  overflow-x: auto;
+  padding: 0.2rem 0.1rem 0.2rem 0;
+  flex: 1 1 auto;
+  align-items: stretch;
+  min-height: 110px;
+}
+
+.capa-galeria-card {
+  position: relative;
+  flex: 0 0 110px;
+  height: 100%;
+  min-height: 110px;
+}
+
+.capa-galeria-thumb,
+.capa-galeria-add {
+  width: 110px;
+  height: 100%;
+  min-height: 110px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.capa-galeria-thumb:hover,
+.capa-galeria-add:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.capa-galeria-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.capa-galeria-thumb-text {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.capa-galeria-card.is-selected .capa-galeria-thumb {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(29, 47, 52, 0.22);
+}
+
+.capa-galeria-delete {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: #b42318;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+.capa-galeria-delete:hover {
+  background: #912018;
+}
+
+.capa-galeria-card--add .capa-galeria-add {
+  background: #d7dce1;
+  color: #5d6773;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.capa-galeria-card--add .capa-galeria-add:hover {
+  color: #2a333d;
+}
+
+.capa-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(2, 6, 23, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.capa-editor-modal {
+  width: min(940px, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 24px 64px rgba(2, 6, 23, 0.24);
+}
+
+.capa-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.capa-editor-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.capa-editor-stage {
+  position: relative;
+  width: min(100%, 620px);
+  margin: 0 auto;
+  aspect-ratio: 794 / 1123;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: #0f172a;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.capa-editor-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.capa-editor-image {
+  object-fit: initial;
+}
+
+.capa-editor-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.17) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.17) 1px, transparent 1px);
+  background-size: calc(100% / 6) calc(100% / 10);
+}
+
+.capa-editor-texto-topo {
+  position: absolute;
+  top: 8%;
+  left: 7.2%;
+  right: 7.2%;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+.capa-editor-texto-base {
+  position: absolute;
+  left: 7.2%;
+  right: 7.2%;
+  bottom: 8%;
+  color: #ffffff;
+  pointer-events: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.58);
+}
+
+.capa-editor-texto-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.capa-editor-texto-cliente {
+  margin-top: 0.45rem;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.capa-editor-texto-periodo {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.76);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.capa-editor-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.capa-editor-controls label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.capa-editor-controls input[type='range'] {
+  width: min(360px, 100%);
+}
+
+.capa-editor-controls span {
+  min-width: 50px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.capa-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .relatorios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -152,7 +547,50 @@
   }
 }
 
+@media (hover: none) {
+  .capa-relatorio-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 @media (max-width: 768px) {
+  .capa-relatorio-content {
+    grid-template-columns: 1fr;
+  }
+
+  .capa-relatorio-preview {
+    max-width: 260px;
+  }
+
+  .capa-relatorio-actions {
+    width: 100%;
+  }
+
+  .capa-relatorio-actions .btn-view {
+    flex: 1;
+  }
+
+  .capa-galeria {
+    width: 100%;
+  }
+
+  .capa-editor-actions {
+    width: 100%;
+  }
+
+  .capa-editor-actions .btn-view {
+    flex: 1;
+  }
+
+  .capa-editor-texto-titulo {
+    font-size: 1.55rem;
+  }
+
+  .capa-editor-texto-cliente {
+    font-size: 1.1rem;
+  }
+
   .relatorios-grid {
     grid-template-columns: 1fr;
   }
@@ -165,4 +603,3 @@
     width: 100%;
   }
 }
-

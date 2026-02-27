@@ -10,7 +10,6 @@ import Card from '../components/Card/Card';
 import Modal from '../components/Modal/Modal';
 import './AsaasPage.css';
 
-let pagamentosCache: AsaasPagamento[] | null = null;
 const INTER_LANCAMENTOS_KEY = 'inter_manual_lancamentos_v1';
 const SAIDAS_LANCAMENTOS_KEY = 'saidas_manual_lancamentos_v1';
 const ASAAS_PAGAMENTOS_CACHE_KEY = 'asaas_pagamentos_cache_v1';
@@ -45,13 +44,11 @@ const salvarPagamentosCache = (pagamentos: AsaasPagamento[]) => {
   localStorage.setItem(ASAAS_PAGAMENTOS_CACHE_KEY, JSON.stringify(payload));
 };
 
-const mergePagamentos = (base: AsaasPagamento[], novos: AsaasPagamento[]) => {
-  const map = new Map(base.map((pagamento) => [pagamento.id, pagamento]));
-  novos.forEach((pagamento) => {
-    map.set(pagamento.id, pagamento);
-  });
-  return Array.from(map.values());
-};
+const STATUS_RECEBIDAS = new Set(['RECEIVED', 'RECEIVED_IN_CASH', 'DUNNING_RECEIVED']);
+const STATUS_CONFIRMADAS = new Set(['CONFIRMED']);
+const STATUS_AGUARDANDO = new Set(['PENDING', 'AWAITING_RISK_ANALYSIS']);
+const STATUS_VENCIDAS = new Set(['OVERDUE', 'DUNNING_REQUESTED']);
+const STATUS_REEMBOLSADAS = new Set(['REFUNDED']);
 
 export interface FinanceiroOutletContext {
   pagamentos: AsaasPagamento[];
@@ -143,7 +140,6 @@ export default function AsaasPage() {
       setConfigForm(savedConfig);
       const cache = lerPagamentosCache();
       if (cache?.pagamentos?.length) {
-        pagamentosCache = cache.pagamentos;
         setPagamentos(cache.pagamentos);
       }
       carregarDados();
@@ -224,7 +220,8 @@ export default function AsaasPage() {
   }, [clientes]);
 
   const resumo = useMemo(() => {
-    if (pagamentos.length === 0) return null;
+    const pagamentosValidos = pagamentos.filter((pagamento) => !pagamento.deleted);
+    if (pagamentosValidos.length === 0) return null;
 
     const getDateParts = (dateString?: string) => {
       if (!dateString) return null;
@@ -250,28 +247,26 @@ export default function AsaasPage() {
       return partes.ano === anoAtual && partes.mes === mesAtual;
     };
 
-    const getDataReferencia = (status: string, pagamento: AsaasPagamento) => {
-      if (['RECEIVED', 'RECEIVED_IN_CASH', 'CONFIRMED', 'REFUNDED'].includes(status)) {
-        return pagamento.paymentDate || pagamento.clientPaymentDate || pagamento.dateCreated;
-      }
-
-      return pagamento.dueDate || pagamento.dateCreated;
+    // O dashboard "Situação das cobranças" do Asaas é orientado à cobrança (vencimento),
+    // então o filtro de período deve usar a data de vencimento para todos os status.
+    const getDataReferencia = (pagamento: AsaasPagamento) => {
+      return pagamento.dueDate || pagamento.originalDueDate || pagamento.dateCreated;
     };
 
-    const somarPorStatus = (statusList: string[]) => {
-      return pagamentos.reduce((sum, pagamento) => {
-        if (!statusList.includes(pagamento.status)) return sum;
-        const dataReferencia = getDataReferencia(pagamento.status, pagamento);
+    const somarPorStatus = (statusSet: Set<string>) => {
+      return pagamentosValidos.reduce((sum, pagamento) => {
+        if (!statusSet.has(pagamento.status)) return sum;
+        const dataReferencia = getDataReferencia(pagamento);
         if (!isDentroPeriodo(dataReferencia)) return sum;
         return sum + (pagamento.value || 0);
       }, 0);
     };
 
-    const received = somarPorStatus(['RECEIVED', 'RECEIVED_IN_CASH']);
-    const confirmed = somarPorStatus(['CONFIRMED']);
-    const pending = somarPorStatus(['PENDING']);
-    const overdue = somarPorStatus(['OVERDUE']);
-    const refunded = somarPorStatus(['REFUNDED']);
+    const received = somarPorStatus(STATUS_RECEBIDAS);
+    const confirmed = somarPorStatus(STATUS_CONFIRMADAS);
+    const pending = somarPorStatus(STATUS_AGUARDANDO);
+    const overdue = somarPorStatus(STATUS_VENCIDAS);
+    const refunded = somarPorStatus(STATUS_REEMBOLSADAS);
     const balance = received + confirmed - refunded;
 
     return {
@@ -295,17 +290,14 @@ export default function AsaasPage() {
     try {
       const resposta = await buscarPagamentosPaginados();
       const lista = resposta || [];
-      const base = cacheAtual?.pagamentos || [];
-      const mesclado = mergePagamentos(base, lista);
-      pagamentosCache = mesclado;
-      setPagamentos(mesclado);
-      salvarPagamentosCache(mesclado);
+      const atualizados = Array.from(new Map(lista.map((pagamento) => [pagamento.id, pagamento])).values());
+      setPagamentos(atualizados);
+      salvarPagamentosCache(atualizados);
     } catch (error: any) {
       const errorMessage = error.message || 'Erro ao carregar dados do Asaas';
       setErro(errorMessage);
       console.error('Erro completo:', error);
       if (cacheAtual?.pagamentos?.length) {
-        pagamentosCache = cacheAtual.pagamentos;
         setPagamentos(cacheAtual.pagamentos);
       }
       

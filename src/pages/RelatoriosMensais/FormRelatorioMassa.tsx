@@ -4,6 +4,7 @@ import { RelatorioMensal } from '../../types/relatorio';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import { buscarCDI } from '../../services/cdiIfixService';
 import Card from '../../components/Card/Card';
+import YearSelect from '../../components/YearSelect/YearSelect';
 import { formatDecimalInput, parseDecimalInput } from '../../utils/numberInput';
 import './FormRelatorioMassa.css';
 
@@ -58,6 +59,13 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
 
+  const formatDateIso = (date: Date) => {
+    const ano = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const dia = String(date.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+  };
+
   const obterNomeEstrategia = (estrategiaId?: string) => {
     if (!estrategiaId) return 'Estratégia principal';
     return estrategias.find(estrategia => estrategia.id === estrategiaId)?.nome || 'Estratégia principal';
@@ -90,14 +98,12 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         const dataInicio = new Date(formData.ano, formData.mes - 1, 1);
         const dataFim = new Date(formData.ano, formData.mes, 0); // Último dia do mês
 
-        const dataInicioStr = dataInicio.toISOString().split('T')[0];
-        const dataFimStr = dataFim.toISOString().split('T')[0];
+        const dataInicioStr = formatDateIso(dataInicio);
+        const dataFimStr = formatDateIso(dataFim);
 
-        const cdiAnual = await buscarCDI(dataInicioStr, dataFimStr);
+        const cdiMensal = await buscarCDI(dataInicioStr, dataFimStr);
 
-        if (cdiAnual !== null) {
-          // Converter CDI anual para mensal (dividir por 12)
-          const cdiMensal = cdiAnual / 12;
+        if (cdiMensal !== null) {
           setFormData(prev => ({ ...prev, cdiMensal: formatDecimalInput(cdiMensal) }));
         } else {
           setErroCDI('CDI não encontrado para o período selecionado. Preencha manualmente.');
@@ -495,6 +501,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     return Object.values(clientesSelecionados).filter(c => c.selecionado).length;
   }, [clientesSelecionados]);
 
+  const anosDisponiveis = Array.from({ length: 81 }, (_, index) => 2020 + index);
+
   return (
     <Card title="Geração em Massa de Relatórios" className="form-relatorio-massa">
       <form onSubmit={handleSubmit} className="relatorio-massa-form">
@@ -527,14 +535,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
 
             <div className="form-group">
               <label htmlFor="ano">Ano *</label>
-              <input
-                type="number"
+              <YearSelect
                 id="ano"
-                value={formData.ano}
-                onChange={(e) => setFormData({ ...formData, ano: parseInt(e.target.value) })}
-                min="2020"
-                max="2100"
-                required
+                value={Number(formData.ano) || new Date().getFullYear()}
+                years={anosDisponiveis}
+                onChange={(ano) => setFormData({ ...formData, ano })}
               />
             </div>
           </div>

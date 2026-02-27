@@ -100,11 +100,12 @@
 
 .actions-header {
   text-align: center;
-  width: 160px;
+  width: 220px;
 }
 
 .actions-cell {
   text-align: center;
+  min-width: 220px;
 }
 
 .actions-buttons {
@@ -112,9 +113,14 @@
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
-.membros-page .action-btn {
+.membros-page .membros-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
   padding: 0.45rem 0.72rem;
   border-radius: 6px;
   border: 1px solid var(--border-color);
@@ -122,17 +128,23 @@
   color: var(--text-primary);
   font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.membros-page .action-btn.edit-btn:hover {
+.membros-page .membros-action-btn:hover {
+  transform: none;
+}
+
+.membros-page .membros-action-btn.membros-edit-btn:hover {
   background-color: rgba(59, 130, 246, 0.1);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
-.membros-page .action-btn.delete-btn:hover {
+.membros-page .membros-action-btn.membros-delete-btn:hover {
   background-color: rgba(239, 68, 68, 0.1);
   border-color: var(--danger-color);
   color: var(--danger-color);

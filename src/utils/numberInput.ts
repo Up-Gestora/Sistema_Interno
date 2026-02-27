@@ -30,5 +30,6 @@ export function parseDecimalInput(value: string): number {
 
 export function formatDecimalInput(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) return '';
-  return String(value).replace('.', ',');
+  const normalizado = Number(value.toFixed(6));
+  return String(normalizado).replace('.', ',');
 }

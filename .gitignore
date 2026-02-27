@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
+# Local uploads for report cover repository
+server/uploads/report-covers/*
+!server/uploads/report-covers/.gitkeep
+

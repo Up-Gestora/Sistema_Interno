@@ -362,9 +362,16 @@
   gap: 0.52rem;
 }
 
+.finance-list {
+  max-height: 194px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  scrollbar-gutter: stable;
+}
+
 .finance-add-row {
   display: grid;
-  grid-template-columns: minmax(160px, 1.5fr) minmax(110px, 1fr) minmax(100px, 0.8fr) auto;
+  grid-template-columns: minmax(150px, 1.4fr) minmax(100px, 0.9fr) minmax(140px, 1fr) minmax(110px, 0.9fr) auto;
   gap: 0.5rem;
   align-items: center;
 }
@@ -375,7 +382,7 @@
   background: var(--card-bg);
   padding: 0.5rem;
   display: grid;
-  grid-template-columns: minmax(160px, 1.5fr) minmax(110px, 1fr) minmax(100px, 0.8fr) auto;
+  grid-template-columns: minmax(150px, 1.4fr) minmax(100px, 0.9fr) minmax(140px, 1fr) minmax(110px, 0.9fr) auto;
   align-items: center;
   gap: 0.5rem;
 }
@@ -563,6 +570,10 @@
   .finance-add-row,
   .finance-item {
     grid-template-columns: 1fr;
+  }
+
+  .finance-list {
+    max-height: 320px;
   }
 }
 

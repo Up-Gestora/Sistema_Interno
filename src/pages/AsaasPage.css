@@ -298,6 +298,7 @@
   padding-bottom: 0.5rem;
   --chart-admin: var(--primary-color);
   --chart-performance: var(--primary-dark);
+  --chart-venture: #14b8a6;
   --chart-payments: #ef4444;
   --chart-profit: #0f172a;
   --chart-axis: var(--text-secondary);
@@ -307,6 +308,7 @@
 [data-theme='dark'] .pagamentos-chart-card {
   --chart-admin: #38bdf8;
   --chart-performance: #34d399;
+  --chart-venture: #2dd4bf;
   --chart-payments: #f87171;
   --chart-profit: #f8fafc;
   --chart-axis: #e2e8f0;

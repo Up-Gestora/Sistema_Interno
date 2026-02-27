@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { promises as fs } from 'fs';
+import { randomUUID } from 'crypto';
 import fetch from 'node-fetch';
 import multer from 'multer';
 
@@ -14,7 +16,136 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const upload = multer({ storage: multer.memoryStorage() });
+const assinafyUpload = multer({ storage: multer.memoryStorage() });
+const reportCoverUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
+
+const REPORT_COVER_UPLOAD_DIR = join(__dirname, 'uploads', 'report-covers');
+const REPORT_COVER_DATA_DIR = join(__dirname, 'data');
+const REPORT_COVER_META_FILE = join(REPORT_COVER_DATA_DIR, 'report-covers.json');
+const REPORT_COVER_ALLOWED_MIME = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+};
+const REPORT_COVER_DEFAULT_ADJUSTMENT = { scale: 1, offsetX: 0, offsetY: 0 };
+
+let reportCoverItems = [];
+let reportCoverInitialized = false;
+
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const normalizeReportCoverAdjustment = (adjustment) => {
+  const scaleRaw = Number(adjustment?.scale);
+  const offsetXRaw = Number(adjustment?.offsetX);
+  const offsetYRaw = Number(adjustment?.offsetY);
+
+  const scale = Number.isFinite(scaleRaw)
+    ? clamp(scaleRaw, 1, 2.5)
+    : REPORT_COVER_DEFAULT_ADJUSTMENT.scale;
+  const offsetX = Number.isFinite(offsetXRaw) ? offsetXRaw : REPORT_COVER_DEFAULT_ADJUSTMENT.offsetX;
+  const offsetY = Number.isFinite(offsetYRaw) ? offsetYRaw : REPORT_COVER_DEFAULT_ADJUSTMENT.offsetY;
+
+  return { scale, offsetX, offsetY };
+};
+
+const toPublicReportCoverItem = (item) => ({
+  id: item.id,
+  name: item.name,
+  url: item.url,
+  mimeType: item.mimeType,
+  sizeBytes: item.sizeBytes,
+  createdAt: item.createdAt,
+  adjustment: normalizeReportCoverAdjustment(item.adjustment),
+});
+
+const extractFilenameFromUrl = (url) => {
+  if (typeof url !== 'string') return '';
+  const clean = url.split('?')[0].split('#')[0];
+  return clean.split('/').pop() || '';
+};
+
+const ensureReportCoverStorage = async () => {
+  await fs.mkdir(REPORT_COVER_UPLOAD_DIR, { recursive: true });
+  await fs.mkdir(REPORT_COVER_DATA_DIR, { recursive: true });
+
+  try {
+    await fs.access(REPORT_COVER_META_FILE);
+  } catch {
+    await fs.writeFile(REPORT_COVER_META_FILE, JSON.stringify({ items: [] }, null, 2), 'utf-8');
+  }
+};
+
+const loadReportCoverItemsFromDisk = async () => {
+  try {
+    const content = await fs.readFile(REPORT_COVER_META_FILE, 'utf-8');
+    const parsed = JSON.parse(content);
+    const items = Array.isArray(parsed?.items) ? parsed.items : [];
+
+    return items
+      .map((item) => {
+        const mimeType = REPORT_COVER_ALLOWED_MIME[item?.mimeType] ? item.mimeType : 'image/jpeg';
+        const id = typeof item?.id === 'string' && item.id ? item.id : randomUUID();
+        const name = typeof item?.name === 'string' && item.name ? item.name : `capa-${id}`;
+        const createdAt = typeof item?.createdAt === 'string' && item.createdAt
+          ? item.createdAt
+          : new Date().toISOString();
+        const sizeBytesRaw = Number(item?.sizeBytes);
+        const sizeBytes = Number.isFinite(sizeBytesRaw) && sizeBytesRaw >= 0 ? sizeBytesRaw : 0;
+        const extension = REPORT_COVER_ALLOWED_MIME[mimeType];
+
+        let fileName = typeof item?.fileName === 'string' && item.fileName ? item.fileName : '';
+        if (!fileName) {
+          fileName = extractFilenameFromUrl(item?.url);
+        }
+        if (!fileName) {
+          fileName = `${id}.${extension}`;
+        }
+
+        return {
+          id,
+          name,
+          url: `/uploads/report-covers/${fileName}`,
+          mimeType,
+          sizeBytes,
+          createdAt,
+          adjustment: normalizeReportCoverAdjustment(item?.adjustment),
+          fileName,
+        };
+      })
+      .filter((item) => typeof item.id === 'string' && typeof item.fileName === 'string');
+  } catch (error) {
+    console.error('❌ Erro ao ler metadata de capas:', error.message);
+    return [];
+  }
+};
+
+const persistReportCoverItems = async () => {
+  const payload = {
+    items: reportCoverItems.map((item) => ({
+      ...toPublicReportCoverItem(item),
+      fileName: item.fileName,
+    })),
+  };
+
+  await fs.writeFile(REPORT_COVER_META_FILE, JSON.stringify(payload, null, 2), 'utf-8');
+};
+
+const initializeReportCoverRepository = async () => {
+  if (reportCoverInitialized) return;
+
+  await ensureReportCoverStorage();
+  reportCoverItems = await loadReportCoverItemsFromDisk();
+  reportCoverInitialized = true;
+};
+
+const ensureReportCoverRepositoryReady = async () => {
+  if (!reportCoverInitialized) {
+    await initializeReportCoverRepository();
+  }
+};
 
 const DASHBOARD_CACHE_TTL_MS = 5 * 60 * 1000;
 let dashboardCache = {
@@ -28,6 +159,7 @@ let dashboardCache = {
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 // Log de requisições (apenas em desenvolvimento)
 if (process.env.NODE_ENV !== 'production') {
@@ -40,6 +172,134 @@ if (process.env.NODE_ENV !== 'production') {
 // Endpoint de health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend está funcionando!' });
+});
+
+app.get('/api/relatorios/capas', async (req, res) => {
+  try {
+    await ensureReportCoverRepositoryReady();
+    return res.json({ items: reportCoverItems.map(toPublicReportCoverItem) });
+  } catch (error) {
+    console.error('❌ Erro ao listar capas:', error);
+    return res.status(500).json({ error: 'Erro ao listar capas do repositorio local.' });
+  }
+});
+
+app.post('/api/relatorios/capas', (req, res, next) => {
+  reportCoverUpload.single('file')(req, res, (error) => {
+    if (!error) {
+      return next();
+    }
+
+    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'Arquivo excede o limite de 10MB.' });
+    }
+
+    return res.status(400).json({ error: 'Falha no upload da imagem.' });
+  });
+}, async (req, res) => {
+  try {
+    await ensureReportCoverRepositoryReady();
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'Arquivo nao enviado.' });
+    }
+
+    const extension = REPORT_COVER_ALLOWED_MIME[req.file.mimetype];
+    if (!extension) {
+      return res.status(400).json({ error: 'Formato invalido. Use JPG, PNG ou WEBP.' });
+    }
+
+    const id = randomUUID();
+    const fileName = `${id}.${extension}`;
+    const filePath = join(REPORT_COVER_UPLOAD_DIR, fileName);
+
+    await fs.writeFile(filePath, req.file.buffer);
+
+    const item = {
+      id,
+      name: req.file.originalname || `capa-${id}.${extension}`,
+      url: `/uploads/report-covers/${fileName}`,
+      mimeType: req.file.mimetype,
+      sizeBytes: req.file.size,
+      createdAt: new Date().toISOString(),
+      adjustment: { ...REPORT_COVER_DEFAULT_ADJUSTMENT },
+      fileName,
+    };
+
+    reportCoverItems = [item, ...reportCoverItems];
+    await persistReportCoverItems();
+
+    return res.status(201).json({ item: toPublicReportCoverItem(item) });
+  } catch (error) {
+    console.error('❌ Erro ao salvar capa:', error);
+    return res.status(500).json({ error: 'Erro ao salvar capa no repositorio local.' });
+  }
+});
+
+app.patch('/api/relatorios/capas/:id/ajuste', async (req, res) => {
+  try {
+    await ensureReportCoverRepositoryReady();
+
+    const id = req.params.id;
+    const coverIndex = reportCoverItems.findIndex((item) => item.id === id);
+    if (coverIndex < 0) {
+      return res.status(404).json({ error: 'Capa nao encontrada.' });
+    }
+
+    const adjustment = req.body?.adjustment;
+    const scale = Number(adjustment?.scale);
+    const offsetX = Number(adjustment?.offsetX);
+    const offsetY = Number(adjustment?.offsetY);
+
+    if (!Number.isFinite(scale) || !Number.isFinite(offsetX) || !Number.isFinite(offsetY)) {
+      return res.status(400).json({ error: 'Ajuste invalido. Envie scale, offsetX e offsetY numericos.' });
+    }
+    if (scale < 1 || scale > 2.5) {
+      return res.status(400).json({ error: 'Ajuste invalido. scale deve ficar entre 1 e 2.5.' });
+    }
+
+    const normalized = normalizeReportCoverAdjustment({ scale, offsetX, offsetY });
+    reportCoverItems[coverIndex] = {
+      ...reportCoverItems[coverIndex],
+      adjustment: normalized,
+    };
+
+    await persistReportCoverItems();
+    return res.json({ item: toPublicReportCoverItem(reportCoverItems[coverIndex]) });
+  } catch (error) {
+    console.error('❌ Erro ao atualizar ajuste da capa:', error);
+    return res.status(500).json({ error: 'Erro ao atualizar ajuste da capa.' });
+  }
+});
+
+app.delete('/api/relatorios/capas/:id', async (req, res) => {
+  try {
+    await ensureReportCoverRepositoryReady();
+
+    const id = req.params.id;
+    const coverIndex = reportCoverItems.findIndex((item) => item.id === id);
+    if (coverIndex < 0) {
+      return res.status(404).json({ error: 'Capa nao encontrada.' });
+    }
+
+    const [cover] = reportCoverItems.splice(coverIndex, 1);
+    const fileName = cover?.fileName || extractFilenameFromUrl(cover?.url);
+    const filePath = join(REPORT_COVER_UPLOAD_DIR, fileName);
+
+    try {
+      await fs.unlink(filePath);
+    } catch (error) {
+      if (error?.code !== 'ENOENT') {
+        throw error;
+      }
+    }
+
+    await persistReportCoverItems();
+    return res.status(204).send();
+  } catch (error) {
+    console.error('❌ Erro ao excluir capa:', error);
+    return res.status(500).json({ error: 'Erro ao excluir capa.' });
+  }
 });
 
 // Endpoint proxy para API do Asaas
@@ -215,7 +475,7 @@ app.post('/api/assinafy/proxy', async (req, res) => {
 });
 
 // Endpoint upload de documento para Assinafy
-app.post('/api/assinafy/upload', upload.single('file'), async (req, res) => {
+app.post('/api/assinafy/upload', assinafyUpload.single('file'), async (req, res) => {
   try {
     const apiKey = req.headers['x-assinafy-api-key'] || process.env.ASSINAFY_API_KEY;
     const ambiente = req.headers['x-assinafy-ambiente'] || process.env.ASSINAFY_AMBIENTE || 'production';
@@ -417,8 +677,19 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
-  console.log(`📡 Endpoint proxy: http://localhost:${PORT}/api/asaas/proxy`);
-  console.log(`💡 Configure a API Key do Asaas via variável de ambiente ASAAS_API_KEY ou header X-Asaas-Api-Key`);
-});
+const startServer = async () => {
+  try {
+    await initializeReportCoverRepository();
+  } catch (error) {
+    console.error('Erro ao inicializar repositorio de capas:', error);
+    process.exit(1);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Servidor backend rodando na porta ${PORT}`);
+    console.log(`Endpoint proxy: http://localhost:${PORT}/api/asaas/proxy`);
+    console.log('Configure a API Key do Asaas via variavel de ambiente ASAAS_API_KEY ou header X-Asaas-Api-Key');
+  });
+};
+
+startServer();

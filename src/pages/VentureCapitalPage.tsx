@@ -62,6 +62,7 @@ type NewProjectFormState = {
 type FinancialMovementFormDraft = {
   nome: string;
   valor: string;
+  data: string;
   tipo: MovementType;
 };
 
@@ -107,6 +108,7 @@ const clampPercent = (value: number) => {
 const EMPTY_FINANCIAL_DRAFT: FinancialMovementFormDraft = {
   nome: '',
   valor: '',
+  data: new Date().toISOString().split('T')[0],
   tipo: 'entrada',
 };
 
@@ -264,6 +266,7 @@ const normalizeStoredProjects = (storedProjects: unknown, members: TeamMember[])
   if (!Array.isArray(storedProjects)) return [];
 
   const normalized: PrivateProject[] = [];
+  const fallbackDate = new Date().toISOString().split('T')[0];
 
   for (const rawProject of storedProjects) {
     if (typeof rawProject !== 'object' || rawProject === null) continue;
@@ -280,31 +283,30 @@ const normalizeStoredProjects = (storedProjects: unknown, members: TeamMember[])
     const rawEntradas = Array.isArray(project.financeiro?.entradas) ? project.financeiro?.entradas : [];
     const rawSaidas = Array.isArray(project.financeiro?.saidas) ? project.financeiro?.saidas : [];
 
+    const normalizeMovement = (item: unknown): FinancialMovement | null => {
+      if (typeof item !== 'object' || item === null) return null;
+      const movement = item as Partial<FinancialMovement> & { valor?: unknown };
+      if (typeof movement.id !== 'string' || typeof movement.descricao !== 'string') return null;
+      const valor =
+        typeof movement.valor === 'number' ? movement.valor : Number(String(movement.valor || '').replace(',', '.'));
+      if (!Number.isFinite(valor)) return null;
+      const data =
+        typeof movement.data === 'string' && movement.data.trim().length > 0 ? movement.data : fallbackDate;
+      return {
+        id: movement.id,
+        descricao: movement.descricao,
+        valor,
+        data,
+      };
+    };
+
     const entradas = rawEntradas
-      .filter((item): item is FinancialMovement => {
-        if (typeof item !== 'object' || item === null) return false;
-        const movement = item as Partial<FinancialMovement>;
-        return (
-          typeof movement.id === 'string' &&
-          typeof movement.descricao === 'string' &&
-          typeof movement.data === 'string' &&
-          typeof movement.valor === 'number'
-        );
-      })
-      .map((item) => ({ ...item }));
+      .map((item) => normalizeMovement(item))
+      .filter((item): item is FinancialMovement => item !== null);
 
     const saidas = rawSaidas
-      .filter((item): item is FinancialMovement => {
-        if (typeof item !== 'object' || item === null) return false;
-        const movement = item as Partial<FinancialMovement>;
-        return (
-          typeof movement.id === 'string' &&
-          typeof movement.descricao === 'string' &&
-          typeof movement.data === 'string' &&
-          typeof movement.valor === 'number'
-        );
-      })
-      .map((item) => ({ ...item }));
+      .map((item) => normalizeMovement(item))
+      .filter((item): item is FinancialMovement => item !== null);
 
     const rawPendencias = Array.isArray(project.pendencias) ? project.pendencias : [];
     const pendencias = rawPendencias
@@ -640,6 +642,7 @@ export default function VentureCapitalPage() {
     const draft = getFinancialDraft(projectId);
     const nome = draft.nome.trim();
     const valor = parseCurrencyNumber(draft.valor);
+    const data = draft.data || new Date().toISOString().split('T')[0];
 
     if (!nome || valor <= 0) return;
 
@@ -651,7 +654,7 @@ export default function VentureCapitalPage() {
           id: createId('movimento'),
           descricao: nome,
           valor,
-          data: new Date().toISOString().split('T')[0],
+          data,
           tipo: draft.tipo,
         },
       ];
@@ -671,7 +674,7 @@ export default function VentureCapitalPage() {
   const handleFinanceMovementChange = (
     projectId: string,
     movementId: string,
-    patch: Partial<{ descricao: string; valor: number; tipo: MovementType }>,
+    patch: Partial<{ descricao: string; valor: number; data: string; tipo: MovementType }>,
   ) => {
     updateProject(projectId, (project) => {
       const nextMovements = mapProjectMovements(project).map((movement) => {
@@ -681,6 +684,7 @@ export default function VentureCapitalPage() {
           ...movement,
           descricao: patch.descricao ?? movement.descricao,
           valor: typeof patch.valor === 'number' ? Math.max(0, patch.valor) : movement.valor,
+          data: patch.data ?? movement.data,
           tipo: patch.tipo ?? movement.tipo,
         };
       });
@@ -998,6 +1002,15 @@ export default function VentureCapitalPage() {
                               })
                             }
                           />
+                          <input
+                            type="date"
+                            value={financialDraft.data}
+                            onChange={(event) =>
+                              handleFinancialDraftChange(project.id, {
+                                data: event.target.value,
+                              })
+                            }
+                          />
                           <select
                             value={financialDraft.tipo}
                             onChange={(event) =>
@@ -1042,6 +1055,15 @@ export default function VentureCapitalPage() {
                                   onChange={(event) =>
                                     handleFinanceMovementChange(project.id, item.id, {
                                       valor: parseCurrencyNumber(event.target.value || '0'),
+                                    })
+                                  }
+                                />
+                                <input
+                                  type="date"
+                                  value={item.data}
+                                  onChange={(event) =>
+                                    handleFinanceMovementChange(project.id, item.id, {
+                                      data: event.target.value,
                                     })
                                   }
                                 />

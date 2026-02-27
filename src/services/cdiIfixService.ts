@@ -4,7 +4,7 @@
  * API do Banco Central: https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados
  * 
  * Códigos:
- * - CDI: 12 (Taxa de juros - CDI)
+ * - CDI: 12 (taxa diária do CDI, em % ao dia)
  * - IFIX: 433 (Índice IFIX)
  */
 
@@ -27,7 +27,17 @@ const IFIX_CODIGO = 433;
  * Formata data para formato do Banco Central (dd/MM/yyyy)
  */
 function formatarDataBCB(data: string): string {
+  const isoMatch = data.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) {
+    const [, ano, mes, dia] = isoMatch;
+    return `${dia}/${mes}/${ano}`;
+  }
+
   const date = new Date(data);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Data inválida para o BCB: ${data}`);
+  }
+
   const dia = String(date.getDate()).padStart(2, '0');
   const mes = String(date.getMonth() + 1).padStart(2, '0');
   const ano = date.getFullYear();
@@ -102,6 +112,8 @@ async function buscarSerieBCB(
 
 /**
  * Busca CDI para um período
+ * 
+ * Retorna o CDI acumulado no período (em percentual, ex.: 1.02 = 1,02%).
  */
 export async function buscarCDI(
   dataInicio: string,
@@ -113,8 +125,14 @@ export async function buscarCDI(
     return null;
   }
   
-  // CDI vem em percentual ao ano, retornar como está
-  return resultado.valorMedio;
+  // A série 12 é taxa diária em %. Para o acumulado do período:
+  // fator = produto(1 + taxa_dia/100), retorno = (fator - 1) * 100.
+  const fatorAcumulado = resultado.valores.reduce((acc, item) => {
+    return acc * (1 + item.valor / 100);
+  }, 1);
+
+  const cdiAcumulado = (fatorAcumulado - 1) * 100;
+  return Number.isFinite(cdiAcumulado) ? cdiAcumulado : null;
 }
 
 /**
@@ -162,4 +180,3 @@ export async function buscarCDIeIFIX(
   
   return { cdi, ifix };
 }
-

@@ -27,6 +27,13 @@ type RecebedorSaidaCustom = {
   categoria: CategoriaSaida;
 };
 
+type ResumoTabela = {
+  meses: string[];
+  clientes: { clienteId: string; nome: string; valores: Record<string, number> }[];
+  totaisPorMes: Record<string, number>;
+  formatarMes: (mesKey: string) => string;
+};
+
 const RECEBEDORES_SAIDAS_CUSTOM_KEY = 'financeiro_recebedores_saidas_custom_v1';
 
 const RECEBEDORES_SAIDAS_PADRAO = [
@@ -429,14 +436,194 @@ export default function FinanceiroPagamentosPage() {
     return `${nomeMes}/${ano.slice(-2)}`;
   };
 
+  const carregarProjetosPrivate = () => {
+    if (typeof window === 'undefined') return [] as Array<{
+      id: string;
+      nome: string;
+      entradas: Array<{ valor: number; data: string }>;
+      saidas: Array<{ valor: number; data: string }>;
+    }>;
+
+    const storageKeys = ['private_projects_v4', 'private_projects_v3', 'private_projects_v2', 'private_projects_v1'];
+    const fallbackDate = new Date().toISOString().split('T')[0];
+
+    for (const key of storageKeys) {
+      const stored = localStorage.getItem(key);
+      if (!stored) continue;
+
+      try {
+        const parsed = JSON.parse(stored);
+        if (!Array.isArray(parsed)) continue;
+
+        return parsed
+          .map((item) => {
+            if (typeof item !== 'object' || item === null) return null;
+
+            const projeto = item as {
+              id?: unknown;
+              nome?: unknown;
+              financeiro?: {
+                entradas?: Array<{ valor?: unknown; data?: unknown }>;
+                saidas?: Array<{ valor?: unknown; data?: unknown }>;
+              };
+            };
+
+            const nome = typeof projeto.nome === 'string' ? projeto.nome.trim() : '';
+            if (!nome) return null;
+
+            const id =
+              typeof projeto.id === 'string' && projeto.id.trim()
+                ? projeto.id
+                : `project:${nome.toLowerCase().replace(/\s+/g, '-')}`;
+
+            const entradasRaw = Array.isArray(projeto.financeiro?.entradas) ? projeto.financeiro?.entradas : [];
+            const saidasRaw = Array.isArray(projeto.financeiro?.saidas) ? projeto.financeiro?.saidas : [];
+
+            const entradas = entradasRaw
+              .map((entrada) => {
+                const valor =
+                  typeof entrada?.valor === 'number' ? entrada.valor : Number(entrada?.valor || 0);
+                const dataRaw = typeof entrada?.data === 'string' ? entrada.data : '';
+                if (!Number.isFinite(valor) || valor <= 0) return null;
+                const data = getMesKey(dataRaw) ? dataRaw : fallbackDate;
+                return { valor, data };
+              })
+              .filter((entrada): entrada is { valor: number; data: string } => !!entrada);
+
+            const saidas = saidasRaw
+              .map((saida) => {
+                const valor = typeof saida?.valor === 'number' ? saida.valor : Number(saida?.valor || 0);
+                const dataRaw = typeof saida?.data === 'string' ? saida.data : '';
+                if (!Number.isFinite(valor) || valor <= 0) return null;
+                const data = getMesKey(dataRaw) ? dataRaw : fallbackDate;
+                return { valor, data };
+              })
+              .filter((saida): saida is { valor: number; data: string } => !!saida);
+
+            return {
+              id,
+              nome,
+              entradas,
+              saidas,
+            };
+          })
+          .filter(
+            (
+              projeto,
+            ): projeto is {
+              id: string;
+              nome: string;
+              entradas: Array<{ valor: number; data: string }>;
+              saidas: Array<{ valor: number; data: string }>;
+            } => !!projeto,
+          )
+          .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' }));
+      } catch {
+        continue;
+      }
+    }
+
+    return [] as Array<{
+      id: string;
+      nome: string;
+      entradas: Array<{ valor: number; data: string }>;
+      saidas: Array<{ valor: number; data: string }>;
+    }>;
+  };
+
+  const resumoRecebimentosProjetos = useMemo<ResumoTabela>(() => {
+    const projetos = carregarProjetosPrivate().map((projeto) => {
+      const valores: Record<string, number> = {};
+      projeto.entradas.forEach((entrada) => {
+        const mesKey = getMesKey(entrada.data);
+        if (!mesKey) return;
+        valores[mesKey] = (valores[mesKey] || 0) + entrada.valor;
+      });
+      return {
+        clienteId: projeto.id,
+        nome: projeto.nome,
+        valores,
+      };
+    });
+
+    const meses = Array.from(
+      new Set(
+        projetos.flatMap((projeto) =>
+          Object.keys(projeto.valores).filter((mes) => typeof mes === 'string' && mes.length === 7),
+        ),
+      ),
+    ).sort();
+
+    const totaisPorMes = meses.reduce<Record<string, number>>((acc, mes) => {
+      acc[mes] = projetos.reduce((sum, projeto) => sum + (projeto.valores[mes] || 0), 0);
+      return acc;
+    }, {});
+
+    return {
+      meses,
+      clientes: projetos,
+      totaisPorMes,
+      formatarMes: formatarMesLabel,
+    };
+  }, [formatarMesLabel]);
+
+  const resumoSaidasVenture = useMemo<ResumoTabela>(() => {
+    const vazio: ResumoTabela = {
+      meses: [],
+      clientes: [],
+      totaisPorMes: {},
+      formatarMes: formatarMesLabel,
+    };
+
+    const projetos = carregarProjetosPrivate().map((projeto) => {
+      const valores: Record<string, number> = {};
+      projeto.saidas.forEach((saida) => {
+        const mesKey = getMesKey(saida.data);
+        if (!mesKey) return;
+        valores[mesKey] = (valores[mesKey] || 0) + saida.valor;
+      });
+      return {
+        clienteId: projeto.id,
+        nome: projeto.nome,
+        valores,
+      };
+    });
+
+    if (projetos.length === 0) return vazio;
+
+    const meses = Array.from(
+      new Set(
+        projetos.flatMap((projeto) =>
+          Object.keys(projeto.valores).filter((mes) => typeof mes === 'string' && mes.length === 7),
+        ),
+      ),
+    ).sort();
+
+    const totaisPorMes = meses.reduce<Record<string, number>>((acc, mes) => {
+      acc[mes] = projetos.reduce((sum, projeto) => sum + (projeto.valores[mes] || 0), 0);
+      return acc;
+    }, {});
+
+    return {
+      meses,
+      clientes: projetos,
+      totaisPorMes,
+      formatarMes: formatarMesLabel,
+    };
+  }, [formatarMesLabel]);
+
   const mesesGrafico = useMemo(() => {
-    const setMeses = new Set(resumoRecebimentos.meses);
+    const setMeses = new Set([
+      ...resumoRecebimentos.meses,
+      ...resumoRecebimentosProjetos.meses,
+      ...resumoSaidasVenture.meses,
+    ]);
     saidasLancamentos.forEach((item) => {
       const mesKey = getMesKey(item.data);
       if (mesKey) setMeses.add(mesKey);
     });
     return Array.from(setMeses).sort();
-  }, [resumoRecebimentos.meses, saidasLancamentos]);
+  }, [resumoRecebimentos.meses, resumoRecebimentosProjetos.meses, resumoSaidasVenture.meses, saidasLancamentos]);
 
   const dadosGrafico = useMemo(() => {
     const pagamentosPorMes = saidasLancamentos.reduce<Record<string, number>>((acc, item) => {
@@ -446,17 +633,29 @@ export default function FinanceiroPagamentosPage() {
       return acc;
     }, {});
 
-    return mesesGrafico.map((mes) => ({
-      mes: formatarMesLabel(mes),
-      administracao: resumoAssinaturas.totaisPorMes[mes] || 0,
-      performance: resumoOutros.totaisPorMes[mes] || 0,
-      pagamentos: pagamentosPorMes[mes] || 0,
-      lucro:
-        (resumoAssinaturas.totaisPorMes[mes] || 0) +
-        (resumoOutros.totaisPorMes[mes] || 0) -
-        (pagamentosPorMes[mes] || 0),
-    }));
-  }, [mesesGrafico, resumoAssinaturas.totaisPorMes, resumoOutros.totaisPorMes, saidasLancamentos]);
+    return mesesGrafico.map((mes) => {
+      const administracao = resumoAssinaturas.totaisPorMes[mes] || 0;
+      const performance = resumoOutros.totaisPorMes[mes] || 0;
+      const venture = resumoRecebimentosProjetos.totaisPorMes[mes] || 0;
+      const pagamentos = (pagamentosPorMes[mes] || 0) + (resumoSaidasVenture.totaisPorMes[mes] || 0);
+
+      return {
+        mes: formatarMesLabel(mes),
+        administracao,
+        performance,
+        venture,
+        pagamentos,
+        lucro: administracao + performance + venture - pagamentos,
+      };
+    });
+  }, [
+    mesesGrafico,
+    resumoAssinaturas.totaisPorMes,
+    resumoOutros.totaisPorMes,
+    resumoRecebimentosProjetos.totaisPorMes,
+    resumoSaidasVenture.totaisPorMes,
+    saidasLancamentos,
+  ]);
 
   const clientesPorId = useMemo(() => {
     return clientes.reduce<Record<string, string>>((acc, cliente) => {
@@ -557,8 +756,10 @@ export default function FinanceiroPagamentosPage() {
   const handleExportarExcel = () => {
     setExportandoExcel(true);
     try {
-      const mesesExport = mesesResumo;
+      const mesesExport = mesesResumoComProjetos;
       const mesesLabel = mesesExport.map((mes) => formatarMesLabel(mes));
+      const mesesExportProjetos = mesesResumoComProjetos;
+      const mesesLabelProjetos = mesesExportProjetos.map((mes) => formatarMesLabel(mes));
 
       const wb = XLSX.utils.book_new();
 
@@ -566,11 +767,11 @@ export default function FinanceiroPagamentosPage() {
       const resumoRecebimentosRows = [
         [
           rotuloTotal,
-          ...mesesExport.map((mes) => resumoRecebimentos.totaisPorMes[mes] || 0),
+          ...mesesExport.map((mes) => totaisReceitasConsolidadasPorMes[mes] || 0),
         ],
         [
           'Resultado',
-          ...mesesExport.map((mes) => (resumoRecebimentos.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0)),
+          ...mesesExport.map((mes) => resumoRecebimentos.totaisPorMes[mes] || 0),
         ],
         ...resumoRecebimentos.clientes.map((cliente) => [
           cliente.nome,
@@ -586,23 +787,58 @@ export default function FinanceiroPagamentosPage() {
       }));
       XLSX.utils.book_append_sheet(wb, wsRecebimentos, 'Resumo_Recebimentos');
 
+      const resumoProjetosHeaders = ['Projeto', ...mesesLabelProjetos];
+      const resumoProjetosRows = [
+        [
+          'Total Venture',
+          ...mesesExportProjetos.map((mes) => resumoRecebimentosProjetos.totaisPorMes[mes] || 0),
+        ],
+        [
+          'Resultado',
+          ...mesesExportProjetos.map((mes) => resumoRecebimentosProjetos.totaisPorMes[mes] || 0),
+        ],
+        ...resumoRecebimentosProjetos.clientes.map((projeto) => [
+          projeto.nome,
+          ...mesesExportProjetos.map((mes) => projeto.valores[mes] || 0),
+        ]),
+      ];
+      const wsProjetos = XLSX.utils.aoa_to_sheet([resumoProjetosHeaders, ...resumoProjetosRows]);
+      wsProjetos['!cols'] = resumoProjetosHeaders.map((header) => ({
+        wch: Math.max(12, header.length + 2),
+      }));
+      XLSX.utils.book_append_sheet(wb, wsProjetos, 'Resumo_Projetos_VC');
+
       const resumoMensalHeaders = [
         'Mês',
         'Receita Administração',
         'Receita Performance',
+        'Receita Venture',
         'Receita Total',
+        'Despesa Operacional',
+        'Despesa Venture',
         'Despesa Total',
         'Lucro',
       ];
-      const resumoMensalRows = dadosGrafico.map((item) => {
-        const receitaTotal = (item.administracao || 0) + (item.performance || 0);
+      const resumoMensalRows = mesesExport.map((mes) => {
+        const administracao = resumoAssinaturas.totaisPorMes[mes] || 0;
+        const performance = resumoOutros.totaisPorMes[mes] || 0;
+        const venture = resumoRecebimentosProjetos.totaisPorMes[mes] || 0;
+        const receitaTotal = administracao + performance + venture;
+        const despesaOperacional = resumoSaidas.totaisPorMes[mes] || 0;
+        const despesaVenture = resumoSaidasVenture.totaisPorMes[mes] || 0;
+        const despesaTotal = despesaOperacional + despesaVenture;
+        const lucro = receitaTotal - despesaTotal;
+
         return [
-          item.mes,
-          item.administracao,
-          item.performance,
+          formatarMesLabel(mes),
+          administracao,
+          performance,
+          venture,
           receitaTotal,
-          item.pagamentos,
-          item.lucro,
+          despesaOperacional,
+          despesaVenture,
+          despesaTotal,
+          lucro,
         ];
       });
       const wsResumoMensal = XLSX.utils.aoa_to_sheet([
@@ -631,6 +867,20 @@ export default function FinanceiroPagamentosPage() {
           ]);
         });
       });
+      if (resumoSaidasVenture.clientes.length > 0) {
+        resumoSaidasRows.push([
+          'Saidas Projetos Venture',
+          'Total Saidas Projetos Venture',
+          ...mesesExport.map((mes) => resumoSaidasVenture.totaisPorMes[mes] || 0),
+        ]);
+        resumoSaidasVenture.clientes.forEach((projeto) => {
+          resumoSaidasRows.push([
+            'Saidas Projetos Venture',
+            projeto.nome,
+            ...mesesExport.map((mes) => projeto.valores[mes] || 0),
+          ]);
+        });
+      }
       const wsSaidas = XLSX.utils.aoa_to_sheet([resumoSaidasHeaders, ...resumoSaidasRows]);
       wsSaidas['!cols'] = resumoSaidasHeaders.map((header) => ({
         wch: Math.max(12, header.length + 2),
@@ -847,15 +1097,14 @@ export default function FinanceiroPagamentosPage() {
   };
 
   const renderResumo = (
-    resumo: {
-      meses: string[];
-      clientes: { clienteId: string; nome: string; valores: Record<string, number> }[];
-      totaisPorMes: Record<string, number>;
-      formatarMes: (mesKey: string) => string;
-    },
+    resumo: ResumoTabela,
     titulo: string,
     subtitulo: string,
-    mesesOverride?: string[]
+    mesesOverride?: string[],
+    linhaLabel = 'Cliente',
+    emptyLabel = 'Nenhum pagamento recebido no periodo.',
+    totaisCabecalho?: Record<string, number>,
+    cabecalhoLabel = rotuloTotal
   ) => {
     const mesesParaMostrar = mesesOverride && mesesOverride.length ? mesesOverride : resumo.meses;
 
@@ -866,7 +1115,7 @@ export default function FinanceiroPagamentosPage() {
           <span>{subtitulo} - {mostrarValorLiquido ? 'valor líquido' : 'valor bruto'}</span>
         </div>
         {mesesParaMostrar.length === 0 ? (
-          <div className="empty-state">Nenhum pagamento recebido no período.</div>
+          <div className="empty-state">{emptyLabel}</div>
         ) : (
           <div className="assinaturas-table-container">
             <table className="assinaturas-table">
@@ -878,18 +1127,18 @@ export default function FinanceiroPagamentosPage() {
               </colgroup>
               <thead>
                 <tr>
-                  <th className="assinaturas-col-cliente">{rotuloTotal}</th>
+                  <th className="assinaturas-col-cliente">{linhaLabel}</th>
                   {mesesParaMostrar.map((mes) => (
-                    <th key={`total-${titulo}-${mes}`} className="assinaturas-col-mes">
-                      {maskValue(formatCurrency(resumo.totaisPorMes[mes] || 0))}
+                    <th key={`mes-${titulo}-${mes}`} className="assinaturas-col-mes">
+                      {resumo.formatarMes(mes)}
                     </th>
                   ))}
                 </tr>
                 <tr>
-                  <th className="assinaturas-col-cliente">Cliente</th>
+                  <th className="assinaturas-col-cliente">{cabecalhoLabel}</th>
                   {mesesParaMostrar.map((mes) => (
-                    <th key={`mes-${titulo}-${mes}`} className="assinaturas-col-mes">
-                      {resumo.formatarMes(mes)}
+                    <th key={`total-${titulo}-${mes}`} className="assinaturas-col-mes">
+                      {maskValue(formatCurrency(totaisCabecalho?.[mes] ?? resumo.totaisPorMes[mes] ?? 0))}
                     </th>
                   ))}
                 </tr>
@@ -898,8 +1147,7 @@ export default function FinanceiroPagamentosPage() {
                 <tr className="assinaturas-result-row">
                   <td className="assinaturas-col-cliente">Resultado</td>
                   {mesesParaMostrar.map((mes) => {
-                    const resultadoMes =
-                      (resumo.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0);
+                    const resultadoMes = resumo.totaisPorMes[mes] || 0;
                     const classeResultado =
                       resultadoMes > 0
                         ? 'assinaturas-result-positivo'
@@ -991,7 +1239,7 @@ export default function FinanceiroPagamentosPage() {
     };
 
     const mesesOrdenados = Array.from(
-      new Set([...resumoRecebimentos.meses, ...construirMeses()])
+      new Set([...resumoRecebimentos.meses, ...resumoRecebimentosProjetos.meses, ...construirMeses()]),
     ).sort();
     const ordemRecebedores = gruposSaidas.flatMap((grupo) => grupo.itens);
     const recebedoresOrdenados = ordemRecebedores.map((nome) => {
@@ -1016,12 +1264,36 @@ export default function FinanceiroPagamentosPage() {
       totaisPorMes,
       porRecebedor,
     };
-  }, [saidasLancamentos, recebedoresSaidas, resumoRecebimentos.meses, gruposSaidas]);
+  }, [saidasLancamentos, recebedoresSaidas, resumoRecebimentos.meses, resumoRecebimentosProjetos.meses, gruposSaidas]);
 
   const mesesResumo = useMemo(() => {
-    const setMeses = new Set([...resumoRecebimentos.meses, ...resumoSaidas.meses]);
+    const setMeses = new Set([
+      ...resumoRecebimentos.meses,
+      ...resumoRecebimentosProjetos.meses,
+      ...resumoSaidas.meses,
+      ...resumoSaidasVenture.meses,
+    ]);
     return Array.from(setMeses).sort();
-  }, [resumoRecebimentos.meses, resumoSaidas.meses]);
+  }, [resumoRecebimentos.meses, resumoRecebimentosProjetos.meses, resumoSaidas.meses, resumoSaidasVenture.meses]);
+
+  const mesesResumoComProjetos = useMemo(() => {
+    const setMeses = new Set([...mesesResumo]);
+    return Array.from(setMeses).sort();
+  }, [mesesResumo]);
+
+  const totaisReceitasConsolidadasPorMes = useMemo(() => {
+    return mesesResumoComProjetos.reduce<Record<string, number>>((acc, mes) => {
+      acc[mes] = (resumoRecebimentos.totaisPorMes[mes] || 0) + (resumoRecebimentosProjetos.totaisPorMes[mes] || 0);
+      return acc;
+    }, {});
+  }, [mesesResumoComProjetos, resumoRecebimentos.totaisPorMes, resumoRecebimentosProjetos.totaisPorMes]);
+
+  const totaisSaidasConsolidadasPorMes = useMemo(() => {
+    return mesesResumoComProjetos.reduce<Record<string, number>>((acc, mes) => {
+      acc[mes] = (resumoSaidas.totaisPorMes[mes] || 0) + (resumoSaidasVenture.totaisPorMes[mes] || 0);
+      return acc;
+    }, {});
+  }, [mesesResumoComProjetos, resumoSaidas.totaisPorMes, resumoSaidasVenture.totaisPorMes]);
 
   const obterRecebedorSaida = (nome: string) =>
     resumoSaidas.porRecebedor[normalizarSaida(nome)] || { recebedor: nome, valores: {} };
@@ -1071,8 +1343,9 @@ export default function FinanceiroPagamentosPage() {
   const obterTotalGrupoMes = (grupo: { titulo: string; itens: string[] }, mes: string) =>
     grupo.itens.reduce((sum, nome) => sum + (obterRecebedorSaida(nome).valores[mes] || 0), 0);
 
-  const periodoRelatorio = mesesResumo.length
-    ? `${formatarMesLabel(mesesResumo[0])} - ${formatarMesLabel(mesesResumo[mesesResumo.length - 1])}`
+  const mesesPeriodoRelatorio = mesesResumoComProjetos.length ? mesesResumoComProjetos : mesesResumo;
+  const periodoRelatorio = mesesPeriodoRelatorio.length
+    ? `${formatarMesLabel(mesesPeriodoRelatorio[0])} - ${formatarMesLabel(mesesPeriodoRelatorio[mesesPeriodoRelatorio.length - 1])}`
     : 'Periodo nao definido';
   const dataGeracaoRelatorio = formatDate(new Date().toISOString());
 
@@ -1097,9 +1370,9 @@ export default function FinanceiroPagamentosPage() {
     valores: Record<string, number>;
   };
 
-  const resumoMensalRelatorio: ResumoMensalRelatorio[] = mesesResumo.map((mes) => {
-    const recebimentos = resumoRecebimentos.totaisPorMes[mes] || 0;
-    const saidas = resumoSaidas.totaisPorMes[mes] || 0;
+  const resumoMensalRelatorio: ResumoMensalRelatorio[] = mesesResumoComProjetos.map((mes) => {
+    const recebimentos = totaisReceitasConsolidadasPorMes[mes] || 0;
+    const saidas = totaisSaidasConsolidadasPorMes[mes] || 0;
     const resultado = recebimentos - saidas;
     const margem = recebimentos > 0 ? resultado / recebimentos : 0;
     return { mes, recebimentos, saidas, resultado, margem };
@@ -1144,13 +1417,18 @@ export default function FinanceiroPagamentosPage() {
   };
 
   const mesesPorPaginaRelatorio = 8;
-  const mesesChunksRelatorio = dividirEmChunks(mesesResumo, mesesPorPaginaRelatorio);
+  const mesesChunksRelatorio = dividirEmChunks(mesesResumoComProjetos, mesesPorPaginaRelatorio);
+
+  const totalRecebimentosClientesRelatorio = mesesResumoComProjetos.reduce(
+    (acc, mes) => acc + (resumoRecebimentos.totaisPorMes[mes] || 0),
+    0,
+  );
 
   const clientesResumoRelatorio: ClienteResumoRelatorio[] = resumoRecebimentos.clientes
     .map((cliente) => {
-      const total = mesesResumo.reduce((acc, mes) => acc + (cliente.valores[mes] || 0), 0);
-      const media = mesesResumo.length > 0 ? total / mesesResumo.length : 0;
-      const participacao = totaisRelatorio.recebimentos > 0 ? total / totaisRelatorio.recebimentos : 0;
+      const total = mesesResumoComProjetos.reduce((acc, mes) => acc + (cliente.valores[mes] || 0), 0);
+      const media = mesesResumoComProjetos.length > 0 ? total / mesesResumoComProjetos.length : 0;
+      const participacao = totalRecebimentosClientesRelatorio > 0 ? total / totalRecebimentosClientesRelatorio : 0;
       return {
         clienteId: cliente.clienteId,
         nome: cliente.nome,
@@ -1168,7 +1446,37 @@ export default function FinanceiroPagamentosPage() {
   const topClientesParaDetalhe = clientesResumoRelatorio.slice(0, 12);
   const clientesTopChunksRelatorio = dividirEmChunks(topClientesParaDetalhe, 12);
   const mesesPorPaginaClienteRelatorio = 6;
-  const mesesChunksClienteRelatorio = dividirEmChunks(mesesResumo, mesesPorPaginaClienteRelatorio);
+  const mesesChunksClienteRelatorio = dividirEmChunks(mesesResumoComProjetos, mesesPorPaginaClienteRelatorio);
+
+  const totalRecebimentosProjetosRelatorio = mesesResumoComProjetos.reduce(
+    (acc, mes) => acc + (resumoRecebimentosProjetos.totaisPorMes[mes] || 0),
+    0,
+  );
+
+  const projetosResumoRelatorio: ClienteResumoRelatorio[] = resumoRecebimentosProjetos.clientes
+    .map((projeto) => {
+      const total = mesesResumoComProjetos.reduce((acc, mes) => acc + (projeto.valores[mes] || 0), 0);
+      const media = mesesResumoComProjetos.length > 0 ? total / mesesResumoComProjetos.length : 0;
+      const participacao =
+        totalRecebimentosProjetosRelatorio > 0 ? total / totalRecebimentosProjetosRelatorio : 0;
+      return {
+        clienteId: projeto.clienteId,
+        nome: projeto.nome,
+        total,
+        media,
+        participacao,
+        valores: projeto.valores,
+      };
+    })
+    .sort((a, b) => b.total - a.total || a.nome.localeCompare(b.nome));
+
+  const projetosPorPaginaRelatorio = 18;
+  const projetosChunksRelatorio = dividirEmChunks(projetosResumoRelatorio, projetosPorPaginaRelatorio);
+
+  const topProjetosParaDetalhe = projetosResumoRelatorio.slice(0, 12);
+  const projetosTopChunksRelatorio = dividirEmChunks(topProjetosParaDetalhe, 12);
+  const mesesPorPaginaProjetoRelatorio = 6;
+  const mesesChunksProjetoRelatorio = dividirEmChunks(mesesResumoComProjetos, mesesPorPaginaProjetoRelatorio);
 
   const renderReportHeader = (titulo: string, subtitulo?: string) => (
     <div className="financeiro-report-header">
@@ -1189,7 +1497,7 @@ export default function FinanceiroPagamentosPage() {
         <div className="assinaturas-resumo-header-top">
           <div>
             <h3>Saidas por mes</h3>
-            <span>Valores pagos por recebedor</span>
+            <span>Valores pagos por categoria (inclui projetos venture)</span>
           </div>
           <div className="assinaturas-resumo-controls">
             <button type="button" className="btn-secondary" onClick={handleTogglePlanilhaSaidas}>
@@ -1273,14 +1581,6 @@ export default function FinanceiroPagamentosPage() {
             </colgroup>
             <thead>
               <tr>
-                <th className="assinaturas-col-cliente">Total de saidas</th>
-                {mesesResumo.map((mes) => (
-                  <th key={`saida-total-${mes}`} className="assinaturas-col-mes">
-                    {maskValue(formatCurrency(resumoSaidas.totaisPorMes[mes] || 0))}
-                  </th>
-                ))}
-              </tr>
-              <tr>
                 <th className="assinaturas-col-cliente">Recebedor</th>
                 {mesesResumo.map((mes) => (
                   <th key={`saida-mes-${mes}`} className="assinaturas-col-mes">
@@ -1288,33 +1588,18 @@ export default function FinanceiroPagamentosPage() {
                   </th>
                 ))}
               </tr>
+              <tr>
+                <th className="assinaturas-col-cliente">Total de saidas</th>
+                {mesesResumo.map((mes) => (
+                  <th key={`saida-total-${mes}`} className="assinaturas-col-mes">
+                    {maskValue(formatCurrency(totaisSaidasConsolidadasPorMes[mes] || 0))}
+                  </th>
+                ))}
+              </tr>
             </thead>
             <tbody>
-              <tr className="assinaturas-result-row">
-                <td className="assinaturas-col-cliente">Resultado</td>
-                {mesesResumo.map((mes) => {
-                  const resultadoMes =
-                    (resumoRecebimentos.totaisPorMes[mes] || 0) - (resumoSaidas.totaisPorMes[mes] || 0);
-                  const classeResultado =
-                    resultadoMes > 0
-                      ? 'assinaturas-result-positivo'
-                      : resultadoMes < 0
-                      ? 'assinaturas-result-negativo'
-                      : '';
-                  return (
-                    <td key={`saida-resultado-${mes}`} className={`assinaturas-col-mes ${classeResultado}`}>
-                      {resultadoMes ? maskValue(formatCurrency(resultadoMes)) : '-'}
-                    </td>
-                  );
-                })}
-              </tr>
               {gruposSaidas.map((grupo) => (
                 <Fragment key={grupo.titulo}>
-                  <tr className="assinaturas-group-row">
-                    <td className="assinaturas-group-cell" colSpan={mesesResumo.length + 1}>
-                      {grupo.titulo}
-                    </td>
-                  </tr>
                   <tr className="assinaturas-group-total">
                     <td className="assinaturas-col-cliente">Total {grupo.titulo}</td>
                     {mesesResumo.map((mes) => {
@@ -1369,6 +1654,30 @@ export default function FinanceiroPagamentosPage() {
                   })}
                 </Fragment>
               ))}
+              {resumoSaidasVenture.clientes.length > 0 && (
+                <Fragment key="saida-venture">
+                  <tr className="assinaturas-group-total">
+                    <td className="assinaturas-col-cliente">Total Saidas Projetos Venture</td>
+                    {mesesResumo.map((mes) => (
+                      <td key={`saida-venture-total-${mes}`} className="assinaturas-col-mes">
+                        {resumoSaidasVenture.totaisPorMes[mes]
+                          ? maskValue(formatCurrency(resumoSaidasVenture.totaisPorMes[mes]))
+                          : '-'}
+                      </td>
+                    ))}
+                  </tr>
+                  {resumoSaidasVenture.clientes.map((projeto) => (
+                    <tr key={`saida-venture-${projeto.clienteId}`}>
+                      <td className="assinaturas-col-cliente">{projeto.nome}</td>
+                      {mesesResumo.map((mes) => (
+                        <td key={`saida-venture-${projeto.clienteId}-${mes}`} className="assinaturas-col-mes">
+                          {projeto.valores[mes] ? maskValue(formatCurrency(projeto.valores[mes])) : '-'}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </Fragment>
+              )}
             </tbody>
           </table>
         </div>
@@ -1617,6 +1926,105 @@ export default function FinanceiroPagamentosPage() {
     }
   }
 
+  if (projetosChunksRelatorio.length === 0) {
+    reportPages.push({
+      key: 'financeiro-projetos-vazio',
+      content: (
+        <>
+          {renderReportHeader('Relatorio Financeiro', 'Tabelas por projeto')}
+          <div className="financeiro-report-section">
+            <h3>Recebimentos de venture capital por projeto</h3>
+            <div className="financeiro-report-empty">Nenhum projeto com recebimento no periodo.</div>
+          </div>
+        </>
+      ),
+    });
+  } else {
+    projetosChunksRelatorio.forEach((projetosChunk, index) => {
+      reportPages.push({
+        key: `financeiro-projetos-resumo-${index}`,
+        content: (
+          <>
+            {renderReportHeader('Relatorio Financeiro', `Recebimentos por projeto - Parte ${index + 1}`)}
+            <div className="financeiro-report-section">
+              <div className="financeiro-report-section-header">
+                <h3>Resumo por projeto</h3>
+                <span>{projetosResumoRelatorio.length} projetos no periodo</span>
+              </div>
+              <table className="financeiro-report-table">
+                <thead>
+                  <tr>
+                    <th>Projeto</th>
+                    <th>Total recebido</th>
+                    <th>Media mensal</th>
+                    <th>Participacao</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projetosChunk.map((projeto) => (
+                    <tr key={`pdf-projeto-resumo-${projeto.clienteId}-${index}`}>
+                      <td>{projeto.nome}</td>
+                      <td>{formatarValorRelatorio(projeto.total)}</td>
+                      <td>{formatarValorRelatorio(projeto.media)}</td>
+                      <td>{formatarPercentualRelatorio(projeto.participacao)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ),
+      });
+    });
+
+    if (mesesChunksProjetoRelatorio.length > 0 && projetosTopChunksRelatorio.length > 0) {
+      mesesChunksProjetoRelatorio.forEach((mesesChunk, mesIndex) => {
+        projetosTopChunksRelatorio.forEach((projetosChunk, projetoIndex) => {
+          reportPages.push({
+            key: `financeiro-projetos-mensal-${mesIndex}-${projetoIndex}`,
+            content: (
+              <>
+                {renderReportHeader('Relatorio Financeiro', `Recebimentos mensais por projeto - Parte ${mesIndex + 1}`)}
+                <div className="financeiro-report-section">
+                  <div className="financeiro-report-section-header">
+                    <h3>Detalhe mensal por projeto</h3>
+                    <span>Top {topProjetosParaDetalhe.length} projetos por recebimento</span>
+                  </div>
+                  <table className="financeiro-report-table">
+                    <thead>
+                      <tr>
+                        <th>Projeto</th>
+                        {mesesChunk.map((mes) => (
+                          <th key={`pdf-projeto-mes-head-${mesIndex}-${projetoIndex}-${mes}`}>
+                            {formatarMesLabel(mes)}
+                          </th>
+                        ))}
+                        <th>Total periodo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projetosChunk.map((projeto) => (
+                        <tr key={`pdf-projeto-mensal-${mesIndex}-${projetoIndex}-${projeto.clienteId}`}>
+                          <td>{projeto.nome}</td>
+                          {mesesChunk.map((mes) => (
+                            <td key={`pdf-projeto-mensal-${projeto.clienteId}-${mes}`}>
+                              {formatarValorRelatorio(projeto.valores[mes] || 0)}
+                            </td>
+                          ))}
+                          <td>{formatarValorRelatorio(projeto.total)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ),
+          });
+        });
+      });
+    }
+  }
+
   const totalReportPages = reportPages.length;
 
   return (
@@ -1646,7 +2054,8 @@ export default function FinanceiroPagamentosPage() {
                 <Legend />
                 <Bar dataKey="administracao" name="Administração" stackId="recebimentos" fill="var(--chart-admin)" />
                 <Bar dataKey="performance" name="Performance" stackId="recebimentos" fill="var(--chart-performance)" />
-                <Bar dataKey="pagamentos" name="Pagamentos" fill="var(--chart-payments)" />
+                <Bar dataKey="venture" name="Venture" stackId="recebimentos" fill="var(--chart-venture)" />
+                <Bar dataKey="pagamentos" name="Saidas" fill="var(--chart-payments)" />
                 <Line
                   type="monotone"
                   dataKey="lucro"
@@ -1718,7 +2127,21 @@ export default function FinanceiroPagamentosPage() {
             resumoRecebimentos,
             'Recebimentos por mês',
             'Valores recebidos por cliente',
-            mesesResumo
+            mesesResumo,
+            'Cliente',
+            'Nenhum pagamento recebido no periodo.',
+            totaisReceitasConsolidadasPorMes,
+            rotuloTotal
+          )}
+          {renderResumo(
+            resumoRecebimentosProjetos,
+            'Recebimentos de Venture Capital',
+            'Entradas registradas por projeto',
+            mesesResumoComProjetos,
+            'Projeto',
+            'Nenhum recebimento de venture capital no periodo.',
+            undefined,
+            'Total Venture'
           )}
           {renderResumoSaidas()}
         </div>
@@ -1986,6 +2409,7 @@ export default function FinanceiroPagamentosPage() {
     </div>
   );
 }
+
 
 
 

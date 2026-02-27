@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "8a23eb0e-49c2-481b-9d1e-d8126141cb55",
+      "name": "anne-nygard-x07ELaNFt34-unsplash.jpg",
+      "url": "/uploads/report-covers/8a23eb0e-49c2-481b-9d1e-d8126141cb55.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 2940216,
+      "createdAt": "2026-02-27T19:06:43.355Z",
+      "adjustment": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "fileName": "8a23eb0e-49c2-481b-9d1e-d8126141cb55.jpg"
+    },
+    {
+      "id": "f7faf577-8156-4886-b03b-edf60d255030",
+      "name": "northfolk-Ok76F6yW2iA-unsplash.jpg",
+      "url": "/uploads/report-covers/f7faf577-8156-4886-b03b-edf60d255030.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 4441967,
+      "createdAt": "2026-02-27T19:06:39.301Z",
+      "adjustment": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "fileName": "f7faf577-8156-4886-b03b-edf60d255030.jpg"
+    },
+    {
+      "id": "e278049a-7daf-4b04-854a-f97262351502",
+      "name": "anthony-tyrrell-Bl-LiSJOnlY-unsplash.jpg",
+      "url": "/uploads/report-covers/e278049a-7daf-4b04-854a-f97262351502.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 1682918,
+      "createdAt": "2026-02-27T19:06:34.775Z",
+      "adjustment": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "fileName": "e278049a-7daf-4b04-854a-f97262351502.jpg"
+    },
+    {
+      "id": "b1301a3e-cd12-4ac1-82d4-40f1ce50696c",
+      "name": "sean-pollock-PhYq704ffdA-unsplash.jpg",
+      "url": "/uploads/report-covers/b1301a3e-cd12-4ac1-82d4-40f1ce50696c.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 2222333,
+      "createdAt": "2026-02-27T19:06:29.059Z",
+      "adjustment": {
+        "scale": 1,
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "fileName": "b1301a3e-cd12-4ac1-82d4-40f1ce50696c.jpg"
+    }
+  ]
+}

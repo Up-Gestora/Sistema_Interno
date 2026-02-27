@@ -8,7 +8,10 @@ import { formatCurrency, formatDate } from '../utils/calculations';
 /**
  * Carrega a imagem da capa do relatório
  */
-async function carregarCapaRelatorio(): Promise<string | null> {
+export async function carregarCapaRelatorio(capaImagemPersonalizada?: string | null): Promise<string | null> {
+  if (capaImagemPersonalizada) {
+    return capaImagemPersonalizada;
+  }
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -63,7 +66,14 @@ async function carregarCapaRelatorio(): Promise<string | null> {
   });
 }
 
-export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promise<void> {
+type RelatorioMensalPdfOptions = {
+  capaImagemPersonalizada?: string | null;
+};
+
+export async function gerarRelatorioMensalPDF(
+  relatorio: RelatorioMensal,
+  options: RelatorioMensalPdfOptions = {}
+): Promise<void> {
   const meses = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -669,7 +679,7 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
 
   const paginasResumo = estrategiasResumo.flatMap(criarPaginasResumoMes);
 
-  const capaData = await carregarCapaRelatorio();
+  const capaData = await carregarCapaRelatorio(options.capaImagemPersonalizada);
   const paginaCapa = criarCapaReport(capaData);
 
   document.body.appendChild(paginaCapa);
@@ -756,10 +766,13 @@ export async function gerarRelatorioMensalPDF(relatorio: RelatorioMensal): Promi
   }
 }
 
-export async function gerarRelatoriosMensaisEmMassa(relatorios: RelatorioMensal[]): Promise<void> {
+export async function gerarRelatoriosMensaisEmMassa(
+  relatorios: RelatorioMensal[],
+  options: RelatorioMensalPdfOptions = {}
+): Promise<void> {
   // Gerar PDFs com delay entre cada um para evitar problemas de download simultâneo
   for (let i = 0; i < relatorios.length; i++) {
-    await gerarRelatorioMensalPDF(relatorios[i]);
+    await gerarRelatorioMensalPDF(relatorios[i], options);
     
     // Aguardar um pouco antes do próximo PDF (exceto no último)
     if (i < relatorios.length - 1) {
@@ -1283,3 +1296,4 @@ export async function gerarDashboardClientesPDF(
     });
   }
 }
+

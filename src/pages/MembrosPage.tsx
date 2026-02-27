@@ -151,7 +151,7 @@ export default function MembrosPage() {
                         <div className="actions-buttons">
                           <button
                             type="button"
-                            className="action-btn edit-btn"
+                            className="membros-action-btn membros-edit-btn"
                             onClick={() => openEditModal(member)}
                             title="Editar membro"
                             aria-label="Editar membro"
@@ -160,7 +160,7 @@ export default function MembrosPage() {
                           </button>
                           <button
                             type="button"
-                            className="action-btn delete-btn"
+                            className="membros-action-btn membros-delete-btn"
                             onClick={() => handleRemoveMember(member.id)}
                             title="Remover membro"
                             aria-label="Remover membro"
@@ -272,4 +272,3 @@ export default function MembrosPage() {
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Estrategia } from '../types';
+import { savePortSharedStorageValue } from '../services/portSharedStorage';
 
 // Estratégias padrão
 const DEFAULT_BENCHMARK = 'IFIX';
@@ -10,6 +11,7 @@ const normalizarEstrategia = (estrategia: Estrategia): Estrategia => ({
 });
 
 const normalizarEstrategias = (lista: Estrategia[]) => lista.map(normalizarEstrategia);
+const ESTRATEGIAS_STORAGE_KEY = 'estrategias';
 
 const estrategiasIniciais: Estrategia[] = [
   {
@@ -48,7 +50,7 @@ const estrategiasIniciais: Estrategia[] = [
 
 export function useEstrategias() {
   const [estrategias, setEstrategiasState] = useState<Estrategia[]>(() => {
-    const saved = localStorage.getItem('estrategias');
+    const saved = localStorage.getItem(ESTRATEGIAS_STORAGE_KEY);
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as Estrategia[];
@@ -66,9 +68,10 @@ export function useEstrategias() {
       const estrategiasParaSalvar = JSON.parse(JSON.stringify(normalizarEstrategias(novasEstrategias)));
       setEstrategiasState(estrategiasParaSalvar);
       const dadosSerializados = JSON.stringify(estrategiasParaSalvar);
-      localStorage.setItem('estrategias', dadosSerializados);
+      localStorage.setItem(ESTRATEGIAS_STORAGE_KEY, dadosSerializados);
+      void savePortSharedStorageValue(ESTRATEGIAS_STORAGE_KEY, estrategiasParaSalvar);
       
-      const verificado = localStorage.getItem('estrategias');
+      const verificado = localStorage.getItem(ESTRATEGIAS_STORAGE_KEY);
       if (verificado) {
         const estrategiasVerificadas = JSON.parse(verificado);
         console.log(`✅ Estratégias salvas: ${estrategiasVerificadas.length} estratégia(s)`);
@@ -80,7 +83,8 @@ export function useEstrategias() {
       const normalizadas = normalizarEstrategias(novasEstrategias);
       setEstrategiasState(normalizadas);
       try {
-        localStorage.setItem('estrategias', JSON.stringify(normalizadas));
+        localStorage.setItem(ESTRATEGIAS_STORAGE_KEY, JSON.stringify(normalizadas));
+        void savePortSharedStorageValue(ESTRATEGIAS_STORAGE_KEY, normalizadas);
       } catch (retryError) {
         console.error('❌ Erro ao tentar salvar novamente:', retryError);
       }
@@ -90,7 +94,7 @@ export function useEstrategias() {
   // Sincronizar com localStorage quando estratégias mudarem externamente
   useEffect(() => {
     const handleEstrategiasUpdate = () => {
-      const saved = localStorage.getItem('estrategias');
+      const saved = localStorage.getItem(ESTRATEGIAS_STORAGE_KEY);
       if (saved) {
         try {
           const parsed = JSON.parse(saved) as Estrategia[];
@@ -105,7 +109,7 @@ export function useEstrategias() {
     window.addEventListener('storage', handleEstrategiasUpdate);
 
     const interval = setInterval(() => {
-      const saved = localStorage.getItem('estrategias');
+      const saved = localStorage.getItem(ESTRATEGIAS_STORAGE_KEY);
       if (saved) {
         try {
           const parsed = JSON.parse(saved) as Estrategia[];

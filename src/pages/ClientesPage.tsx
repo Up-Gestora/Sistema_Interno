@@ -8,6 +8,7 @@ import ClientePagamentosModal from '../components/ClientePagamentosModal/Cliente
 import { Cliente } from '../types';
 import { atualizarCobrancasPendentes, buscarSubscriptions, cancelarSubscription, criarCobranca, isAsaasConfigured } from '../services/asaasService';
 import { useMoneyVisibility } from '../contexts/MoneyVisibilityContext';
+import { formatCurrency } from '../utils/calculations';
 import './ClientesPage.css';
 
 export default function ClientesPage() {
@@ -35,6 +36,43 @@ export default function ClientesPage() {
       ? valorTexto.replace(/\./g, '').replace(',', '.')
       : valorTexto;
     return Number(normalizado);
+  };
+
+  const normalizeTaxaAnual = (value: number): number => {
+    if (value > 0 && value < 0.1) return value * 100;
+    return value;
+  };
+
+  const resolvePatrimonioTotal = (cliente: Cliente): number => {
+    const valorTotalContratos = cliente.valorTotalContratos;
+    if (typeof valorTotalContratos === 'number' && Number.isFinite(valorTotalContratos) && valorTotalContratos > 0) {
+      return valorTotalContratos;
+    }
+
+    const patrimonioTotal = cliente.patrimonioTotal;
+    if (typeof patrimonioTotal === 'number' && Number.isFinite(patrimonioTotal) && patrimonioTotal > 0) {
+      return patrimonioTotal;
+    }
+
+    const btg = cliente.btg || 0;
+    const xp = cliente.xp || 0;
+    const avenue = cliente.avenue || 0;
+    const outros = cliente.outros || 0;
+    return btg + xp + avenue + outros;
+  };
+
+  const calcularAssinaturaPorPatrimonio = (cliente: Cliente): number => {
+    if (cliente.status === 'inativo') return 0;
+    if (typeof cliente.taxaAdmAnual !== 'number') return cliente.assinatura || 0;
+
+    const taxaAnual = normalizeTaxaAnual(cliente.taxaAdmAnual);
+    if (taxaAnual <= 0) return cliente.assinatura || 0;
+
+    const patrimonioTotal = resolvePatrimonioTotal(cliente);
+    if (patrimonioTotal <= 0) return 0;
+
+    const assinaturaCalculada = patrimonioTotal * (taxaAnual / 100) / 12;
+    return Math.round(assinaturaCalculada * 100) / 100;
   };
 
   const getEstrategiaNome = (estrategiaId?: string) => {
@@ -76,19 +114,29 @@ export default function ClientesPage() {
 
   const handleSalvarEdicao = async (clienteAtualizado: Cliente) => {
     const existe = clientes.some(c => c.id === clienteAtualizado.id);
+    const assinaturaRecalculada = calcularAssinaturaPorPatrimonio(clienteAtualizado);
+    const assinaturaAtual = clienteAtualizado.assinatura || 0;
+    const clienteAtualizadoNormalizado = Math.abs(assinaturaRecalculada - assinaturaAtual) > 0.01
+      ? {
+          ...clienteAtualizado,
+          assinatura: assinaturaRecalculada,
+        }
+      : clienteAtualizado;
     // Verificar se a assinatura mudou e se o cliente está linkado ao Asaas
     const clienteOriginal = clientes.find(c => c.id === clienteAtualizado.id);
-    const assinaturaMudou = clienteOriginal?.assinatura !== clienteAtualizado.assinatura;
-    const temAsaasCustomerId = clienteAtualizado.asaasCustomerId;
+    const assinaturaOriginal = clienteOriginal?.assinatura || 0;
+    const assinaturaNormalizada = clienteAtualizadoNormalizado.assinatura || 0;
+    const assinaturaMudou = Math.abs(assinaturaOriginal - assinaturaNormalizada) > 0.01;
+    const temAsaasCustomerId = clienteAtualizadoNormalizado.asaasCustomerId;
     const asaasConfigurado = isAsaasConfigured();
     const statusMudouParaInativo = !!clienteOriginal &&
       clienteOriginal.status !== 'inativo' &&
-      clienteAtualizado.status === 'inativo';
+      clienteAtualizadoNormalizado.status === 'inativo';
 
     let clienteParaSalvar = {
-      ...clienteAtualizado,
+      ...clienteAtualizadoNormalizado,
       dataCadastro:
-        clienteAtualizado.dataCadastro ||
+        clienteAtualizadoNormalizado.dataCadastro ||
         clienteOriginal?.dataCadastro ||
         new Date().toISOString().split('T')[0],
     };
@@ -99,9 +147,9 @@ export default function ClientesPage() {
 
     if (statusMudouParaInativo && temAsaasCustomerId && asaasConfigurado) {
       try {
-        let subscriptionId = clienteAtualizado.asaasSubscriptionId;
+        let subscriptionId = clienteAtualizadoNormalizado.asaasSubscriptionId;
         if (!subscriptionId) {
-          const respostaSubscriptions = await buscarSubscriptions({ customer: clienteAtualizado.asaasCustomerId, limit: 100 });
+          const respostaSubscriptions = await buscarSubscriptions({ customer: clienteAtualizadoNormalizado.asaasCustomerId, limit: 100 });
           const lista = respostaSubscriptions.data || [];
           const ativa = lista.find(sub => sub.status === 'ACTIVE');
           const selecionada = ativa || lista[0];
@@ -130,17 +178,17 @@ export default function ClientesPage() {
     }
 
     // Se a assinatura mudou, o cliente está linkado e o Asaas está configurado, atualizar cobranças pendentes no Asaas
-    if (existe && assinaturaMudou && temAsaasCustomerId && asaasConfigurado && clienteAtualizado.assinatura) {
+    if (existe && assinaturaMudou && temAsaasCustomerId && asaasConfigurado && assinaturaNormalizada > 0) {
       try {
         const resultado = await atualizarCobrancasPendentes(
           temAsaasCustomerId,
-          clienteAtualizado.asaasSubscriptionId,
-          clienteAtualizado.assinatura
+          clienteAtualizadoNormalizado.asaasSubscriptionId,
+          assinaturaNormalizada
         );
         
-        if (resultado.subscriptionId && !clienteAtualizado.asaasSubscriptionId) {
+        if (resultado.subscriptionId && !clienteParaSalvar.asaasSubscriptionId) {
           clienteParaSalvar = {
-            ...clienteAtualizado,
+            ...clienteParaSalvar,
             asaasSubscriptionId: resultado.subscriptionId,
           };
         }

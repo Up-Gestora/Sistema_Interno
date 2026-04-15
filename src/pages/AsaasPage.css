@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0;
+}
+
+.financeiro-subpage {
+  min-width: 0;
 }
 
 .page-header {
@@ -562,6 +567,10 @@
   background-color: var(--bg-tertiary);
 }
 
+.assinaturas-table tbody tr:hover .assinaturas-col-cliente {
+  background-color: var(--bg-tertiary);
+}
+
 .assinaturas-group-row td {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
@@ -583,12 +592,9 @@
 }
 
 .assinaturas-result-row td {
-  background-color: rgba(59, 130, 246, 0.06);
+  background-color: #f3f8fe;
+  background-color: color-mix(in srgb, var(--card-bg) 94%, #3b82f6 6%);
   font-weight: 700;
-}
-
-.assinaturas-result-row .assinaturas-col-cliente {
-  background-color: rgba(59, 130, 246, 0.06);
 }
 
 .assinaturas-result-positivo {
@@ -673,13 +679,58 @@
   text-align: left;
   position: sticky;
   left: 0;
-  background-color: inherit;
+  background-color: var(--card-bg);
   min-width: 180px;
-  z-index: 1;
+  z-index: 3;
+  box-shadow: 1px 0 0 var(--border-color);
+  transition: background-color 0.15s ease-out;
+}
+
+.assinaturas-table thead .assinaturas-col-cliente {
+  z-index: 4;
+}
+
+.assinaturas-group-row .assinaturas-col-cliente {
+  background-color: var(--bg-secondary);
+}
+
+.assinaturas-group-total .assinaturas-col-cliente {
+  background-color: var(--bg-tertiary);
+}
+
+.assinaturas-result-row .assinaturas-col-cliente {
+  background-color: #f3f8fe;
+  background-color: color-mix(in srgb, var(--card-bg) 94%, #3b82f6 6%);
 }
 
 .assinaturas-col-mes {
   min-width: 90px;
+}
+
+.assinaturas-col-acoes {
+  min-width: 110px;
+  text-align: center;
+}
+
+.assinaturas-acao-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.assinaturas-acao-btn--remove {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(2px);
+  transition: opacity 0.15s ease-out, visibility 0.15s ease-out, transform 0.15s ease-out;
+}
+
+.assinaturas-table-editing tbody tr:hover .assinaturas-acao-btn--remove,
+.assinaturas-table-editing tbody tr:focus-within .assinaturas-acao-btn--remove {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .pagamentos-table {

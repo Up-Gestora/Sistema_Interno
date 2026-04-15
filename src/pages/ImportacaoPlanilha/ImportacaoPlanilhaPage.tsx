@@ -6,6 +6,7 @@ import {
   importarExcelParaFinanceiro,
   RECEBEDORES_SAIDAS,
 } from '../../services/financeiroPlanilhaService';
+import { savePortSharedStorageValue } from '../../services/portSharedStorage';
 import { useClientes } from '../../hooks/useClientes';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import Card from '../../components/Card/Card';
@@ -125,11 +126,13 @@ export default function ImportacaoPlanilhaPage() {
             console.warn('Aviso: Número de clientes no localStorage não corresponde ao esperado');
             // Tentar salvar novamente
             localStorage.setItem('clientes', JSON.stringify(clientesAtualizados));
+            void savePortSharedStorageValue('clientes', clientesAtualizados);
           }
         } else {
           console.error('Erro: Dados não foram salvos no localStorage!');
           // Tentar salvar novamente
           localStorage.setItem('clientes', JSON.stringify(clientesAtualizados));
+          void savePortSharedStorageValue('clientes', clientesAtualizados);
         }
       };
       
@@ -193,6 +196,7 @@ export default function ImportacaoPlanilhaPage() {
           ? [...resultado.interLancamentos].sort(sortByDateDesc)
           : mergeById(interExistentes, resultado.interLancamentos);
         localStorage.setItem(INTER_LANCAMENTOS_KEY, JSON.stringify(interFinal));
+        void savePortSharedStorageValue(INTER_LANCAMENTOS_KEY, interFinal);
       }
 
       if (resultado.saidasEncontrado) {
@@ -200,6 +204,7 @@ export default function ImportacaoPlanilhaPage() {
           ? [...resultado.saidasLancamentos].sort(sortByDateDesc)
           : mergeById(saidasExistentes, resultado.saidasLancamentos);
         localStorage.setItem(SAIDAS_LANCAMENTOS_KEY, JSON.stringify(saidasFinal));
+        void savePortSharedStorageValue(SAIDAS_LANCAMENTOS_KEY, saidasFinal);
       }
 
       window.dispatchEvent(new Event('financeiro-lancamentos-updated'));

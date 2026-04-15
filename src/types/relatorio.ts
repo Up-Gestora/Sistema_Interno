@@ -16,6 +16,25 @@ export interface RelatorioMensal {
   dataGeracao?: string;
 }
 
+export interface RelatorioPeriodico {
+  id?: string;
+  tituloCapa: string;
+  mes: number;
+  ano: number;
+  resumoTexto: string;
+  resumoImagens: Array<{ id: string; src: string }>;
+  dataGeracao?: string;
+}
+
+export interface CamposCompartilhadosProducaoRelatorio {
+  mes: number;
+  ano: number;
+  resumoMacro: string;
+  cdiMensal: string;
+  textoAcimaCDI: string;
+  textoAbaixoCDI: string;
+}
+
 export interface RelatorioMensalEstrategia {
   titulo: string;
   patrimonioTotal: number;
@@ -34,3 +53,4 @@ export interface TemplateRelatorio {
   resumoTexto: string;
   dataGeracao: string;
 }
+

@@ -19,6 +19,7 @@ import { formatCurrency, formatDate } from '../../utils/calculations';
 import Card from '../../components/Card/Card';
 import { FinanceiroOutletContext } from '../AsaasPage';
 import { AsaasPagamento } from '../../types/asaas';
+import { savePortSharedStorageValue } from '../../services/portSharedStorage';
 
 type CategoriaSaida = 'impostos' | 'distribuicao' | 'custos';
 
@@ -141,6 +142,7 @@ export default function FinanceiroPagamentosPage() {
   const reportRef = useRef<HTMLDivElement | null>(null);
   const COL_WIDTH_CLIENTE = 220;
   const COL_WIDTH_MES = 110;
+  const COL_WIDTH_ACOES = 120;
 
   const DISTRIBUICAO_LUCROS_LONGA_NORMALIZADA =
     'distribuicao de lucros (soma dos valores distribuidos ao matheus, vinicius, igor e mario abaixo)';
@@ -155,6 +157,7 @@ export default function FinanceiroPagamentosPage() {
 
   useEffect(() => {
     localStorage.setItem(RECEBEDORES_SAIDAS_CUSTOM_KEY, JSON.stringify(recebedoresSaidasCustom));
+    void savePortSharedStorageValue(RECEBEDORES_SAIDAS_CUSTOM_KEY, recebedoresSaidasCustom);
   }, [recebedoresSaidasCustom]);
 
   const uniquePorNormalizado = (nomes: string[]) => {
@@ -249,6 +252,35 @@ export default function FinanceiroPagamentosPage() {
   const removerGastoCustom = (nome: string) => {
     const key = normalizarSaida(nome);
     setRecebedoresSaidasCustom((prev) => prev.filter((item) => normalizarSaida(item.nome) !== key));
+  };
+
+  const excluirSaidasRecebedor = (recebedor: string) => {
+    const recebedorKey = normalizarSaida(recebedor);
+    const existeLancamento = saidasLancamentos.some(
+      (item) => normalizarSaida(item.recebedor) === recebedorKey
+    );
+    const isCustom = recebedoresSaidasCustom.some(
+      (item) => normalizarSaida(item.nome) === recebedorKey
+    );
+
+    if (!existeLancamento && !isCustom) return;
+
+    const confirmado = window.confirm(
+      `Excluir todas as saídas de "${recebedor}"?`
+    );
+    if (!confirmado) return;
+
+    saidasLancamentos
+      .filter((item) => normalizarSaida(item.recebedor) === recebedorKey)
+      .forEach((item) => onRemoverSaida(item.id));
+
+    setRecebedoresSaidasCustom((prev) =>
+      prev.filter((item) => normalizarSaida(item.nome) !== recebedorKey)
+    );
+
+    if (normalizarSaida(saidaRecebedor) === recebedorKey) {
+      setSaidaRecebedor('');
+    }
   };
 
   const handleAdicionarGastoCustom = () => {
@@ -1040,6 +1072,8 @@ export default function FinanceiroPagamentosPage() {
       const next = !prev;
       if (prev) {
         setEdicaoSaidas({});
+        setMostrarNovoGasto(false);
+        setNovoGastoErro('');
       }
       return next;
     });
@@ -1503,16 +1537,18 @@ export default function FinanceiroPagamentosPage() {
             <button type="button" className="btn-secondary" onClick={handleTogglePlanilhaSaidas}>
               {modoPlanilhaSaidas ? 'Finalizar edicao' : 'Editar planilha'}
             </button>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => {
-                setMostrarNovoGasto((prev) => !prev);
-                setNovoGastoErro('');
-              }}
-            >
-              {mostrarNovoGasto ? 'Cancelar' : 'Novo gasto'}
-            </button>
+            {modoPlanilhaSaidas && (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => {
+                  setMostrarNovoGasto((prev) => !prev);
+                  setNovoGastoErro('');
+                }}
+              >
+                {mostrarNovoGasto ? 'Cancelar' : 'Novo gasto'}
+              </button>
+            )}
           </div>
         </div>
         {modoPlanilhaSaidas && (
@@ -1520,7 +1556,7 @@ export default function FinanceiroPagamentosPage() {
             Clique na celula para digitar. Enter confirma, Esc cancela.
           </span>
         )}
-        {mostrarNovoGasto && (
+        {modoPlanilhaSaidas && mostrarNovoGasto && (
           <div className="assinaturas-novo-gasto">
             <div className="inter-manual-form">
               <label>
@@ -1578,6 +1614,7 @@ export default function FinanceiroPagamentosPage() {
               {mesesResumo.map((mes) => (
                 <col key={`col-saida-${mes}`} style={{ width: `${COL_WIDTH_MES}px` }} />
               ))}
+              {modoPlanilhaSaidas && <col style={{ width: `${COL_WIDTH_ACOES}px` }} />}
             </colgroup>
             <thead>
               <tr>
@@ -1587,6 +1624,7 @@ export default function FinanceiroPagamentosPage() {
                     {formatarMesLabel(mes)}
                   </th>
                 ))}
+                {modoPlanilhaSaidas && <th className="assinaturas-col-acoes">Acoes</th>}
               </tr>
               <tr>
                 <th className="assinaturas-col-cliente">Total de saidas</th>
@@ -1595,6 +1633,7 @@ export default function FinanceiroPagamentosPage() {
                     {maskValue(formatCurrency(totaisSaidasConsolidadasPorMes[mes] || 0))}
                   </th>
                 ))}
+                {modoPlanilhaSaidas && <th className="assinaturas-col-acoes">-</th>}
               </tr>
             </thead>
             <tbody>
@@ -1610,6 +1649,7 @@ export default function FinanceiroPagamentosPage() {
                         </td>
                       );
                     })}
+                    {modoPlanilhaSaidas && <td className="assinaturas-col-acoes">-</td>}
                   </tr>
                   {grupo.itens.map((nome) => {
                     const item = obterRecebedorSaida(nome);
@@ -1649,6 +1689,17 @@ export default function FinanceiroPagamentosPage() {
                             )}
                           </td>
                         ))}
+                        {modoPlanilhaSaidas && (
+                          <td className="assinaturas-col-acoes">
+                            <button
+                              type="button"
+                              className="btn-secondary assinaturas-acao-btn assinaturas-acao-btn--remove"
+                              onClick={() => excluirSaidasRecebedor(item.recebedor)}
+                            >
+                              Excluir
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
@@ -1665,6 +1716,7 @@ export default function FinanceiroPagamentosPage() {
                           : '-'}
                       </td>
                     ))}
+                    {modoPlanilhaSaidas && <td className="assinaturas-col-acoes">-</td>}
                   </tr>
                   {resumoSaidasVenture.clientes.map((projeto) => (
                     <tr key={`saida-venture-${projeto.clienteId}`}>
@@ -1674,6 +1726,7 @@ export default function FinanceiroPagamentosPage() {
                           {projeto.valores[mes] ? maskValue(formatCurrency(projeto.valores[mes])) : '-'}
                         </td>
                       ))}
+                      {modoPlanilhaSaidas && <td className="assinaturas-col-acoes">-</td>}
                     </tr>
                   ))}
                 </Fragment>

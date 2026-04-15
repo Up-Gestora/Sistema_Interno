@@ -8,6 +8,7 @@
     "dev:backend": "cd server && npm run dev",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:backend\"",
     "build": "tsc && vite build",
+    "build:cloud": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "install:backend": "cd server && npm install"

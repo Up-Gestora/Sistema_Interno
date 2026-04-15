@@ -3,7 +3,9 @@ import Layout from './components/Layout/Layout';
 import Dashboard from './components/Dashboard/Dashboard';
 import ClientesPage from './pages/ClientesPage';
 import RelatoriosMensaisPage from './pages/RelatoriosMensais/RelatoriosMensaisPage';
+import RelatorioPeriodicoPage from './pages/RelatoriosMensais/RelatorioPeriodicoPage';
 import PerformancePage from './pages/PerformanceTrimestral/PerformancePage';
+import AtualizacaoCreditoPage from './pages/AtualizacaoCredito/AtualizacaoCreditoPage';
 import ImportacaoPlanilhaPage from './pages/ImportacaoPlanilha/ImportacaoPlanilhaPage';
 import EstrategiasPage from './pages/EstrategiasPage';
 import AsaasPage from './pages/AsaasPage';
@@ -38,7 +40,10 @@ function App() {
         <Route path="/estrategias" element={<EstrategiasPage />} />
         <Route path="/private" element={<VentureCapitalPage />} />
         <Route path="/venture-capital" element={<VentureCapitalPage />} />
+        <Route path="/relatorios" element={<RelatoriosMensaisPage />} />
+        <Route path="/relatorios/periodicos" element={<RelatorioPeriodicoPage />} />
         <Route path="/relatorios-mensais" element={<RelatoriosMensaisPage />} />
+        <Route path="/atualizacao-credito" element={<AtualizacaoCreditoPage />} />
         <Route path="/performance" element={<PerformancePage />} />
         <Route path="/laminas" element={<LaminasPage />} />
         <Route path="/estrategia-diaria" element={<EstrategiaDiariaPage />} />

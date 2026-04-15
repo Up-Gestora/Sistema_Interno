@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Cliente } from '../../types';
-import { RelatorioMensal } from '../../types/relatorio';
+import { CamposCompartilhadosProducaoRelatorio, RelatorioMensal } from '../../types/relatorio';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import Card from '../../components/Card/Card';
 import YearSelect from '../../components/YearSelect/YearSelect';
@@ -10,6 +10,8 @@ import './FormRelatorio.css';
 interface FormRelatorioProps {
   clientes: Cliente[];
   onSubmit: (relatorio: RelatorioMensal) => void;
+  camposCompartilhados: CamposCompartilhadosProducaoRelatorio;
+  onCamposCompartilhadosChange: (campos: Partial<CamposCompartilhadosProducaoRelatorio>) => void;
   onCancel?: () => void;
 }
 
@@ -24,14 +26,15 @@ interface EstrategiaSelecionada {
   comentarioImagens: Array<{ id: string; src: string }>;
 }
 
-export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRelatorioProps) {
+export default function FormRelatorio({
+  clientes,
+  onSubmit,
+  camposCompartilhados,
+  onCamposCompartilhadosChange,
+  onCancel,
+}: FormRelatorioProps) {
   const { estrategias } = useEstrategias();
-  const [formData, setFormData] = useState<Partial<RelatorioMensal>>({
-    clienteId: '',
-    mes: new Date().getMonth() + 1,
-    ano: new Date().getFullYear(),
-    resumoMacro: '',
-  });
+  const [formData, setFormData] = useState({ clienteId: '' });
   const [estrategiasSelecionadas, setEstrategiasSelecionadas] = useState<EstrategiaSelecionada[]>(() => ([
     {
       estrategiaId: '',
@@ -157,7 +160,7 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
       const imagemRemovida = (estrategia.comentarioImagens || [])[imagemIndex];
       const tokenRemover = imagemRemovida ? `[[img:${imagemRemovida.id}]]` : '';
       const comentarioAtualizado = tokenRemover
-        ? (estrategia.comentario || '').replaceAll(tokenRemover, '').replace(/\n{3,}/g, '\n\n').trim()
+        ? (estrategia.comentario || '').split(tokenRemover).join('').replace(/\n{3,}/g, '\n\n').trim()
         : estrategia.comentario;
       return {
         ...estrategia,
@@ -208,7 +211,7 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.clienteId || !formData.resumoMacro) {
+    if (!formData.clienteId || !camposCompartilhados.resumoMacro) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -244,7 +247,10 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
     });
     const estrategiaPrincipal = estrategiasRelatorio[0];
     const relatorio: RelatorioMensal = {
-      ...formData as RelatorioMensal,
+      clienteId: formData.clienteId,
+      mes: camposCompartilhados.mes,
+      ano: camposCompartilhados.ano,
+      resumoMacro: camposCompartilhados.resumoMacro,
       patrimonioTotal: estrategiaPrincipal?.patrimonioTotal || 0,
       resultadoMes: estrategiaPrincipal?.resultadoMes || 0,
       resultadoPercentual: estrategiaPrincipal?.resultadoPercentual || 0,
@@ -316,8 +322,11 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
               <label htmlFor="mes">Mês *</label>
               <select
                 id="mes"
-                value={formData.mes}
-                onChange={(e) => setFormData({ ...formData, mes: parseInt(e.target.value) })}
+                value={camposCompartilhados.mes}
+                onChange={(e) => onCamposCompartilhadosChange({
+                  mes: parseInt(e.target.value, 10),
+                  cdiMensal: '',
+                })}
                 required
               >
                 {meses.map((mes, index) => (
@@ -332,9 +341,12 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
               <label htmlFor="ano">Ano *</label>
               <YearSelect
                 id="ano"
-                value={Number(formData.ano) || new Date().getFullYear()}
+                value={Number(camposCompartilhados.ano) || new Date().getFullYear()}
                 years={anosDisponiveis}
-                onChange={(ano) => setFormData({ ...formData, ano })}
+                onChange={(ano) => onCamposCompartilhadosChange({
+                  ano,
+                  cdiMensal: '',
+                })}
               />
             </div>
           </div>
@@ -343,8 +355,8 @@ export default function FormRelatorio({ clientes, onSubmit, onCancel }: FormRela
             <label htmlFor="resumoMacro">Resumo Macro *</label>
             <textarea
               id="resumoMacro"
-              value={formData.resumoMacro}
-              onChange={(e) => setFormData({ ...formData, resumoMacro: e.target.value })}
+              value={camposCompartilhados.resumoMacro}
+              onChange={(e) => onCamposCompartilhadosChange({ resumoMacro: e.target.value })}
               rows={3}
               placeholder="Digite o resumo macro da carteira..."
               required

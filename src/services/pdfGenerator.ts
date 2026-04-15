@@ -1,7 +1,7 @@
 // @ts-ignore
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-import { RelatorioMensal, RelatorioMensalEstrategia } from '../types/relatorio';
+import { RelatorioMensal, RelatorioMensalEstrategia, RelatorioPeriodico } from '../types/relatorio';
 import { Cliente } from '../types';
 import { formatCurrency, formatDate } from '../utils/calculations';
 
@@ -215,7 +215,7 @@ export async function gerarRelatorioMensalPDF(
     );
     const tokenRegex = /\[\[img:([a-zA-Z0-9_-]+)\]\]/g;
     const blocos: ResumoBloco[] = [];
-    const paragrafos = (texto || '').split(/\n\s*\n/);
+    const paragrafos = (texto || '').split(/\r?\n/);
 
     paragrafos.forEach((paragrafo) => {
       if (!paragrafo.trim()) {
@@ -282,6 +282,7 @@ export async function gerarRelatorioMensalPDF(
     p.style.color = textSecondary;
     p.style.fontSize = '14px';
     p.style.lineHeight = '1.4';
+    p.style.whiteSpace = 'pre-line';
     p.style.margin = isSpacer ? '0 0 12px 0' : '0 0 6px 0';
     p.style.textAlign = 'justify';
     p.style.textIndent = isSpacer ? '0' : '1.2em';
@@ -778,6 +779,462 @@ export async function gerarRelatoriosMensaisEmMassa(
     if (i < relatorios.length - 1) {
       await new Promise(resolve => setTimeout(resolve, 500));
     }
+  }
+}
+
+type RelatorioPeriodicoPdfOptions = {
+  capaImagemPersonalizada?: string | null;
+};
+
+export async function gerarRelatorioPeriodicoPDF(
+  relatorio: RelatorioPeriodico,
+  options: RelatorioPeriodicoPdfOptions = {}
+): Promise<void> {
+  const meses = [
+    'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+  ];
+
+  const mesNumero = Number.isInteger(relatorio.mes) ? relatorio.mes : new Date().getMonth() + 1;
+  const anoNumero = Number.isInteger(relatorio.ano) ? relatorio.ano : new Date().getFullYear();
+  const mesNome = meses[Math.max(0, Math.min(11, mesNumero - 1))] || `Mes ${mesNumero}`;
+  const periodo = `${mesNome} ${anoNumero}`;
+  const dataGeracao = relatorio.dataGeracao
+    ? formatDate(relatorio.dataGeracao)
+    : formatDate(new Date().toISOString());
+  const tituloCapa = relatorio.tituloCapa?.trim() || 'Documento';
+  const resumoTexto = relatorio.resumoTexto?.trim() || 'Nenhum conteudo informado.';
+
+  const primaryColor = '#1d2f34';
+  const primaryDark = '#131b1d';
+  const primaryLight = '#4c5f64';
+  const textColor = '#1c2836';
+  const textSecondary = '#2a3a4d';
+  const textMuted = '#44576c';
+  const bgLight = '#f1f3f6';
+  const borderColor = '#d7e0ea';
+
+  const PAGE_WIDTH_PX = 794;
+  const PAGE_HEIGHT_PX = 1123;
+  const PAGE_PADDING_PX = 44;
+  const BAR_HEIGHT_PX = 12;
+  const barPattern = 'repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 8px, rgba(255, 255, 255, 0) 8px, rgba(255, 255, 255, 0) 16px)';
+  const barGradient = `linear-gradient(90deg, ${primaryDark} 0%, ${primaryColor} 55%, ${primaryLight} 100%)`;
+  const barBackground = `${barPattern}, ${barGradient}`;
+  const barWatermarkText = 'UP GESTAO • RELATORIO PERIODICO • UP GESTAO • RELATORIO PERIODICO';
+
+  type ResumoBlocoPeriodico =
+    | { type: 'paragraph'; text: string }
+    | { type: 'image'; src: string; id: string }
+    | { type: 'spacer' };
+
+  const escapeHtml = (value: string): string => (
+    value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+  );
+
+  const criarMarcaDaguaBarra = () => {
+    const marca = document.createElement('div');
+    marca.style.position = 'absolute';
+    marca.style.inset = '0';
+    marca.style.display = 'flex';
+    marca.style.alignItems = 'center';
+    marca.style.justifyContent = 'center';
+    marca.style.fontSize = '9px';
+    marca.style.letterSpacing = '0.4em';
+    marca.style.textTransform = 'uppercase';
+    marca.style.color = 'rgba(255, 255, 255, 0.5)';
+    marca.style.whiteSpace = 'nowrap';
+    marca.textContent = barWatermarkText;
+    return marca;
+  };
+
+  const criarBarraMarca = (posicao: 'top' | 'bottom') => {
+    const barra = document.createElement('div');
+    barra.style.position = 'absolute';
+    barra.style.left = '0';
+    barra.style.right = '0';
+    barra.style.height = `${BAR_HEIGHT_PX}px`;
+    barra.style.background = barBackground;
+    barra.style.zIndex = '1';
+    barra.style.overflow = 'hidden';
+    barra.style[posicao] = '0';
+    barra.appendChild(criarMarcaDaguaBarra());
+    return barra;
+  };
+
+  const dimensoesImagemPorSrc = new Map<string, { width: number; height: number }>();
+
+  const carregarDimensoesImagem = (src: string): Promise<{ width: number; height: number } | null> => (
+    new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const width = img.naturalWidth || img.width;
+        const height = img.naturalHeight || img.height;
+        if (!width || !height) {
+          resolve(null);
+          return;
+        }
+        resolve({ width, height });
+      };
+      img.onerror = () => resolve(null);
+      img.src = src;
+    })
+  );
+
+  const preloadDimensoesImagens = async (imagens: Array<{ src: string }>) => {
+    const srcs = Array.from(
+      new Set(
+        (imagens || [])
+          .map((img) => img?.src)
+          .filter((src): src is string => typeof src === 'string' && src.trim().length > 0)
+      )
+    );
+
+    await Promise.all(
+      srcs.map(async (src) => {
+        if (dimensoesImagemPorSrc.has(src)) return;
+        const dims = await carregarDimensoesImagem(src);
+        if (dims) dimensoesImagemPorSrc.set(src, dims);
+      })
+    );
+  };
+
+  const criarBlocosResumoTexto = (
+    texto: string,
+    imagens: Array<{ id: string; src: string }> = []
+  ): ResumoBlocoPeriodico[] => {
+    const imagemMap = new Map(
+      (imagens || [])
+        .filter((item) => item?.id && item?.src)
+        .map((item) => [item.id, item.src])
+    );
+    const tokenRegex = /\[\[img:([a-zA-Z0-9_-]+)\]\]/g;
+    const blocos: ResumoBlocoPeriodico[] = [];
+    const paragrafos = (texto || '').split(/\r?\n/);
+
+    paragrafos.forEach((paragrafo) => {
+      if (!paragrafo.trim()) {
+        blocos.push({ type: 'spacer' });
+        return;
+      }
+
+      let lastIndex = 0;
+      let adicionou = false;
+
+      paragrafo.replace(tokenRegex, (match, id, offset) => {
+        const antes = paragrafo.slice(lastIndex, offset).trim();
+        if (antes) {
+          blocos.push({ type: 'paragraph', text: antes });
+          adicionou = true;
+        }
+        const src = imagemMap.get(id);
+        if (src) {
+          blocos.push({ type: 'image', src, id });
+          adicionou = true;
+        }
+        lastIndex = offset + match.length;
+        return match;
+      });
+
+      const depois = paragrafo.slice(lastIndex).trim();
+      if (depois) {
+        blocos.push({ type: 'paragraph', text: depois });
+        adicionou = true;
+      }
+
+      if (!adicionou) {
+        blocos.push({ type: 'spacer' });
+      }
+    });
+
+    return blocos;
+  };
+
+  const criarElementoResumoBloco = (bloco: ResumoBlocoPeriodico): HTMLElement => {
+    if (bloco.type === 'image') {
+      const wrapper = document.createElement('div');
+      wrapper.style.margin = '10px 0';
+
+      const img = document.createElement('img');
+      img.src = bloco.src;
+      img.alt = 'Imagem do relatorio';
+      const dims = dimensoesImagemPorSrc.get(bloco.src);
+      if (dims) {
+        img.width = dims.width;
+        img.height = dims.height;
+      }
+      img.style.width = '100%';
+      img.style.height = 'auto';
+      img.style.borderRadius = '10px';
+      img.style.display = 'block';
+
+      wrapper.appendChild(img);
+      return wrapper;
+    }
+
+    const p = document.createElement('p');
+    const isSpacer = bloco.type === 'spacer';
+    p.style.color = textSecondary;
+    p.style.fontSize = '14px';
+    p.style.lineHeight = '1.5';
+    p.style.whiteSpace = 'pre-line';
+    p.style.margin = isSpacer ? '0 0 12px 0' : '0 0 7px 0';
+    p.style.textAlign = 'justify';
+    p.style.textIndent = isSpacer ? '0' : '1.2em';
+    p.textContent = isSpacer ? '\u00A0' : bloco.text;
+    return p;
+  };
+
+  const criarCapa = (capaImagem: string | null): HTMLElement => {
+    const capa = document.createElement('div');
+    capa.style.position = 'absolute';
+    capa.style.left = '-9999px';
+    capa.style.width = `${PAGE_WIDTH_PX}px`;
+    capa.style.height = `${PAGE_HEIGHT_PX}px`;
+    capa.style.fontFamily = '\'Source Sans 3\', sans-serif';
+    capa.style.backgroundColor = '#ffffff';
+    capa.style.color = '#ffffff';
+    capa.style.boxSizing = 'border-box';
+    capa.style.overflow = 'hidden';
+
+    const fundo = document.createElement('div');
+    fundo.style.position = 'absolute';
+    fundo.style.inset = '0';
+    fundo.style.background = capaImagem
+      ? `url(${capaImagem}) center/cover no-repeat`
+      : barGradient;
+    fundo.style.filter = capaImagem ? 'saturate(0.9)' : 'none';
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.inset = '0';
+    overlay.style.background = 'linear-gradient(180deg, rgba(13, 18, 19, 0.3) 0%, rgba(13, 18, 19, 0.62) 45%, rgba(13, 18, 19, 0.86) 100%)';
+
+    const conteudo = document.createElement('div');
+    conteudo.style.position = 'relative';
+    conteudo.style.zIndex = '2';
+    conteudo.style.height = '100%';
+    conteudo.style.display = 'flex';
+    conteudo.style.flexDirection = 'column';
+    conteudo.style.justifyContent = 'space-between';
+    conteudo.style.padding = '64px 56px';
+
+    const topo = document.createElement('div');
+    topo.innerHTML = `
+      <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; font-size: 34px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85);">
+        UP Gestao
+      </div>
+      <div style="margin-top: 10px; width: 140px; height: 2px; background: rgba(255, 255, 255, 0.6);"></div>
+    `;
+
+    const base = document.createElement('div');
+    base.innerHTML = `
+      <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; font-size: 46px; font-weight: 700; line-height: 1.1; color: rgba(255, 255, 255, 0.92);">
+        ${escapeHtml(tituloCapa)}
+      </div>
+      <div style="margin-top: 14px; font-size: 27px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72);">
+        ${escapeHtml(periodo)}
+      </div>
+    `;
+
+    conteudo.appendChild(topo);
+    conteudo.appendChild(base);
+    capa.appendChild(fundo);
+    capa.appendChild(overlay);
+    capa.appendChild(conteudo);
+    return capa;
+  };
+
+  const criarPaginaConteudoBase = (continua: boolean) => {
+    const pagina = document.createElement('div');
+    pagina.style.position = 'absolute';
+    pagina.style.left = '-9999px';
+    pagina.style.width = `${PAGE_WIDTH_PX}px`;
+    pagina.style.height = `${PAGE_HEIGHT_PX}px`;
+    pagina.style.padding = '0';
+    pagina.style.fontFamily = '\'Source Sans 3\', sans-serif';
+    pagina.style.backgroundColor = '#ffffff';
+    pagina.style.color = textColor;
+    pagina.style.boxSizing = 'border-box';
+    pagina.style.overflow = 'hidden';
+
+    const container = document.createElement('div');
+    container.style.position = 'relative';
+    container.style.height = '100%';
+    container.style.width = '100%';
+    container.style.boxSizing = 'border-box';
+    container.style.padding = `${PAGE_PADDING_PX}px`;
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.zIndex = '2';
+
+    const header = document.createElement('div');
+    header.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 14px;">
+        <div>
+          <div style="font-family: 'Sora', 'Source Sans 3', sans-serif; color: ${primaryColor}; font-size: 22px; font-weight: 700; margin: 0;">
+            UP Gestao
+          </div>
+          <div style="margin-top: 4px; color: ${textMuted}; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+            Relatorio Periodico${continua ? ' (continuacao)' : ''}
+          </div>
+        </div>
+        <div style="background: ${bgLight}; border: 1px solid ${borderColor}; border-radius: 10px; padding: 10px 12px; text-align: right; min-width: 190px;">
+          <div style="color: ${textMuted}; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">Periodo</div>
+          <div style="color: ${textColor}; font-size: 14px; font-weight: 600; margin-top: 4px;">${escapeHtml(periodo)}</div>
+          <div style="color: ${textSecondary}; font-size: 12px; margin-top: 6px;">${escapeHtml(tituloCapa)}</div>
+        </div>
+      </div>
+      <div style="height: 2px; background: ${primaryColor}; opacity: 0.4; margin-bottom: 16px;"></div>
+    `;
+
+    const box = document.createElement('div');
+    box.style.backgroundColor = '#ffffff';
+    box.style.padding = '16px';
+    box.style.borderRadius = '10px';
+    box.style.border = 'none';
+    box.style.borderLeft = `4px solid ${primaryColor}`;
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = 'Conteudo';
+    titulo.style.color = textMuted;
+    titulo.style.fontSize = '12px';
+    titulo.style.fontWeight = '600';
+    titulo.style.marginBottom = '10px';
+    titulo.style.marginTop = '0';
+    titulo.style.textTransform = 'uppercase';
+    titulo.style.letterSpacing = '0.12em';
+
+    const corpo = document.createElement('div');
+    corpo.style.textAlign = 'justify';
+
+    const footer = document.createElement('div');
+    footer.style.marginTop = 'auto';
+    footer.style.paddingTop = '14px';
+    footer.style.borderTop = `1px solid ${borderColor}`;
+    footer.style.textAlign = 'center';
+    footer.style.color = textMuted;
+    footer.style.fontSize = '11px';
+    footer.textContent = `Gerado em ${dataGeracao} | UP Gestao`;
+
+    box.appendChild(titulo);
+    box.appendChild(corpo);
+    container.appendChild(header);
+    container.appendChild(box);
+    container.appendChild(footer);
+
+    pagina.appendChild(criarBarraMarca('top'));
+    pagina.appendChild(criarBarraMarca('bottom'));
+    pagina.appendChild(container);
+
+    return { pagina, corpo };
+  };
+
+  const blocosResumo = criarBlocosResumoTexto(resumoTexto, relatorio.resumoImagens || []);
+  const temConteudo = blocosResumo.some((bloco) => bloco.type !== 'spacer');
+  if (!temConteudo) {
+    blocosResumo.length = 0;
+    blocosResumo.push({
+      type: 'paragraph',
+      text: 'Nenhum conteudo disponivel.',
+    });
+  }
+
+  await preloadDimensoesImagens(relatorio.resumoImagens || []);
+
+  const paginasConteudo: HTMLElement[] = [];
+  let contexto = criarPaginaConteudoBase(false);
+  document.body.appendChild(contexto.pagina);
+
+  blocosResumo.forEach((bloco) => {
+    const elemento = criarElementoResumoBloco(bloco);
+    contexto.corpo.appendChild(elemento);
+
+    if (contexto.pagina.scrollHeight > PAGE_HEIGHT_PX) {
+      contexto.corpo.removeChild(elemento);
+
+      if (contexto.corpo.childElementCount === 0) {
+        contexto.corpo.appendChild(elemento);
+        return;
+      }
+
+      paginasConteudo.push(contexto.pagina);
+      contexto = criarPaginaConteudoBase(true);
+      document.body.appendChild(contexto.pagina);
+      contexto.corpo.appendChild(elemento);
+    }
+  });
+
+  paginasConteudo.push(contexto.pagina);
+
+  const capaData = await carregarCapaRelatorio(options.capaImagemPersonalizada);
+  const paginaCapa = criarCapa(capaData);
+  document.body.appendChild(paginaCapa);
+
+  try {
+    const canvasesConteudo = [];
+    for (const pagina of paginasConteudo) {
+      const canvas = await html2canvas(pagina, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: PAGE_WIDTH_PX,
+        height: PAGE_HEIGHT_PX,
+      });
+      canvasesConteudo.push(canvas);
+    }
+
+    let imgCapa: string | null = null;
+    try {
+      const canvasCapa = await html2canvas(paginaCapa, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: PAGE_WIDTH_PX,
+        height: PAGE_HEIGHT_PX,
+      });
+      imgCapa = canvasCapa.toDataURL('image/png');
+    } catch {
+      imgCapa = capaData || null;
+    }
+
+    // @ts-ignore
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    if (imgCapa) {
+      pdf.addImage(imgCapa, 'PNG', 0, 0, 210, 297);
+    }
+
+    canvasesConteudo.forEach((canvas) => {
+      pdf.addPage();
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+    });
+
+    const tituloArquivo = tituloCapa
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '_');
+    const nomeBase = tituloArquivo || 'Relatorio_Periodico';
+    const fileName = `${nomeBase}_${String(mesNumero).padStart(2, '0')}_${anoNumero}.pdf`;
+    pdf.save(fileName);
+  } finally {
+    if (paginaCapa.parentNode) {
+      paginaCapa.parentNode.removeChild(paginaCapa);
+    }
+    paginasConteudo.forEach((pagina) => {
+      if (pagina.parentNode) {
+        pagina.parentNode.removeChild(pagina);
+      }
+    });
   }
 }
 

@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import type { EstrategiaDiariaEntry } from '../../services/estrategiaDiariaPlanilhaService';
+import { syncLaminaSnapshotToSharedStorage } from '../../services/laminaStorageSnapshot';
 import LaminasEditorPanel from './LaminasEditorPanel';
 import LaminasPreviewPanel from './LaminasPreviewPanel';
 import {
@@ -63,23 +64,6 @@ const removeStrategyStorage = (baseKey: string, strategyId?: string) => {
   localStorage.removeItem(buildStorageKey(baseKey, strategyId));
 };
 
-const criarIntroDaDescricao = (descricao?: string): LaminaTemplate['intro'] => {
-  if (!descricao) return [];
-  const textoLimpo = descricao.trim();
-  if (!textoLimpo) return [];
-  const partes = textoLimpo
-    .replace(/\r\n/g, '\n')
-    .split(/\n+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  if (partes.length === 0) {
-    return [{ texto: textoLimpo }];
-  }
-
-  return partes.map((texto) => ({ texto }));
-};
-
 export default function LaminasJsonEditor() {
   const { estrategias } = useEstrategias();
   const [template, setTemplate] = useState<LaminaTemplate>(TEMPLATE_PADRAO);
@@ -119,10 +103,6 @@ export default function LaminasJsonEditor() {
   );
   const benchmarkSelecionado = estrategiaSelecionada?.benchmark?.trim() || 'IFIX';
   const tituloEstrategia = estrategiaSelecionada?.nome?.trim() || '';
-  const introDescricao = useMemo(
-    () => criarIntroDaDescricao(estrategiaSelecionada?.descricao),
-    [estrategiaSelecionada?.descricao]
-  );
 
   useLayoutEffect(() => {
     const updateSize = () => {
@@ -243,15 +223,34 @@ export default function LaminasJsonEditor() {
   }, [notasInternas, strategyId]);
 
   useEffect(() => {
-    if (strategyId) return;
+    if (hydratingRef.current) return;
+    const timeout = setTimeout(() => {
+      void syncLaminaSnapshotToSharedStorage();
+    }, 600);
+    return () => clearTimeout(timeout);
+  }, [strategyId, jsonText, notasInternas, layoutMap, logoTopo, logoRodape, hiddenBlocks, modoLivre]);
+
+  useEffect(() => {
+    if (estrategias.length === 0) return;
+
+    const idsDisponiveis = new Set(estrategias.map((estrategia) => estrategia.id));
+    if (strategyId && idsDisponiveis.has(strategyId)) return;
+
     const saved = localStorage.getItem(LAMINA_STRATEGY_KEY) || localStorage.getItem(STRATEGY_ID_KEY);
-    if (saved) {
+    if (saved && idsDisponiveis.has(saved)) {
       setStrategyId(saved);
       return;
     }
-    if (estrategias.length > 0) {
-      setStrategyId(estrategias[0].id);
+
+    const estrategiaComTemplateSalvo = estrategias.find((estrategia) =>
+      !!loadStrategyStorage(TEMPLATE_STORAGE_KEY, estrategia.id)
+    );
+    if (estrategiaComTemplateSalvo) {
+      setStrategyId(estrategiaComTemplateSalvo.id);
+      return;
     }
+
+    setStrategyId(estrategias[0].id);
   }, [estrategias, strategyId]);
 
   useEffect(() => {
@@ -269,18 +268,6 @@ export default function LaminasJsonEditor() {
     const entries = map[strategyId] ? normalizeEntries(map[strategyId]) : [];
     setDailyEntries(entries);
   }, [strategyId]);
-
-  useEffect(() => {
-    if (!introDescricao.length) return;
-    setTemplate((prev) => {
-      const textoAtual = prev.intro.map((item) => item.texto.trim()).filter(Boolean).join('\n\n');
-      const textoNovo = introDescricao.map((item) => item.texto.trim()).filter(Boolean).join('\n\n');
-      if (textoAtual === textoNovo) return prev;
-      const next = { ...prev, intro: introDescricao };
-      setJsonText(JSON.stringify(next, null, 2));
-      return next;
-    });
-  }, [introDescricao]);
 
   useEffect(() => {
     if (!tituloEstrategia) return;
@@ -465,7 +452,12 @@ export default function LaminasJsonEditor() {
   };
 
   const atualizarIntro = (index: number, valor: string) => {
-    const novoIntro = template.intro.map((item, idx) => (idx === index ? { ...item, texto: valor } : item));
+    const tamanhoMinimo = Math.max(3, index + 1);
+    const introBase = Array.from({ length: tamanhoMinimo }, (_, idx) => ({
+      texto: template.intro[idx]?.texto || '',
+      destaques: template.intro[idx]?.destaques,
+    }));
+    const novoIntro = introBase.map((item, idx) => (idx === index ? { ...item, texto: valor } : item));
     atualizarTemplate({ ...template, intro: novoIntro });
   };
 
@@ -708,14 +700,10 @@ export default function LaminasJsonEditor() {
     () => (dailyMetrics ? aplicarDadosDiarios(template, dailyMetrics) : template),
     [template, dailyMetrics]
   );
-  const templateComIntro = useMemo(() => {
-    if (!introDescricao.length) return templateComDados;
-    return { ...templateComDados, intro: introDescricao };
-  }, [templateComDados, introDescricao]);
   const templateComTitulo = useMemo(() => {
-    if (!tituloEstrategia) return templateComIntro;
-    return { ...templateComIntro, header: { ...templateComIntro.header, titulo: tituloEstrategia } };
-  }, [templateComIntro, tituloEstrategia]);
+    if (!tituloEstrategia) return templateComDados;
+    return { ...templateComDados, header: { ...templateComDados.header, titulo: tituloEstrategia } };
+  }, [templateComDados, tituloEstrategia]);
   const templatePreview = useMemo(
     () => aplicarBenchmarkLabel(templateComTitulo, benchmarkSelecionado),
     [templateComTitulo, benchmarkSelecionado]
@@ -784,6 +772,7 @@ export default function LaminasJsonEditor() {
     saveStrategyStorage(LAMINA_LAYOUT_MODE_KEY, strategyId, modoLivre ? 'true' : 'false');
     saveStrategyStorage(LAMINA_HIDDEN_KEY, strategyId, JSON.stringify(hiddenBlocks));
     saveStrategyStorage(NOTES_STORAGE_KEY, strategyId, notasInternas);
+    void syncLaminaSnapshotToSharedStorage();
     setSalvoMensagem('Alterações salvas.');
     setTimeout(() => setSalvoMensagem(''), 2000);
   };
@@ -918,6 +907,7 @@ export default function LaminasJsonEditor() {
         layoutAtivo={layoutAtivo}
         zoomAplicado={zoomAplicado}
         templatePreview={templatePreview}
+        benchmarkLabel={benchmarkSelecionado.toUpperCase()}
         logoTopo={logoTopo}
         logoRodape={logoRodape}
         layoutMap={layoutMap}
@@ -944,6 +934,7 @@ export default function LaminasJsonEditor() {
     </div>
   );
 }
+
 
 
 

@@ -9,6 +9,7 @@ import {
   AsaasSubscription,
   AsaasRespostaSubscriptions,
 } from '../types/asaas';
+import { removePortSharedStorageValue, savePortSharedStorageValue } from './portSharedStorage';
 
 // URLs base da API do Asaas (usadas apenas para referência)
 // As requisições agora passam pelo backend proxy
@@ -35,6 +36,7 @@ export function getAsaasConfig(): AsaasConfig | null {
  */
 export function saveAsaasConfig(config: AsaasConfig): void {
   localStorage.setItem('asaas_config', JSON.stringify(config));
+  void savePortSharedStorageValue('asaas_config', config);
 }
 
 /**
@@ -42,6 +44,7 @@ export function saveAsaasConfig(config: AsaasConfig): void {
  */
 export function removeAsaasConfig(): void {
   localStorage.removeItem('asaas_config');
+  void removePortSharedStorageValue('asaas_config');
 }
 
 /**

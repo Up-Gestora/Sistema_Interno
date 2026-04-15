@@ -1,0 +1,31 @@
+.relatorios-periodicos-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.relatorios-periodicos-banner {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.relatorios-periodicos-banner.success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.relatorios-periodicos-banner.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #7f1d1d;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.relatorio-periodico-capa-titulo {
+  margin-top: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.05;
+}

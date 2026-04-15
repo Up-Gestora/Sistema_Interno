@@ -1,0 +1,1125 @@
+{
+  "key": "saidas_manual_lancamentos_v1",
+  "action": "put",
+  "timestamp": "2026-04-15T15:08:59.098Z",
+  "previousValue": [
+    {
+      "id": "saida_imp_1714anv",
+      "recebedor": "PIS",
+      "valor": 3344.64,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_e4pvpk",
+      "recebedor": "COFINS",
+      "valor": 2685.84,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1jra2yg",
+      "recebedor": "ISS",
+      "valor": 1300.88,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_17hrqy3",
+      "recebedor": "Igor",
+      "valor": 5800.17,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_21zyfa",
+      "recebedor": "Mário",
+      "valor": 4668.2300000000005,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1lcdc9u",
+      "recebedor": "Matheus",
+      "valor": 6819.150000000001,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_dzn4b2",
+      "recebedor": "Vinicius",
+      "valor": 8843.970000000001,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_v2jw0o",
+      "recebedor": "Profit Ultra",
+      "valor": 2212,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1w8pcnf",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_np87qe",
+      "recebedor": "Cartao",
+      "valor": 254.59,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_gbbty1",
+      "recebedor": "Grana Capital",
+      "valor": 175,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_fsw6m2",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_151ey8y",
+      "recebedor": "COFINS",
+      "valor": 1204.18,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_6gyei9",
+      "recebedor": "ISS",
+      "valor": 2006.97,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_m3jssp",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_i1nrof",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1s5f9sa",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_14vxnxr",
+      "recebedor": "Matheus",
+      "valor": 3774.9,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1vj76h5",
+      "recebedor": "Vinicius",
+      "valor": 7097.17,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_16h4nmq",
+      "recebedor": "Igor",
+      "valor": 4377.73,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_bk8wzs",
+      "recebedor": "Mário",
+      "valor": 2809.67,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_rhzv2f",
+      "recebedor": "Cartao",
+      "valor": 240.9,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_m10brq",
+      "recebedor": "Grana Capital",
+      "valor": 569.7,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_ouucpl",
+      "recebedor": "Contabilidade",
+      "valor": 600,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1kkhs11",
+      "recebedor": "PIS",
+      "valor": 815.2,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_gdk2xj",
+      "recebedor": "COFINS",
+      "valor": 432.85,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_v9afmy",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_89ixzw",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_yjh0r3",
+      "recebedor": "Grupo FIIs",
+      "valor": 150,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1oxqqfw",
+      "recebedor": "Limpeza mensal",
+      "valor": 120,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1x2xh80",
+      "recebedor": "Investimentos",
+      "valor": 234,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_107l4em",
+      "recebedor": "Matheus",
+      "valor": 3158.03,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1pkgk93",
+      "recebedor": "Vinicius",
+      "valor": 6754.46,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_10u5euf",
+      "recebedor": "Igor",
+      "valor": 4103.56,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1ou93wr",
+      "recebedor": "Mário",
+      "valor": 1583.58,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1ybwv64",
+      "recebedor": "Cartao",
+      "valor": 241.99,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_dt1x6i",
+      "recebedor": "Contabilidade",
+      "valor": 600,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_fog3lh",
+      "recebedor": "PIS",
+      "valor": 2315.82,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1w2b082",
+      "recebedor": "COFINS",
+      "valor": 1602.18,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_kzklof",
+      "recebedor": "ISS",
+      "valor": 3165.34,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1aocd6z",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_jdhbof",
+      "recebedor": "DLL",
+      "valor": 1587,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_jmpqob",
+      "recebedor": "Grupo FIIs",
+      "valor": 100,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1rrf16w",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1qvmepi",
+      "recebedor": "Investimentos",
+      "valor": 577.43,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1uyy1wh",
+      "recebedor": "Matheus",
+      "valor": 6521.2,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1uwty09",
+      "recebedor": "Vinicius",
+      "valor": 6608.5,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1rt03r4",
+      "recebedor": "Igor",
+      "valor": 5598.31,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_13r0nuy",
+      "recebedor": "Mário",
+      "valor": 5957.95,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_f7sma2",
+      "recebedor": "Cartao",
+      "valor": 181.08,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_9axs49",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_uzswp",
+      "recebedor": "PIS",
+      "valor": 1259.37,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_5ypn7j",
+      "recebedor": "COFINS",
+      "valor": 272.86,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_fsgnr2",
+      "recebedor": "ISS",
+      "valor": 2098.95,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1b99isj",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_10r325x",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_w0y6ar",
+      "recebedor": "Grupo FIIs",
+      "valor": 100,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_awho68",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_75ta8n",
+      "recebedor": "Matheus",
+      "valor": 497.53,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_nrpmhv",
+      "recebedor": "Vinicius",
+      "valor": 3336.39,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1nbaeeh",
+      "recebedor": "Igor",
+      "valor": 2981.11,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1kxw7il",
+      "recebedor": "Mário",
+      "valor": 1095.22,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1a0k3l9",
+      "recebedor": "Cartao",
+      "valor": 568.04,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1a8wrch",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_oz43tw",
+      "recebedor": "PIS",
+      "valor": 552.27,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_3sjtf",
+      "recebedor": "COFINS",
+      "valor": 313.36,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_rqjguo",
+      "recebedor": "ISS",
+      "valor": 67.89,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_14z24tw",
+      "recebedor": "Limpeza mensal",
+      "valor": 120,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_qysvj6",
+      "recebedor": "Investimentos",
+      "valor": 5004.97,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1l7784h",
+      "recebedor": "Cartao",
+      "valor": 335.34,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1pmjukw",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1j1uurf",
+      "recebedor": "PIS",
+      "valor": 3874.96,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_2colax",
+      "recebedor": "COFINS",
+      "valor": 350.43,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_ogt887",
+      "recebedor": "ISS",
+      "valor": 480.04,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_tonw6o",
+      "recebedor": "Email UP",
+      "valor": 32.97,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_bh7omz",
+      "recebedor": "Trafego pago",
+      "valor": 914.26,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_1fdk3no",
+      "recebedor": "Investimentos",
+      "valor": 1887,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_15tz3nu",
+      "recebedor": "Cartao",
+      "valor": 559.78,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_1aha9mn",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-07-01"
+    }
+  ],
+  "nextValue": [
+    {
+      "id": "saida_planilha_davi_2026-03",
+      "recebedor": "Davi",
+      "valor": 1540,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_igor_2026-03",
+      "recebedor": "Igor",
+      "valor": 4538.78,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_mario_2026-03",
+      "recebedor": "Mário",
+      "valor": 1026.42,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_matheus_2026-03",
+      "recebedor": "Matheus",
+      "valor": 7150.31,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_vinicius_2026-03",
+      "recebedor": "Vinicius",
+      "valor": 4517.4,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_iss_2026-03",
+      "recebedor": "ISS",
+      "valor": 2428.73,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_grana capital_2026-03",
+      "recebedor": "Grana Capital",
+      "valor": 189.9,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_cartao_2026-03",
+      "recebedor": "Cartao",
+      "valor": 658.83,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_limpeza mensal_2026-03",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_repasses_2026-03",
+      "recebedor": "Repasses",
+      "valor": 865.98,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_contabilidade_2026-03",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_trafego pago_2026-03",
+      "recebedor": "Trafego pago",
+      "valor": 135.24,
+      "data": "2026-03-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_matheus_2026-02",
+      "recebedor": "Matheus",
+      "valor": 1838.76,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_vinicius_2026-02",
+      "recebedor": "Vinicius",
+      "valor": 4021.54,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_mario_2026-02",
+      "recebedor": "Mário",
+      "valor": 1509.58,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_igor_2026-02",
+      "recebedor": "Igor",
+      "valor": 3517.23,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_trafego pago_2026-02",
+      "recebedor": "Trafego pago",
+      "valor": 1050,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_cofins_2026-02",
+      "recebedor": "COFINS",
+      "valor": 1172.16,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_investimentos_2026-02",
+      "recebedor": "Investimentos",
+      "valor": 664.8,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_cartao_2026-02",
+      "recebedor": "Cartao",
+      "valor": 886.33,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_iss_2026-02",
+      "recebedor": "ISS",
+      "valor": 1605.71,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_contabilidade_2026-02",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_grupo fiis_2026-02",
+      "recebedor": "Grupo FIIs",
+      "valor": 270,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_planilha_limpeza mensal_2026-02",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2026-02-01",
+      "descricao": "Planilha"
+    },
+    {
+      "id": "saida_imp_1714anv",
+      "recebedor": "PIS",
+      "valor": 3344.64,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_e4pvpk",
+      "recebedor": "COFINS",
+      "valor": 2685.84,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1jra2yg",
+      "recebedor": "ISS",
+      "valor": 1300.88,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_17hrqy3",
+      "recebedor": "Igor",
+      "valor": 5800.17,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_21zyfa",
+      "recebedor": "Mário",
+      "valor": 4668.2300000000005,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1lcdc9u",
+      "recebedor": "Matheus",
+      "valor": 6819.150000000001,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_dzn4b2",
+      "recebedor": "Vinicius",
+      "valor": 8843.970000000001,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_v2jw0o",
+      "recebedor": "Profit Ultra",
+      "valor": 2212,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_1w8pcnf",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_np87qe",
+      "recebedor": "Cartao",
+      "valor": 254.59,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_gbbty1",
+      "recebedor": "Grana Capital",
+      "valor": 175,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_fsw6m2",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2026-01-01"
+    },
+    {
+      "id": "saida_imp_151ey8y",
+      "recebedor": "COFINS",
+      "valor": 1204.18,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_6gyei9",
+      "recebedor": "ISS",
+      "valor": 2006.97,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_m3jssp",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_i1nrof",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1s5f9sa",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_14vxnxr",
+      "recebedor": "Matheus",
+      "valor": 3774.9,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1vj76h5",
+      "recebedor": "Vinicius",
+      "valor": 7097.17,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_16h4nmq",
+      "recebedor": "Igor",
+      "valor": 4377.73,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_bk8wzs",
+      "recebedor": "Mário",
+      "valor": 2809.67,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_rhzv2f",
+      "recebedor": "Cartao",
+      "valor": 240.9,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_m10brq",
+      "recebedor": "Grana Capital",
+      "valor": 569.7,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_ouucpl",
+      "recebedor": "Contabilidade",
+      "valor": 600,
+      "data": "2025-12-01"
+    },
+    {
+      "id": "saida_imp_1kkhs11",
+      "recebedor": "PIS",
+      "valor": 815.2,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_gdk2xj",
+      "recebedor": "COFINS",
+      "valor": 432.85,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_v9afmy",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_89ixzw",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_yjh0r3",
+      "recebedor": "Grupo FIIs",
+      "valor": 150,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1oxqqfw",
+      "recebedor": "Limpeza mensal",
+      "valor": 120,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1x2xh80",
+      "recebedor": "Investimentos",
+      "valor": 234,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_107l4em",
+      "recebedor": "Matheus",
+      "valor": 3158.03,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1pkgk93",
+      "recebedor": "Vinicius",
+      "valor": 6754.46,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_10u5euf",
+      "recebedor": "Igor",
+      "valor": 4103.56,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1ou93wr",
+      "recebedor": "Mário",
+      "valor": 1583.58,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_1ybwv64",
+      "recebedor": "Cartao",
+      "valor": 241.99,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_dt1x6i",
+      "recebedor": "Contabilidade",
+      "valor": 600,
+      "data": "2025-11-01"
+    },
+    {
+      "id": "saida_imp_fog3lh",
+      "recebedor": "PIS",
+      "valor": 2315.82,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1w2b082",
+      "recebedor": "COFINS",
+      "valor": 1602.18,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_kzklof",
+      "recebedor": "ISS",
+      "valor": 3165.34,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1aocd6z",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_jdhbof",
+      "recebedor": "DLL",
+      "valor": 1587,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_jmpqob",
+      "recebedor": "Grupo FIIs",
+      "valor": 100,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1rrf16w",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1qvmepi",
+      "recebedor": "Investimentos",
+      "valor": 577.43,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1uyy1wh",
+      "recebedor": "Matheus",
+      "valor": 6521.2,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1uwty09",
+      "recebedor": "Vinicius",
+      "valor": 6608.5,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_1rt03r4",
+      "recebedor": "Igor",
+      "valor": 5598.31,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_13r0nuy",
+      "recebedor": "Mário",
+      "valor": 5957.95,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_f7sma2",
+      "recebedor": "Cartao",
+      "valor": 181.08,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_9axs49",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-10-01"
+    },
+    {
+      "id": "saida_imp_uzswp",
+      "recebedor": "PIS",
+      "valor": 1259.37,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_5ypn7j",
+      "recebedor": "COFINS",
+      "valor": 272.86,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_fsgnr2",
+      "recebedor": "ISS",
+      "valor": 2098.95,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1b99isj",
+      "recebedor": "Profit Ultra",
+      "valor": 425,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_10r325x",
+      "recebedor": "DLL",
+      "valor": 1787,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_w0y6ar",
+      "recebedor": "Grupo FIIs",
+      "valor": 100,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_awho68",
+      "recebedor": "Limpeza mensal",
+      "valor": 60,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_75ta8n",
+      "recebedor": "Matheus",
+      "valor": 497.53,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_nrpmhv",
+      "recebedor": "Vinicius",
+      "valor": 3336.39,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1nbaeeh",
+      "recebedor": "Igor",
+      "valor": 2981.11,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1kxw7il",
+      "recebedor": "Mário",
+      "valor": 1095.22,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1a0k3l9",
+      "recebedor": "Cartao",
+      "valor": 568.04,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_1a8wrch",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-09-01"
+    },
+    {
+      "id": "saida_imp_oz43tw",
+      "recebedor": "PIS",
+      "valor": 552.27,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_3sjtf",
+      "recebedor": "COFINS",
+      "valor": 313.36,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_rqjguo",
+      "recebedor": "ISS",
+      "valor": 67.89,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_14z24tw",
+      "recebedor": "Limpeza mensal",
+      "valor": 120,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_qysvj6",
+      "recebedor": "Investimentos",
+      "valor": 5004.97,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1l7784h",
+      "recebedor": "Cartao",
+      "valor": 335.34,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1pmjukw",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-08-01"
+    },
+    {
+      "id": "saida_imp_1j1uurf",
+      "recebedor": "PIS",
+      "valor": 3874.96,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_2colax",
+      "recebedor": "COFINS",
+      "valor": 350.43,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_ogt887",
+      "recebedor": "ISS",
+      "valor": 480.04,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_tonw6o",
+      "recebedor": "Email UP",
+      "valor": 32.97,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_bh7omz",
+      "recebedor": "Trafego pago",
+      "valor": 914.26,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_1fdk3no",
+      "recebedor": "Investimentos",
+      "valor": 1887,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_15tz3nu",
+      "recebedor": "Cartao",
+      "valor": 559.78,
+      "data": "2025-07-01"
+    },
+    {
+      "id": "saida_imp_1aha9mn",
+      "recebedor": "Contabilidade",
+      "valor": 400,
+      "data": "2025-07-01"
+    }
+  ]
+}

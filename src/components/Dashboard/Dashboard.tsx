@@ -3,6 +3,7 @@ import { Cliente, Aplicacao, SaldoCliente } from '../../types';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import { calculateDashboardData, formatCurrency, calculateTotalAssinaturaMensal } from '../../utils/calculations';
 import { buscarDashboardAsaasData, isAsaasConfigured } from '../../services/asaasService';
+import { savePortSharedStorageValue } from '../../services/portSharedStorage';
 import { useMoneyVisibility } from '../../contexts/MoneyVisibilityContext';
 import StatCard from '../StatCard/StatCard';
 import Clientes from '../Clientes/Clientes';
@@ -113,14 +114,13 @@ export default function Dashboard({ clientes, aplicacoes, saldos }: DashboardPro
         : await buscarDashboardAsaasData(asaasCustomerIds);
 
       if (!cacheValido) {
-        localStorage.setItem(
-          DASHBOARD_CACHE_KEY,
-          JSON.stringify({
-            timestamp: agora,
-            contatos: dados.contatos || {},
-            status: dados.status || {},
-          })
-        );
+        const payload = {
+          timestamp: agora,
+          contatos: dados.contatos || {},
+          status: dados.status || {},
+        };
+        localStorage.setItem(DASHBOARD_CACHE_KEY, JSON.stringify(payload));
+        void savePortSharedStorageValue(DASHBOARD_CACHE_KEY, payload);
       }
 
       if (!ativo) return;

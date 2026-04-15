@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Cliente } from '../../types';
-import { RelatorioMensal } from '../../types/relatorio';
+import { CamposCompartilhadosProducaoRelatorio, RelatorioMensal } from '../../types/relatorio';
 import { useEstrategias } from '../../hooks/useEstrategias';
 import { buscarCDI } from '../../services/cdiIfixService';
 import Card from '../../components/Card/Card';
@@ -11,6 +11,8 @@ import './FormRelatorioMassa.css';
 interface FormRelatorioMassaProps {
   clientes: Cliente[];
   onGerarPDFs: (relatorios: RelatorioMensal[]) => void;
+  camposCompartilhados: CamposCompartilhadosProducaoRelatorio;
+  onCamposCompartilhadosChange: (campos: Partial<CamposCompartilhadosProducaoRelatorio>) => void;
 }
 
 interface ClienteSelecionado {
@@ -30,16 +32,14 @@ interface EstrategiaSelecionada {
   comentarioImagens: Array<{ id: string; src: string }>;
 }
 
-export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelatorioMassaProps) {
+export default function FormRelatorioMassa({
+  clientes,
+  onGerarPDFs,
+  camposCompartilhados,
+  onCamposCompartilhadosChange,
+}: FormRelatorioMassaProps) {
+  const OPCAO_TODOS_CLIENTES_ATIVOS = '__todos_clientes_ativos__';
   const { estrategias } = useEstrategias();
-  const [formData, setFormData] = useState({
-    mes: new Date().getMonth() + 1,
-    ano: new Date().getFullYear(),
-    resumoMacro: '',
-    cdiMensal: '',
-    textoAcimaCDI: '',
-    textoAbaixoCDI: '',
-  });
 
   const [clientesSelecionados, setClientesSelecionados] = useState<Record<string, ClienteSelecionado>>({});
   const [estrategiaSelecionada, setEstrategiaSelecionada] = useState<string>('');
@@ -71,6 +71,46 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     return estrategias.find(estrategia => estrategia.id === estrategiaId)?.nome || 'Estratégia principal';
   };
 
+  const clientesAtivos = useMemo(
+    () => clientes.filter((cliente) => String(cliente.status || '').trim().toLowerCase() === 'ativo'),
+    [clientes]
+  );
+
+  const clientesAtivosPorEstrategia = useMemo(() => {
+    const agrupados: Record<string, Cliente[]> = {};
+    clientesAtivos.forEach((cliente) => {
+      if (!cliente.estrategiaId) return;
+      if (!agrupados[cliente.estrategiaId]) {
+        agrupados[cliente.estrategiaId] = [];
+      }
+      agrupados[cliente.estrategiaId].push(cliente);
+    });
+    return agrupados;
+  }, [clientesAtivos]);
+
+  const nomeSelecaoAtual = useMemo(() => {
+    if (estrategiaSelecionada === OPCAO_TODOS_CLIENTES_ATIVOS) {
+      return 'Todos os clientes ativos';
+    }
+    return estrategias.find(estrategia => estrategia.id === estrategiaSelecionada)?.nome || '';
+  }, [estrategiaSelecionada, estrategias]);
+
+  const clientesPorId = useMemo(() => {
+    const mapa: Record<string, Cliente> = {};
+    clientes.forEach((cliente) => {
+      mapa[cliente.id] = cliente;
+    });
+    return mapa;
+  }, [clientes]);
+
+  const compararClientesPorNome = (clienteIdA: string, clienteIdB: string) => {
+    const nomeA = clientesPorId[clienteIdA]?.nome?.trim() || '';
+    const nomeB = clientesPorId[clienteIdB]?.nome?.trim() || '';
+    const comparacaoNome = nomeA.localeCompare(nomeB, 'pt-BR', { sensitivity: 'base' });
+    if (comparacaoNome !== 0) return comparacaoNome;
+    return clienteIdA.localeCompare(clienteIdB, 'pt-BR', { sensitivity: 'base' });
+  };
+
   const criarEstrategiaPadrao = (cliente?: Cliente): EstrategiaSelecionada => {
     const estrategiaId = cliente?.estrategiaId || '';
     return {
@@ -88,15 +128,16 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   // Buscar CDI automaticamente quando mês/ano mudar
   useEffect(() => {
     const buscarCDIMensal = async () => {
-      if (!formData.mes || !formData.ano) return;
+      if (!camposCompartilhados.mes || !camposCompartilhados.ano) return;
+      if (camposCompartilhados.cdiMensal.trim()) return;
 
       setCarregandoCDI(true);
       setErroCDI('');
 
       try {
         // Calcular data início e fim do mês
-        const dataInicio = new Date(formData.ano, formData.mes - 1, 1);
-        const dataFim = new Date(formData.ano, formData.mes, 0); // Último dia do mês
+        const dataInicio = new Date(camposCompartilhados.ano, camposCompartilhados.mes - 1, 1);
+        const dataFim = new Date(camposCompartilhados.ano, camposCompartilhados.mes, 0); // Último dia do mês
 
         const dataInicioStr = formatDateIso(dataInicio);
         const dataFimStr = formatDateIso(dataFim);
@@ -104,7 +145,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
         const cdiMensal = await buscarCDI(dataInicioStr, dataFimStr);
 
         if (cdiMensal !== null) {
-          setFormData(prev => ({ ...prev, cdiMensal: formatDecimalInput(cdiMensal) }));
+          onCamposCompartilhadosChange({ cdiMensal: formatDecimalInput(cdiMensal) });
         } else {
           setErroCDI('CDI não encontrado para o período selecionado. Preencha manualmente.');
         }
@@ -119,7 +160,12 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     // Debounce para evitar muitas requisições
     const timeoutId = setTimeout(buscarCDIMensal, 500);
     return () => clearTimeout(timeoutId);
-  }, [formData.mes, formData.ano]);
+  }, [
+    camposCompartilhados.mes,
+    camposCompartilhados.ano,
+    camposCompartilhados.cdiMensal,
+    onCamposCompartilhadosChange,
+  ]);
 
   // Quando a estratégia mudar, atualizar automaticamente os clientes selecionados
   const handleEstrategiaChange = (estrategiaId: string) => {
@@ -131,8 +177,10 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       return;
     }
     
-    // Selecionar todos os clientes da estratégia
-    const clientesEstrategia = clientes.filter(c => c.estrategiaId === estrategiaId);
+    // Selecionar todos os clientes ativos da estratégia ou todos os ativos
+    const clientesEstrategia = estrategiaId === OPCAO_TODOS_CLIENTES_ATIVOS
+      ? clientesAtivos
+      : clientesAtivos.filter(c => c.estrategiaId === estrategiaId);
     const novosSelecionados: Record<string, ClienteSelecionado> = {};
     
     clientesEstrategia.forEach(cliente => {
@@ -149,8 +197,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   // Obter clientes da estratégia selecionada
   const clientesEstrategiaSelecionada = useMemo(() => {
     if (!estrategiaSelecionada) return [];
-    return clientes.filter(c => c.estrategiaId === estrategiaSelecionada);
-  }, [clientes, estrategiaSelecionada]);
+    if (estrategiaSelecionada === OPCAO_TODOS_CLIENTES_ATIVOS) {
+      return clientesAtivos;
+    }
+    return clientesAtivos.filter(c => c.estrategiaId === estrategiaSelecionada);
+  }, [clientesAtivos, estrategiaSelecionada]);
 
   const atualizarDadosCliente = (
     clienteId: string,
@@ -355,7 +406,7 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             const imagemRemovida = (estrategia.comentarioImagens || [])[imagemIndex];
             const tokenRemover = imagemRemovida ? `[[img:${imagemRemovida.id}]]` : '';
             const comentarioAtualizado = tokenRemover
-              ? (estrategia.comentario || '').replaceAll(tokenRemover, '').replace(/\n{3,}/g, '\n\n').trim()
+              ? (estrategia.comentario || '').split(tokenRemover).join('').replace(/\n{3,}/g, '\n\n').trim()
               : estrategia.comentario;
             return {
               ...estrategia,
@@ -413,12 +464,12 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.resumoMacro) {
+    if (!camposCompartilhados.resumoMacro) {
       alert('Por favor, preencha o Resumo Macro.');
       return;
     }
 
-    if (!formData.textoAcimaCDI || !formData.textoAbaixoCDI) {
+    if (!camposCompartilhados.textoAcimaCDI || !camposCompartilhados.textoAbaixoCDI) {
       alert('Por favor, preencha os textos para resultado acima e abaixo do CDI.');
       return;
     }
@@ -428,9 +479,9 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       return;
     }
 
-    const clientesIds = Object.keys(clientesSelecionados).filter(
-      id => clientesSelecionados[id]?.selecionado
-    );
+    const clientesIds = Object.keys(clientesSelecionados)
+      .filter(id => clientesSelecionados[id]?.selecionado)
+      .sort(compararClientesPorNome);
     if (clientesIds.length === 0) {
       alert('Nenhum cliente encontrado para a estratégia selecionada.');
       return;
@@ -438,21 +489,34 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
 
     const relatorios: RelatorioMensal[] = clientesIds.map(clienteId => {
       const dados = clientesSelecionados[clienteId];
-      const cliente = clientes.find(c => c.id === clienteId);
+      const cliente = clientesPorId[clienteId];
 
-      const cdiMensal = parseDecimalInput(formData.cdiMensal);
-      const estrategiasRelatorio = dados.estrategias.map((estrategia) => {
+      const cdiMensal = parseDecimalInput(camposCompartilhados.cdiMensal);
+      const estrategiasComResultado = dados.estrategias.map((estrategia) => {
+        const resultadoPercentual = parseDecimalInput(estrategia.resultadoPercentual);
+        return {
+          estrategia,
+          resultadoPercentual,
+          patrimonioTotal: parseDecimalInput(estrategia.patrimonioTotal),
+          resultadoValor: parseDecimalInput(estrategia.resultadoValor),
+          acimaCDI: resultadoPercentual > cdiMensal,
+        };
+      });
+
+      const totalAcimaCDI = estrategiasComResultado.filter((item) => item.acimaCDI).length;
+      const totalAbaixoOuIgualCDI = estrategiasComResultado.length - totalAcimaCDI;
+
+      const estrategiasRelatorio = estrategiasComResultado.map((item) => {
+        const { estrategia, resultadoPercentual, patrimonioTotal, resultadoValor, acimaCDI } = item;
         const tituloResolvido =
           estrategia.tituloPersonalizado?.trim() ||
           estrategia.titulo ||
           obterNomeEstrategia(estrategia.estrategiaId) ||
           'Estratégia manual';
-        const resultadoPercentual = parseDecimalInput(estrategia.resultadoPercentual);
-        const patrimonioTotal = parseDecimalInput(estrategia.patrimonioTotal);
-        const resultadoValor = parseDecimalInput(estrategia.resultadoValor);
-        const resumoTextoPadrao = resultadoPercentual > cdiMensal
-          ? formData.textoAcimaCDI
-          : formData.textoAbaixoCDI;
+        const textoPadraoRepetido = acimaCDI ? totalAcimaCDI >= 2 : totalAbaixoOuIgualCDI >= 2;
+        const resumoTextoPadrao = textoPadraoRepetido
+          ? ''
+          : (acimaCDI ? camposCompartilhados.textoAcimaCDI : camposCompartilhados.textoAbaixoCDI);
         const comentarioIndividual = estrategia.comentario?.trim();
         const resumoTextoFinal = comentarioIndividual
           ? (resumoTextoPadrao ? `${resumoTextoPadrao}\n\n${comentarioIndividual}` : comentarioIndividual)
@@ -472,16 +536,16 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
       return {
         clienteId,
         clienteNome: cliente?.nome,
-        mes: formData.mes,
-        ano: formData.ano,
-        resumoMacro: formData.resumoMacro,
+        mes: camposCompartilhados.mes,
+        ano: camposCompartilhados.ano,
+        resumoMacro: camposCompartilhados.resumoMacro,
         patrimonioTotal: estrategiaPrincipal?.patrimonioTotal || 0,
         resultadoMes: estrategiaPrincipal?.resultadoMes || 0,
         resultadoPercentual: estrategiaPrincipal?.resultadoPercentual || 0,
         resumoTexto: estrategiaPrincipal?.resumoTexto || '',
         cdiMensal,
-        textoAcimaCDI: formData.textoAcimaCDI,
-        textoAbaixoCDI: formData.textoAbaixoCDI,
+        textoAcimaCDI: camposCompartilhados.textoAcimaCDI,
+        textoAbaixoCDI: camposCompartilhados.textoAbaixoCDI,
         estrategias: estrategiasRelatorio,
         dataGeracao: new Date().toISOString(),
       };
@@ -491,15 +555,36 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
   };
 
   const clientesSelecionadosList = useMemo(() => {
-    return Object.keys(clientesSelecionados).map(id => {
-      const cliente = clientes.find(c => c.id === id);
-      return { id, cliente, dados: clientesSelecionados[id] };
-    });
-  }, [clientesSelecionados, clientes]);
+    return Object.keys(clientesSelecionados)
+      .sort(compararClientesPorNome)
+      .map(id => {
+        const cliente = clientesPorId[id];
+        return { id, cliente, dados: clientesSelecionados[id] };
+      });
+  }, [clientesSelecionados, clientesPorId]);
 
   const totalSelecionados = useMemo(() => {
     return Object.values(clientesSelecionados).filter(c => c.selecionado).length;
   }, [clientesSelecionados]);
+
+  const todosClientesSelecionados = useMemo(() => {
+    const totalClientesCarregados = Object.keys(clientesSelecionados).length;
+    return totalClientesCarregados > 0 && totalSelecionados === totalClientesCarregados;
+  }, [clientesSelecionados, totalSelecionados]);
+
+  const toggleTodosClientesSelecionados = () => {
+    const marcarTodos = !todosClientesSelecionados;
+    setClientesSelecionados((prev) => {
+      const atualizado: Record<string, ClienteSelecionado> = {};
+      Object.keys(prev).forEach((clienteId) => {
+        atualizado[clienteId] = {
+          ...prev[clienteId],
+          selecionado: marcarTodos,
+        };
+      });
+      return atualizado;
+    });
+  };
 
   const anosDisponiveis = Array.from({ length: 81 }, (_, index) => 2020 + index);
 
@@ -521,8 +606,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
               <label htmlFor="mes">Mês *</label>
               <select
                 id="mes"
-                value={formData.mes}
-                onChange={(e) => setFormData({ ...formData, mes: parseInt(e.target.value) })}
+                value={camposCompartilhados.mes}
+                onChange={(e) => onCamposCompartilhadosChange({
+                  mes: parseInt(e.target.value, 10),
+                  cdiMensal: '',
+                })}
                 required
               >
                 {meses.map((mes, index) => (
@@ -537,9 +625,12 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
               <label htmlFor="ano">Ano *</label>
               <YearSelect
                 id="ano"
-                value={Number(formData.ano) || new Date().getFullYear()}
+                value={Number(camposCompartilhados.ano) || new Date().getFullYear()}
                 years={anosDisponiveis}
-                onChange={(ano) => setFormData({ ...formData, ano })}
+                onChange={(ano) => onCamposCompartilhadosChange({
+                  ano,
+                  cdiMensal: '',
+                })}
               />
             </div>
           </div>
@@ -548,8 +639,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             <label htmlFor="resumoMacro">Resumo Macro (Padrão para todos) *</label>
             <textarea
               id="resumoMacro"
-              value={formData.resumoMacro}
-              onChange={(e) => setFormData({ ...formData, resumoMacro: e.target.value })}
+              value={camposCompartilhados.resumoMacro}
+              onChange={(e) => onCamposCompartilhadosChange({ resumoMacro: e.target.value })}
               rows={3}
               placeholder="Digite o resumo macro da carteira..."
               required
@@ -566,8 +657,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                 type="text"
                 inputMode="decimal"
                 id="cdiMensal"
-                value={formData.cdiMensal}
-                onChange={(e) => setFormData({ ...formData, cdiMensal: e.target.value })}
+                value={camposCompartilhados.cdiMensal}
+                onChange={(e) => onCamposCompartilhadosChange({ cdiMensal: e.target.value })}
                 placeholder="Será preenchido automaticamente"
                 disabled={carregandoCDI}
               />
@@ -579,8 +670,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             <label htmlFor="textoAcimaCDI">Texto quando Resultado maior que CDI *</label>
             <textarea
               id="textoAcimaCDI"
-              value={formData.textoAcimaCDI}
-              onChange={(e) => setFormData({ ...formData, textoAcimaCDI: e.target.value })}
+              value={camposCompartilhados.textoAcimaCDI}
+              onChange={(e) => onCamposCompartilhadosChange({ textoAcimaCDI: e.target.value })}
               rows={5}
               placeholder="Texto que será usado quando o resultado do mês for superior ao CDI..."
               required
@@ -591,8 +682,8 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             <label htmlFor="textoAbaixoCDI">Texto quando Resultado menor ou igual ao CDI *</label>
             <textarea
               id="textoAbaixoCDI"
-              value={formData.textoAbaixoCDI}
-              onChange={(e) => setFormData({ ...formData, textoAbaixoCDI: e.target.value })}
+              value={camposCompartilhados.textoAbaixoCDI}
+              onChange={(e) => onCamposCompartilhadosChange({ textoAbaixoCDI: e.target.value })}
               rows={5}
               placeholder="Texto que será usado quando o resultado do mês for igual ou inferior ao CDI..."
               required
@@ -614,8 +705,11 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
                 required
               >
                 <option value="">Selecione uma estratégia</option>
+                <option value={OPCAO_TODOS_CLIENTES_ATIVOS}>
+                  Todos os clientes ativos ({clientesAtivos.length} cliente{clientesAtivos.length !== 1 ? 's' : ''})
+                </option>
                 {estrategias.map((estrategia) => {
-                  const clientesEstrategia = clientes.filter(c => c.estrategiaId === estrategia.id);
+                  const clientesEstrategia = clientesAtivosPorEstrategia[estrategia.id] || [];
                   return (
                     <option key={estrategia.id} value={estrategia.id}>
                       {estrategia.nome} ({clientesEstrategia.length} cliente{clientesEstrategia.length !== 1 ? 's' : ''})
@@ -628,14 +722,14 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
             {estrategiaSelecionada && (
               <div className="estrategia-info">
                 <p className="selected-count">
-                  <strong>{Object.keys(clientesSelecionados).length}</strong> cliente(s) da estratégia "<strong>{estrategias.find(e => e.id === estrategiaSelecionada)?.nome}</strong>" serão incluídos no relatório.
+                  <strong>{Object.keys(clientesSelecionados).length}</strong> cliente(s) da seleção "<strong>{nomeSelecaoAtual}</strong>" serão incluídos no relatório.
                 </p>
                 <p className="selected-count selected-count--computed">
-                  <strong>{totalSelecionados}</strong> de <strong>{clientesEstrategiaSelecionada.length}</strong> cliente(s) selecionado(s) da estrategia "<strong>{estrategias.find(e => e.id === estrategiaSelecionada)?.nome}</strong>".
+                  <strong>{totalSelecionados}</strong> de <strong>{clientesEstrategiaSelecionada.length}</strong> cliente(s) selecionado(s) da seleção "<strong>{nomeSelecaoAtual}</strong>".
                 </p>
                 {clientesEstrategiaSelecionada.length === 0 && (
                   <p className="warning-message">
-                    ⚠️ Nenhum cliente encontrado para esta estratégia.
+                    ⚠️ Nenhum cliente encontrado para esta seleção.
                   </p>
                 )}
               </div>
@@ -645,7 +739,17 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
 
         {clientesSelecionadosList.length > 0 && (
           <div className="form-section">
-            <h3>Dados dos Clientes Selecionados</h3>
+            <div className="clientes-selecionados-header">
+              <h3>Dados dos Clientes Selecionados</h3>
+              <label className="selecionar-todos-toggle">
+                <input
+                  type="checkbox"
+                  checked={todosClientesSelecionados}
+                  onChange={toggleTodosClientesSelecionados}
+                />
+                <span>Selecionar todos</span>
+              </label>
+            </div>
             
             <div className="clientes-dados">
               {clientesSelecionadosList.map(({ id, cliente, dados }) => (
@@ -831,3 +935,4 @@ export default function FormRelatorioMassa({ clientes, onGerarPDFs }: FormRelato
     </Card>
   );
 }
+

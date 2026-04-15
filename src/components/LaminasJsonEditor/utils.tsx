@@ -220,6 +220,53 @@ const substituirBenchmark = (valor: string, benchmark: string) => {
   return valor.replace(benchmarkRegex, benchmark);
 };
 
+const normalizarTabelaPerformancePorBenchmark = (
+  headers: string[],
+  rows: string[][],
+  benchmark: string
+): LaminaTemplate['tabelaPerformance'] => {
+  const headersFixos = ['Período', 'Tática', benchmark, 'CDI', 'Alpha'];
+  if (!Array.isArray(headers) || !headers.length) {
+    return {
+      headers: headersFixos,
+      rows: rows.map((row) => row.slice(0, 5)),
+    };
+  }
+
+  const indexBy = {
+    periodo: headers.findIndex((header) => {
+      const label = normalizeLabel(header);
+      return label.includes('periodo') || label.includes('período');
+    }),
+    tatica: headers.findIndex((header) => normalizeLabel(header).includes('tatica')),
+    benchmark: headers.findIndex((header) => {
+      const label = normalizeLabel(header);
+      return label.includes('benchmark') || label.includes('ifix') || label.includes('ibov') || label === normalizeLabel(benchmark);
+    }),
+    cdi: headers.findIndex((header) => normalizeLabel(header).includes('cdi')),
+    alpha: headers.findIndex((header) => normalizeLabel(header).includes('alpha')),
+  };
+
+  const pick = (row: string[], idx: number, fallbackIdx: number, emptyValue = '-') => {
+    if (idx >= 0 && idx < row.length) return row[idx];
+    if (fallbackIdx >= 0 && fallbackIdx < row.length) return row[fallbackIdx];
+    return emptyValue;
+  };
+
+  const rowsNormalizadas = rows.map((row) => [
+    pick(row, indexBy.periodo, 0, ''),
+    pick(row, indexBy.tatica, 1),
+    pick(row, indexBy.benchmark, 2),
+    pick(row, indexBy.cdi, 3),
+    pick(row, indexBy.alpha, 4),
+  ]);
+
+  return {
+    headers: headersFixos,
+    rows: rowsNormalizadas,
+  };
+};
+
 export const aplicarBenchmarkLabel = (base: LaminaTemplate, benchmark: string): LaminaTemplate => {
   const safeBenchmark = benchmark?.trim();
   if (!safeBenchmark) return base;
@@ -230,6 +277,14 @@ export const aplicarBenchmarkLabel = (base: LaminaTemplate, benchmark: string): 
     texto: replace(item.texto),
     destaques: item.destaques?.map((destaque) => replace(destaque)),
   });
+
+  const headersSubstituidos = base.tabelaPerformance.headers.map(replace);
+  const rowsSubstituidas = base.tabelaPerformance.rows.map((row) => row.map(replace));
+  const tabelaPerformanceNormalizada = normalizarTabelaPerformancePorBenchmark(
+    headersSubstituidos,
+    rowsSubstituidas,
+    normalizedBenchmark
+  );
 
   return {
     ...base,
@@ -260,8 +315,8 @@ export const aplicarBenchmarkLabel = (base: LaminaTemplate, benchmark: string): 
     })),
     tabelaPerformance: {
       ...base.tabelaPerformance,
-      headers: base.tabelaPerformance.headers.map(replace),
-      rows: base.tabelaPerformance.rows.map((row) => row.map(replace)),
+      headers: tabelaPerformanceNormalizada.headers,
+      rows: tabelaPerformanceNormalizada.rows,
     },
     mesTitulo: replace(base.mesTitulo),
     comentarios: base.comentarios.map(updateIntro),
@@ -331,6 +386,7 @@ export function renderTextoComDestaques(texto: string, destaques?: string[]) {
 
   return nodes;
 }
+
 
 
 

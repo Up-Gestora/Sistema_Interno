@@ -1,0 +1,2375 @@
+{
+  "values": {
+    "asaas_config": {
+      "apiKey": "$aact_prod_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjFhZjFkZTE5LWMwYzEtNDljYS05Y2E2LTc4NjllODM4NDVlMjo6JGFhY2hfMThjNmU0NTQtOWE4Mi00NTBkLTgxM2YtYmU4ODE0NGQ2MWJi",
+      "ambiente": "production"
+    },
+    "saidas_manual_lancamentos_v1": [
+      {
+        "id": "saida_planilha_davi_2026-03",
+        "recebedor": "Davi",
+        "valor": 1540,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_igor_2026-03",
+        "recebedor": "Igor",
+        "valor": 4538.78,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_mario_2026-03",
+        "recebedor": "Mário",
+        "valor": 1026.42,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_matheus_2026-03",
+        "recebedor": "Matheus",
+        "valor": 7150.31,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_vinicius_2026-03",
+        "recebedor": "Vinicius",
+        "valor": 4517.4,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_iss_2026-03",
+        "recebedor": "ISS",
+        "valor": 2428.73,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_grana capital_2026-03",
+        "recebedor": "Grana Capital",
+        "valor": 189.9,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_cartao_2026-03",
+        "recebedor": "Cartao",
+        "valor": 658.83,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_limpeza mensal_2026-03",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_repasses_2026-03",
+        "recebedor": "Repasses",
+        "valor": 865.98,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_contabilidade_2026-03",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_trafego pago_2026-03",
+        "recebedor": "Trafego pago",
+        "valor": 135.24,
+        "data": "2026-03-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_matheus_2026-02",
+        "recebedor": "Matheus",
+        "valor": 1838.76,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_vinicius_2026-02",
+        "recebedor": "Vinicius",
+        "valor": 4021.54,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_mario_2026-02",
+        "recebedor": "Mário",
+        "valor": 1509.58,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_igor_2026-02",
+        "recebedor": "Igor",
+        "valor": 3517.23,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_trafego pago_2026-02",
+        "recebedor": "Trafego pago",
+        "valor": 1050,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_cofins_2026-02",
+        "recebedor": "COFINS",
+        "valor": 1172.16,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_investimentos_2026-02",
+        "recebedor": "Investimentos",
+        "valor": 664.8,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_cartao_2026-02",
+        "recebedor": "Cartao",
+        "valor": 886.33,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_iss_2026-02",
+        "recebedor": "ISS",
+        "valor": 1605.71,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_contabilidade_2026-02",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_grupo fiis_2026-02",
+        "recebedor": "Grupo FIIs",
+        "valor": 270,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_planilha_limpeza mensal_2026-02",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2026-02-01",
+        "descricao": "Planilha"
+      },
+      {
+        "id": "saida_imp_1714anv",
+        "recebedor": "PIS",
+        "valor": 3344.64,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_e4pvpk",
+        "recebedor": "COFINS",
+        "valor": 2685.84,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_1jra2yg",
+        "recebedor": "ISS",
+        "valor": 1300.88,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_17hrqy3",
+        "recebedor": "Igor",
+        "valor": 5800.17,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_21zyfa",
+        "recebedor": "Mário",
+        "valor": 4668.2300000000005,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_1lcdc9u",
+        "recebedor": "Matheus",
+        "valor": 6819.150000000001,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_dzn4b2",
+        "recebedor": "Vinicius",
+        "valor": 8843.970000000001,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_v2jw0o",
+        "recebedor": "Profit Ultra",
+        "valor": 2212,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_1w8pcnf",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_np87qe",
+        "recebedor": "Cartao",
+        "valor": 254.59,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_gbbty1",
+        "recebedor": "Grana Capital",
+        "valor": 175,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_fsw6m2",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2026-01-01"
+      },
+      {
+        "id": "saida_imp_151ey8y",
+        "recebedor": "COFINS",
+        "valor": 1204.18,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_6gyei9",
+        "recebedor": "ISS",
+        "valor": 2006.97,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_m3jssp",
+        "recebedor": "Profit Ultra",
+        "valor": 425,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_i1nrof",
+        "recebedor": "DLL",
+        "valor": 1787,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_1s5f9sa",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_14vxnxr",
+        "recebedor": "Matheus",
+        "valor": 3774.9,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_1vj76h5",
+        "recebedor": "Vinicius",
+        "valor": 7097.17,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_16h4nmq",
+        "recebedor": "Igor",
+        "valor": 4377.73,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_bk8wzs",
+        "recebedor": "Mário",
+        "valor": 2809.67,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_rhzv2f",
+        "recebedor": "Cartao",
+        "valor": 240.9,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_m10brq",
+        "recebedor": "Grana Capital",
+        "valor": 569.7,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_ouucpl",
+        "recebedor": "Contabilidade",
+        "valor": 600,
+        "data": "2025-12-01"
+      },
+      {
+        "id": "saida_imp_1kkhs11",
+        "recebedor": "PIS",
+        "valor": 815.2,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_gdk2xj",
+        "recebedor": "COFINS",
+        "valor": 432.85,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_v9afmy",
+        "recebedor": "Profit Ultra",
+        "valor": 425,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_89ixzw",
+        "recebedor": "DLL",
+        "valor": 1787,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_yjh0r3",
+        "recebedor": "Grupo FIIs",
+        "valor": 150,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_1oxqqfw",
+        "recebedor": "Limpeza mensal",
+        "valor": 120,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_1x2xh80",
+        "recebedor": "Investimentos",
+        "valor": 234,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_107l4em",
+        "recebedor": "Matheus",
+        "valor": 3158.03,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_1pkgk93",
+        "recebedor": "Vinicius",
+        "valor": 6754.46,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_10u5euf",
+        "recebedor": "Igor",
+        "valor": 4103.56,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_1ou93wr",
+        "recebedor": "Mário",
+        "valor": 1583.58,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_1ybwv64",
+        "recebedor": "Cartao",
+        "valor": 241.99,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_dt1x6i",
+        "recebedor": "Contabilidade",
+        "valor": 600,
+        "data": "2025-11-01"
+      },
+      {
+        "id": "saida_imp_fog3lh",
+        "recebedor": "PIS",
+        "valor": 2315.82,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1w2b082",
+        "recebedor": "COFINS",
+        "valor": 1602.18,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_kzklof",
+        "recebedor": "ISS",
+        "valor": 3165.34,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1aocd6z",
+        "recebedor": "Profit Ultra",
+        "valor": 425,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_jdhbof",
+        "recebedor": "DLL",
+        "valor": 1587,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_jmpqob",
+        "recebedor": "Grupo FIIs",
+        "valor": 100,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1rrf16w",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1qvmepi",
+        "recebedor": "Investimentos",
+        "valor": 577.43,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1uyy1wh",
+        "recebedor": "Matheus",
+        "valor": 6521.2,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1uwty09",
+        "recebedor": "Vinicius",
+        "valor": 6608.5,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_1rt03r4",
+        "recebedor": "Igor",
+        "valor": 5598.31,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_13r0nuy",
+        "recebedor": "Mário",
+        "valor": 5957.95,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_f7sma2",
+        "recebedor": "Cartao",
+        "valor": 181.08,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_9axs49",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2025-10-01"
+      },
+      {
+        "id": "saida_imp_uzswp",
+        "recebedor": "PIS",
+        "valor": 1259.37,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_5ypn7j",
+        "recebedor": "COFINS",
+        "valor": 272.86,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_fsgnr2",
+        "recebedor": "ISS",
+        "valor": 2098.95,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_1b99isj",
+        "recebedor": "Profit Ultra",
+        "valor": 425,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_10r325x",
+        "recebedor": "DLL",
+        "valor": 1787,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_w0y6ar",
+        "recebedor": "Grupo FIIs",
+        "valor": 100,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_awho68",
+        "recebedor": "Limpeza mensal",
+        "valor": 60,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_75ta8n",
+        "recebedor": "Matheus",
+        "valor": 497.53,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_nrpmhv",
+        "recebedor": "Vinicius",
+        "valor": 3336.39,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_1nbaeeh",
+        "recebedor": "Igor",
+        "valor": 2981.11,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_1kxw7il",
+        "recebedor": "Mário",
+        "valor": 1095.22,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_1a0k3l9",
+        "recebedor": "Cartao",
+        "valor": 568.04,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_1a8wrch",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2025-09-01"
+      },
+      {
+        "id": "saida_imp_oz43tw",
+        "recebedor": "PIS",
+        "valor": 552.27,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_3sjtf",
+        "recebedor": "COFINS",
+        "valor": 313.36,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_rqjguo",
+        "recebedor": "ISS",
+        "valor": 67.89,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_14z24tw",
+        "recebedor": "Limpeza mensal",
+        "valor": 120,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_qysvj6",
+        "recebedor": "Investimentos",
+        "valor": 5004.97,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_1l7784h",
+        "recebedor": "Cartao",
+        "valor": 335.34,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_1pmjukw",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2025-08-01"
+      },
+      {
+        "id": "saida_imp_1j1uurf",
+        "recebedor": "PIS",
+        "valor": 3874.96,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_2colax",
+        "recebedor": "COFINS",
+        "valor": 350.43,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_ogt887",
+        "recebedor": "ISS",
+        "valor": 480.04,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_tonw6o",
+        "recebedor": "Email UP",
+        "valor": 32.97,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_bh7omz",
+        "recebedor": "Trafego pago",
+        "valor": 914.26,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_1fdk3no",
+        "recebedor": "Investimentos",
+        "valor": 1887,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_15tz3nu",
+        "recebedor": "Cartao",
+        "valor": 559.78,
+        "data": "2025-07-01"
+      },
+      {
+        "id": "saida_imp_1aha9mn",
+        "recebedor": "Contabilidade",
+        "valor": 400,
+        "data": "2025-07-01"
+      }
+    ],
+    "inter_manual_lancamentos_v1": [
+      {
+        "id": "inter_1770745402880",
+        "clienteId": "novo_1769465075570_2",
+        "tipo": "recebimento",
+        "valor": 5871.22,
+        "data": "2025-04-25",
+        "descricao": "Performance 1T2025"
+      },
+      {
+        "id": "inter_imp_1yzczt0",
+        "clienteId": "novo_1769465075570_14",
+        "tipo": "recebimento",
+        "valor": 658.29,
+        "data": "2026-01-28",
+        "descricao": "Acerto"
+      },
+      {
+        "id": "inter_imp_1y2ut7e",
+        "clienteId": "novo_1769465075570_23",
+        "tipo": "recebimento",
+        "valor": 352.61,
+        "data": "2026-01-22",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_168scvn",
+        "clienteId": "novo_1769465075570_11",
+        "tipo": "recebimento",
+        "valor": 1000,
+        "data": "2026-01-21",
+        "descricao": "Pgto Adm"
+      },
+      {
+        "id": "inter_imp_1h4ogog",
+        "clienteId": "novo_1769465075570_4",
+        "tipo": "recebimento",
+        "valor": 350,
+        "data": "2026-01-18",
+        "descricao": "Acerto"
+      },
+      {
+        "id": "inter_imp_wtlbzw",
+        "clienteId": "novo_1769465075570_2",
+        "tipo": "recebimento",
+        "valor": 7067.51,
+        "data": "2026-01-15",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_coi3tj",
+        "clienteId": "cliente_1770658064352",
+        "tipo": "recebimento",
+        "valor": 100,
+        "data": "2026-01-13",
+        "descricao": "Abate Grana"
+      },
+      {
+        "id": "inter_imp_kpek4h",
+        "clienteId": "novo_1769465075570_11",
+        "tipo": "recebimento",
+        "valor": 94.53,
+        "data": "2026-01-13",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_1kkh4x1",
+        "clienteId": "novo_1769465075570_6",
+        "tipo": "recebimento",
+        "valor": 354.81,
+        "data": "2026-01-11",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_1uz6uu7",
+        "clienteId": "novo_1769465075571_50",
+        "tipo": "recebimento",
+        "valor": 187.37,
+        "data": "2026-01-09",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_1wj6924",
+        "clienteId": "novo_1769465075570_19",
+        "tipo": "recebimento",
+        "valor": 427.28,
+        "data": "2026-01-07",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_16saw6e",
+        "clienteId": "novo_1769465075570_26",
+        "tipo": "recebimento",
+        "valor": 1826.44,
+        "data": "2026-01-07",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_1u4molf",
+        "clienteId": "novo_1769465075570_24",
+        "tipo": "recebimento",
+        "valor": 1043.59,
+        "data": "2026-01-07",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_1ryq7zv",
+        "clienteId": "novo_1769465075570_29",
+        "tipo": "recebimento",
+        "valor": 323.49,
+        "data": "2026-01-07",
+        "descricao": "Performance 4T2025"
+      },
+      {
+        "id": "inter_imp_j6u409",
+        "clienteId": "novo_1769465075570_15",
+        "tipo": "recebimento",
+        "valor": 500,
+        "data": "2026-01-07",
+        "descricao": "Bonificação"
+      },
+      {
+        "id": "inter_imp_11zrlcx",
+        "clienteId": "novo_1769465075570_23",
+        "tipo": "recebimento",
+        "valor": 212.15,
+        "data": "2026-01-04",
+        "descricao": "Pgto Adm"
+      },
+      {
+        "id": "inter_imp_vqrafr",
+        "clienteId": "cliente_1769538424246",
+        "tipo": "recebimento",
+        "valor": 6000,
+        "data": "2026-01-04",
+        "descricao": "Findmy Angel"
+      },
+      {
+        "id": "inter_imp_31kg0m",
+        "clienteId": "novo_1769465075571_36",
+        "tipo": "recebimento",
+        "valor": 305.39,
+        "data": "2025-10-20",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_25if8v",
+        "clienteId": "novo_1769465075570_25",
+        "tipo": "recebimento",
+        "valor": 4336.62,
+        "data": "2025-10-20",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_1xn1ne9",
+        "clienteId": "novo_1769465075570_21",
+        "tipo": "recebimento",
+        "valor": 395.71,
+        "data": "2025-10-16",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_1krurag",
+        "clienteId": "novo_1769465075570_24",
+        "tipo": "recebimento",
+        "valor": 1161.25,
+        "data": "2025-10-13",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_pwsqcj",
+        "clienteId": "novo_1769465075570_23",
+        "tipo": "recebimento",
+        "valor": 1545.81,
+        "data": "2025-10-13",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_i4k91l",
+        "clienteId": "novo_1769465075570_32",
+        "tipo": "recebimento",
+        "valor": 43.54,
+        "data": "2025-10-13",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_1xymskk",
+        "clienteId": "novo_1769465075570_23",
+        "tipo": "recebimento",
+        "valor": 1031.8,
+        "data": "2025-10-13",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_rkekr4",
+        "clienteId": "novo_1769465075570_31",
+        "tipo": "recebimento",
+        "valor": 319.7,
+        "data": "2025-10-13",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_oy3gk4",
+        "clienteId": "novo_1769465075570_2",
+        "tipo": "recebimento",
+        "valor": 6850,
+        "data": "2025-10-10",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_coxvps",
+        "clienteId": "novo_1769465075570_29",
+        "tipo": "recebimento",
+        "valor": 202.35,
+        "data": "2025-10-10",
+        "descricao": "Performance 3T2025"
+      },
+      {
+        "id": "inter_imp_z9fwwm",
+        "clienteId": "novo_1769465075570_2",
+        "tipo": "recebimento",
+        "valor": 6456.85,
+        "data": "2025-07-21",
+        "descricao": "Performance 2T2025"
+      },
+      {
+        "id": "inter_imp_6vcjzo",
+        "clienteId": "novo_1769465075570_8",
+        "tipo": "recebimento",
+        "valor": 3946.92,
+        "data": "2025-07-15",
+        "descricao": "Performance 2T2025"
+      },
+      {
+        "id": "inter_imp_1lqdqhb",
+        "clienteId": "novo_1769465075570_1",
+        "tipo": "recebimento",
+        "valor": 14793.91,
+        "data": "2025-07-14",
+        "descricao": "Performance 2T2025"
+      },
+      {
+        "id": "inter_imp_1mwwtz",
+        "clienteId": "novo_1769465075570_19",
+        "tipo": "recebimento",
+        "valor": 749.78,
+        "data": "2025-07-10",
+        "descricao": "Performance 2T2025"
+      },
+      {
+        "id": "inter_imp_x0qwh",
+        "clienteId": "novo_1769465075570_24",
+        "tipo": "recebimento",
+        "valor": 666.56,
+        "data": "2025-07-09",
+        "descricao": "Performance 2T2025"
+      },
+      {
+        "id": "inter_imp_dupjlp",
+        "clienteId": "novo_1769465075570_10",
+        "tipo": "recebimento",
+        "valor": 1000,
+        "data": "2025-06-02",
+        "descricao": "Acerto"
+      },
+      {
+        "id": "inter_imp_s3qaf4",
+        "clienteId": "novo_1769465075570_1",
+        "tipo": "recebimento",
+        "valor": 28000,
+        "data": "2025-04-11",
+        "descricao": "Performance 1T2025"
+      }
+    ],
+    "financeiro_recebedores_saidas_custom_v1": [
+      {
+        "nome": "Davi",
+        "categoria": "custos"
+      },
+      {
+        "nome": "Repasses",
+        "categoria": "custos"
+      }
+    ],
+    "clientes": [
+      {
+        "id": "cliente_1772224297321",
+        "nome": "Arlindo C",
+        "email": "arlindo.cervinski2909@gmail.com",
+        "telefone": "47991265568",
+        "empresa": "",
+        "dataCadastro": "2026-02-27",
+        "status": "ativo",
+        "estrategiaId": "1",
+        "valorTotalContratos": 795880.06,
+        "btg": 795880.06,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.8,
+        "taxaAdmMensal": 0.07,
+        "assinatura": 530.59,
+        "patrimonioTotal": 795880.06,
+        "asaasCustomerId": "cus_000163633853",
+        "asaasSubscriptionId": "sub_sru3hef16ln23nmf"
+      },
+      {
+        "id": "cliente_1770836959616",
+        "nome": "Divina O",
+        "email": "divina_souza@yahoo.com.br",
+        "telefone": "62981510429",
+        "empresa": "",
+        "dataCadastro": "2026-02-11",
+        "status": "ativo",
+        "valorTotalContratos": 83478.76,
+        "btg": 83478.76,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 1.25,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 86.96,
+        "patrimonioTotal": 83478.76,
+        "asaasCustomerId": "cus_000163636807",
+        "asaasSubscriptionId": "sub_f9ejzarr0ehi86dq",
+        "estrategiaId": "3"
+      },
+      {
+        "id": "cliente_1770836952560",
+        "nome": "Milena V",
+        "email": "milena_vidalsantos@hotmail.com",
+        "telefone": "91980419777",
+        "empresa": "",
+        "dataCadastro": "2026-02-11",
+        "status": "ativo",
+        "valorTotalContratos": 1447226.73,
+        "btg": 1447226.73,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.8,
+        "taxaAdmMensal": 0.07,
+        "assinatura": 964.82,
+        "patrimonioTotal": 1447226.73,
+        "asaasCustomerId": "cus_000163633253",
+        "asaasSubscriptionId": "sub_ni1bc5ptgpbtqhic",
+        "estrategiaId": "1"
+      },
+      {
+        "id": "cliente_1770658064352",
+        "nome": "Grana Capital",
+        "email": "",
+        "telefone": "",
+        "empresa": "",
+        "dataCadastro": "2026-02-09",
+        "status": "ativo",
+        "valorTotalContratos": 0,
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0,
+        "taxaAdmMensal": 0,
+        "assinatura": 0,
+        "patrimonioTotal": 0
+      },
+      {
+        "id": "cliente_1770315624164",
+        "nome": "Guilherme S",
+        "email": "",
+        "telefone": "",
+        "empresa": "",
+        "dataCadastro": "2026-02-05",
+        "status": "ativo",
+        "estrategiaId": "3",
+        "valorTotalContratos": 0,
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "assinatura": 0,
+        "patrimonioTotal": 0
+      },
+      {
+        "id": "cliente_1770125693843",
+        "nome": "Igor Santiago",
+        "email": "",
+        "telefone": "",
+        "empresa": "",
+        "dataCadastro": "2026-02-03",
+        "status": "ativo",
+        "estrategiaId": "estrategia_1769699155929",
+        "valorTotalContratos": 4,
+        "btg": 1,
+        "xp": 1,
+        "avenue": 1,
+        "outros": 1,
+        "taxaAdmAnual": "FIXO",
+        "assinatura": 0,
+        "patrimonioTotal": 4
+      },
+      {
+        "id": "cliente_1769538424246",
+        "nome": "Alexandre N",
+        "email": "anigri@maxinvest.com.br",
+        "telefone": "11994043035",
+        "empresa": "",
+        "dataCadastro": "2026-01-27",
+        "status": "ativo",
+        "estrategiaId": "1",
+        "valorTotalContratos": 52353.69,
+        "btg": 52353.69,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 2,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 87.26,
+        "patrimonioTotal": 52353.69,
+        "asaasCustomerId": "cus_000159306226",
+        "asaasSubscriptionId": "sub_luz2dcb0yq5998gq"
+      },
+      {
+        "id": "novo_1769465075570_1",
+        "nome": "Daniel GE",
+        "email": "dge@uol.com.br",
+        "telefone": "11995285571",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 2699000.59,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 783217.63,
+        "taxaAdmAnual": 0.006,
+        "taxaAdmMensal": 0.05,
+        "assinatura": 1741.11,
+        "valorTotalContratos": 3482218.2199999997,
+        "patrimonioTotal": 3482218.2199999997,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000111811962",
+        "asaasSubscriptionId": "sub_m60i28exj4619ong"
+      },
+      {
+        "id": "novo_1769465075570_2",
+        "nome": "Antonio CB",
+        "email": "antoniocarlosbarretojunior@gmail.com",
+        "telefone": "43999507575",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 1690966.53,
+        "xp": 1184248.03,
+        "avenue": 139012.59,
+        "outros": 565169.5,
+        "taxaAdmAnual": 0.003,
+        "taxaAdmMensal": 0.03,
+        "assinatura": 894.85,
+        "valorTotalContratos": 3579396.65,
+        "patrimonioTotal": 3579396.65,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000110384058",
+        "asaasSubscriptionId": "sub_ct8clg6ior8pndxp"
+      },
+      {
+        "id": "novo_1769465075570_3",
+        "nome": "Bruno AS",
+        "email": "brunowea@hotmail.com",
+        "telefone": "51999588951",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 0,
+        "xp": 452313.69,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "assinatura": 253,
+        "valorTotalContratos": 452313.69,
+        "patrimonioTotal": 452313.69,
+        "asaasCustomerId": "cus_000112346778",
+        "asaasSubscriptionId": "sub_e6gus01387ogpvd4",
+        "estrategiaId": "4"
+      },
+      {
+        "id": "novo_1769465075570_4",
+        "nome": "Bruno HA",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.003,
+        "taxaAdmMensal": 0.03,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075570_5",
+        "nome": "Erivan T",
+        "email": "erivan@aviacao.net.br",
+        "telefone": "31997321719",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.003,
+        "taxaAdmMensal": 0.03,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3",
+        "asaasCustomerId": "cus_000112589167",
+        "asaasSubscriptionId": "sub_5vyc6wjszzl6aqpc"
+      },
+      {
+        "id": "novo_1769465075570_6",
+        "nome": "Gustavo M",
+        "email": "guga_melillo@yahoo.com.br",
+        "telefone": "32991581328",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 181787.75,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.0048,
+        "taxaAdmMensal": 0.04,
+        "assinatura": 72.72,
+        "valorTotalContratos": 181787.75,
+        "patrimonioTotal": 181787.75,
+        "asaasCustomerId": "cus_000110849356",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_agtk8iz2pcg9kez6"
+      },
+      {
+        "id": "novo_1769465075570_7",
+        "nome": "Miguel M",
+        "email": "miguelmaksud80@gmail.com",
+        "telefone": "91991077117",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 219000,
+        "taxaAdmAnual": "FIXO",
+        "taxaAdmMensal": "FIXO",
+        "assinatura": 142,
+        "valorTotalContratos": 219000,
+        "patrimonioTotal": 219000,
+        "asaasCustomerId": "cus_000111444782",
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075570_8",
+        "nome": "Gilvan H",
+        "email": "gilaxl@hotmail.com",
+        "telefone": "31992429384",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 907982.75,
+        "xp": 378259.91,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 1071.87,
+        "valorTotalContratos": 1286242.66,
+        "patrimonioTotal": 1286242.66,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000112685259",
+        "asaasSubscriptionId": "sub_r3sltd577cyuma3n"
+      },
+      {
+        "id": "novo_1769465075570_9",
+        "nome": "Fernanda G",
+        "email": "galdiano.fernanda@gmail.com",
+        "telefone": "31999204400",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 3538094.56,
+        "xp": 1292513.69,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.005,
+        "taxaAdmMensal": 0.04,
+        "assinatura": 2012.75,
+        "valorTotalContratos": 4830608.25,
+        "patrimonioTotal": 4830608.25,
+        "estrategiaId": "3",
+        "asaasCustomerId": "cus_000113002555",
+        "asaasSubscriptionId": "sub_msd8e8hohco9lsnz"
+      },
+      {
+        "id": "novo_1769465075570_10",
+        "nome": "Leonardo G",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0,
+        "taxaAdmMensal": 0,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075570_11",
+        "nome": "Joao F",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 41481.91,
+        "xp": 45232.55,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "taxaAdmMensal": "FIXO",
+        "assinatura": 0,
+        "valorTotalContratos": 86714.46,
+        "patrimonioTotal": 86714.46,
+        "estrategiaId": "4"
+      },
+      {
+        "id": "novo_1769465075570_12",
+        "nome": "José V",
+        "email": "moraes@mtadvogados.com.br",
+        "telefone": "51996959326",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 1258196.83,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.003,
+        "taxaAdmMensal": 0.03,
+        "assinatura": 314.55,
+        "valorTotalContratos": 1258196.83,
+        "patrimonioTotal": 1258196.83,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000111815421",
+        "asaasSubscriptionId": "sub_tw8zswc2sd8hy3oz"
+      },
+      {
+        "id": "novo_1769465075570_13",
+        "nome": "Marco AFS",
+        "email": "sancmarco@gmail.com",
+        "telefone": "41999011028",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 62505.65,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 104.18,
+        "valorTotalContratos": 62505.65,
+        "patrimonioTotal": 62505.65,
+        "asaasCustomerId": "cus_000112093291",
+        "estrategiaId": "4",
+        "asaasSubscriptionId": "sub_w8coerhhcvthq931"
+      },
+      {
+        "id": "novo_1769465075570_14",
+        "nome": "Roque J",
+        "email": "roquesantos@gmail.com",
+        "telefone": "11997616340",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.006,
+        "taxaAdmMensal": 0.05,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3",
+        "asaasCustomerId": "cus_000112660107",
+        "asaasSubscriptionId": "sub_x2ygfkb4mh9rjuuz"
+      },
+      {
+        "id": "novo_1769465075570_15",
+        "nome": "Alcides CJ",
+        "email": "alcideschiaratojr@hotmail.com",
+        "telefone": "14997865518",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 728431.57,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.8,
+        "taxaAdmMensal": 0.07,
+        "assinatura": 485.62,
+        "valorTotalContratos": 728431.57,
+        "patrimonioTotal": 728431.57,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000114779028",
+        "asaasSubscriptionId": "sub_h776orpptyp4fcrm"
+      },
+      {
+        "id": "novo_1769465075570_16",
+        "nome": "Rafael T",
+        "email": "Psico.rafaelterrin@gmail.com",
+        "telefone": "43999911606",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 73960.92,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "taxaAdmMensal": "FIXO",
+        "assinatura": 50,
+        "valorTotalContratos": 73960.92,
+        "patrimonioTotal": 73960.92,
+        "asaasCustomerId": "cus_000112117296",
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075570_17",
+        "nome": "Thais C",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "taxaAdmMensal": "FIXO",
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075570_18",
+        "nome": "Matheus B",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 175392.32,
+        "xp": 16015.13,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "taxaAdmMensal": "FIXO",
+        "assinatura": 0,
+        "valorTotalContratos": 191407.45,
+        "patrimonioTotal": 191407.45,
+        "estrategiaId": "4"
+      },
+      {
+        "id": "novo_1769465075570_19",
+        "nome": "Maurício R",
+        "email": "m.ribas.guimaraes@gmail.com",
+        "telefone": "43991565867",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 146570.51,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.009,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 109.93,
+        "valorTotalContratos": 146570.51,
+        "patrimonioTotal": 146570.51,
+        "asaasCustomerId": "cus_000116121629",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_rt9kucv8mx1vi74i"
+      },
+      {
+        "id": "novo_1769465075570_20",
+        "nome": "Pedro HB",
+        "email": "pedrohbm@poli.ufrj.br",
+        "telefone": "21996703372",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 213810.34,
+        "xp": 34206.21,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.0096,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 198.41,
+        "valorTotalContratos": 248016.55,
+        "patrimonioTotal": 248016.55,
+        "asaasCustomerId": "cus_000116152091",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_hvg3buj2s8upxrya"
+      },
+      {
+        "id": "novo_1769465075570_21",
+        "nome": "Carlo R",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "1"
+      },
+      {
+        "id": "novo_1769465075570_22",
+        "nome": "Joelson F",
+        "email": "sr.joelson@gmail.com",
+        "telefone": "61984780545",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 1026999.9,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 1283.75,
+        "valorTotalContratos": 1026999.9,
+        "patrimonioTotal": 1026999.9,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000115206967",
+        "asaasSubscriptionId": "sub_zq03kpwqpus219rp"
+      },
+      {
+        "id": "novo_1769465075570_23",
+        "nome": "Mauricio A",
+        "email": "mauricio.mgm@gmail.com",
+        "telefone": "43988171910",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 335067.15,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 279.22,
+        "valorTotalContratos": 335067.15,
+        "patrimonioTotal": 335067.15,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000116135652"
+      },
+      {
+        "id": "novo_1769465075570_24",
+        "nome": "João P",
+        "email": "jpnogueira_05@outlook.com",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 98818.13,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 123.52,
+        "valorTotalContratos": 98818.13,
+        "patrimonioTotal": 98818.13,
+        "asaasCustomerId": "cus_000120123500",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_zc96osgkwbmktr92"
+      },
+      {
+        "id": "novo_1769465075570_25",
+        "nome": "Renato F",
+        "email": "R2345678@gmail.com",
+        "telefone": "11976034385",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 655971.28,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.008,
+        "taxaAdmMensal": 0.07,
+        "assinatura": 437.31,
+        "valorTotalContratos": 655971.28,
+        "patrimonioTotal": 655971.28,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000120371852",
+        "asaasSubscriptionId": "sub_zcwuyyhabsaajc5k"
+      },
+      {
+        "id": "novo_1769465075570_26",
+        "nome": "Ílson",
+        "email": "sanches.ilson@gmail.com",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 591059.64,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.009,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 443.29,
+        "valorTotalContratos": 591059.64,
+        "patrimonioTotal": 591059.64,
+        "asaasCustomerId": "cus_000120393743",
+        "estrategiaId": "4",
+        "asaasSubscriptionId": "sub_9j6crhmjev8g4zg2"
+      },
+      {
+        "id": "novo_1769465075570_27",
+        "nome": "Daniela Gesing",
+        "email": "danigesing@gmail.com",
+        "telefone": "48999663747",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 48925.63,
+        "xp": 335502.86,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.0097,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 310.75,
+        "valorTotalContratos": 384428.49,
+        "patrimonioTotal": 384428.49,
+        "asaasCustomerId": "cus_000114936260",
+        "estrategiaId": "4",
+        "asaasSubscriptionId": "sub_6hfnsm92ob98xnyz"
+      },
+      {
+        "id": "novo_1769465075570_28",
+        "nome": "Jonas F",
+        "email": "jonaschagasweb@gmail.com",
+        "telefone": "21984848229",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 138248.35,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 115.21,
+        "valorTotalContratos": 138248.35,
+        "patrimonioTotal": 138248.35,
+        "asaasCustomerId": "cus_000126327318",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_0nhmahjrrdr7ffsd"
+      },
+      {
+        "id": "novo_1769465075570_29",
+        "nome": "João Goulart",
+        "email": "jv.goulart.almeida@hotmail.com",
+        "telefone": "43998149208",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 73219.75,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 1.5,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 91.52,
+        "valorTotalContratos": 73219.75,
+        "patrimonioTotal": 73219.75,
+        "asaasCustomerId": "cus_000126329696",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_7qi7jvl13az94xkz"
+      },
+      {
+        "id": "novo_1769465075570_30",
+        "nome": "Thalita B",
+        "email": "thalitamab@gmail.com",
+        "telefone": "41988592785",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 34627.23,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 57.71,
+        "valorTotalContratos": 34627.23,
+        "patrimonioTotal": 34627.23,
+        "asaasCustomerId": "cus_000126330882",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_u9yga1m79xr3xs98"
+      },
+      {
+        "id": "novo_1769465075570_31",
+        "nome": "Theo L",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "1"
+      },
+      {
+        "id": "novo_1769465075570_32",
+        "nome": "Shiguemi",
+        "email": "shiguemiuehara@gmail.com",
+        "telefone": "11981818307",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 141912.42,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 236.52,
+        "valorTotalContratos": 141912.42,
+        "patrimonioTotal": 141912.42,
+        "asaasCustomerId": "cus_000126332341",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_txyo40891s611kon"
+      },
+      {
+        "id": "novo_1769465075570_33",
+        "nome": "Jean F M",
+        "email": "jeanfmaldonado@gmail.com",
+        "telefone": "44998184459",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 33579.78,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 55.97,
+        "valorTotalContratos": 33579.78,
+        "patrimonioTotal": 33579.78,
+        "asaasCustomerId": "cus_000126331402",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_32joegjslabnbly6"
+      },
+      {
+        "id": "novo_1769465075570_34",
+        "nome": "Alberto S",
+        "email": "asjesuss@hotmail.com",
+        "telefone": "75988332336",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 50695.78,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 84.49,
+        "valorTotalContratos": 50695.78,
+        "patrimonioTotal": 50695.78,
+        "asaasCustomerId": "cus_000132004400",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_qn5s3xft9mvfqfxr"
+      },
+      {
+        "id": "novo_1769465075571_35",
+        "nome": "André T",
+        "email": "teyaguu@gmail.com",
+        "telefone": "11972949459",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 69921.38,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 105635.25,
+        "taxaAdmAnual": 0.012,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 175.56,
+        "valorTotalContratos": 175556.63,
+        "patrimonioTotal": 175556.63,
+        "asaasCustomerId": "cus_000128411990",
+        "estrategiaId": "2",
+        "asaasSubscriptionId": "sub_78l1sj93aqhav3qt"
+      },
+      {
+        "id": "novo_1769465075571_36",
+        "nome": "Diego AP",
+        "email": "Diego@construtoraphoenix.com.br",
+        "telefone": "13997420349",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 232788.74,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 193.99,
+        "valorTotalContratos": 232788.74,
+        "patrimonioTotal": 232788.74,
+        "asaasCustomerId": "cus_000128412754",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_sukg92odvcx5js49"
+      },
+      {
+        "id": "novo_1769465075571_37",
+        "nome": "Jean Carlos",
+        "email": "Jeancarlosgoncalves1230@gmail.com",
+        "telefone": "18996916472",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 33546.52,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 55.91,
+        "valorTotalContratos": 33546.52,
+        "patrimonioTotal": 33546.52,
+        "asaasCustomerId": "cus_000128413176",
+        "estrategiaId": "1",
+        "asaasSubscriptionId": "sub_ssv2un5540j16mfs"
+      },
+      {
+        "id": "novo_1769465075571_38",
+        "nome": "Ronaldo S",
+        "email": "rotavolt2025@gmail.com",
+        "telefone": "62999431374",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 163748.76,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.012,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 163.75,
+        "valorTotalContratos": 163748.76,
+        "patrimonioTotal": 163748.76,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000128413931",
+        "asaasSubscriptionId": "sub_nw87doh4wrnki766"
+      },
+      {
+        "id": "novo_1769465075571_39",
+        "nome": "Igor M",
+        "email": "igor.msilva99@gmail.com",
+        "telefone": "17996480744",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 50544.49,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 2,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 84.24,
+        "valorTotalContratos": 50544.49,
+        "patrimonioTotal": 50544.49,
+        "asaasCustomerId": "cus_000133274342",
+        "estrategiaId": "3",
+        "asaasSubscriptionId": "sub_qj00k37dg46kax98"
+      },
+      {
+        "id": "novo_1769465075571_40",
+        "nome": "Nivaldo B",
+        "email": "nivaldo.buzzo@gmail.com",
+        "telefone": "12991230909",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 113309.64,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 141.64,
+        "valorTotalContratos": 113309.64,
+        "patrimonioTotal": 113309.64,
+        "asaasCustomerId": "cus_000133283152",
+        "estrategiaId": "2",
+        "asaasSubscriptionId": "sub_5g1erunw27z5yldo"
+      },
+      {
+        "id": "novo_1769465075571_41",
+        "nome": "Ewerton I",
+        "email": "ewerton.in@gmail.com",
+        "telefone": "43984530656",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 33951.81,
+        "xp": 61228.62,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 118.98,
+        "valorTotalContratos": 95180.43,
+        "patrimonioTotal": 95180.43,
+        "asaasCustomerId": "cus_000133283592",
+        "estrategiaId": "4",
+        "asaasSubscriptionId": "sub_692wom9z64km6fsn"
+      },
+      {
+        "id": "novo_1769465075571_42",
+        "nome": "Erick M",
+        "email": "erick_mattheus@hotmail.com",
+        "telefone": "86998290761",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 109821.12,
+        "xp": 149668.09,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 216.24,
+        "valorTotalContratos": 259489.21,
+        "patrimonioTotal": 259489.21,
+        "asaasCustomerId": "cus_000133283910",
+        "estrategiaId": "4",
+        "asaasSubscriptionId": "sub_sebh1hrujcb2jdui"
+      },
+      {
+        "id": "novo_1769465075571_43",
+        "nome": "Daniela S",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 11095.48,
+        "xp": 16411.01,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0,
+        "taxaAdmMensal": 0,
+        "assinatura": 0,
+        "valorTotalContratos": 27506.489999999998,
+        "patrimonioTotal": 27506.489999999998,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075571_44",
+        "nome": "Gabriel M",
+        "email": "gdlmartins@gmail.com",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 207634.78,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 1.2,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 207.63,
+        "valorTotalContratos": 207634.78,
+        "patrimonioTotal": 207634.78,
+        "estrategiaId": "1",
+        "asaasCustomerId": "cus_000133285182"
+      },
+      {
+        "id": "novo_1769465075571_45",
+        "nome": "Cilas C",
+        "email": "cilasaugustocacc@gmail.com",
+        "telefone": "18997779156",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 7830.68,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": "FIXO",
+        "assinatura": 50,
+        "valorTotalContratos": 7830.68,
+        "patrimonioTotal": 7830.68,
+        "asaasCustomerId": "cus_000145583374",
+        "estrategiaId": "3",
+        "asaasSubscriptionId": "sub_zqlmiocq5g0aoox9"
+      },
+      {
+        "id": "novo_1769465075571_46",
+        "nome": "Paulo HB",
+        "email": "paulobrincker@hotmail.com",
+        "telefone": "65992717666",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 0,
+        "xp": 52215.86,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.02,
+        "taxaAdmMensal": 0.17,
+        "assinatura": 87.03,
+        "valorTotalContratos": 52215.86,
+        "patrimonioTotal": 52215.86,
+        "asaasCustomerId": "cus_000145588053",
+        "estrategiaId": "3",
+        "asaasSubscriptionId": "sub_dsr2dt1cx8q1jpfz"
+      },
+      {
+        "id": "novo_1769465075571_47",
+        "nome": "Claudio G",
+        "email": "cacogesing@hotmail.com",
+        "telefone": "48999870433",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 128002.35,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.012,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 128,
+        "valorTotalContratos": 128002.35,
+        "patrimonioTotal": 128002.35,
+        "estrategiaId": "3",
+        "asaasCustomerId": "cus_000150743918",
+        "asaasSubscriptionId": "sub_2qvqau6sxsggr8mz"
+      },
+      {
+        "id": "novo_1769465075571_48",
+        "nome": "Francisco M",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0,
+        "taxaAdmMensal": 0,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075571_49",
+        "nome": "Alexandre M",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0,
+        "taxaAdmMensal": 0,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "3"
+      },
+      {
+        "id": "novo_1769465075571_50",
+        "nome": "Nivaldo G",
+        "email": "nivaldogois2025@gmail.com",
+        "telefone": "18981328890",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 66720.59,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.012,
+        "taxaAdmMensal": 0.1,
+        "assinatura": 66.72,
+        "valorTotalContratos": 66720.59,
+        "patrimonioTotal": 66720.59,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000145589042",
+        "asaasSubscriptionId": "sub_hsahehhxx5pow9t2"
+      },
+      {
+        "id": "novo_1769465075571_51",
+        "nome": "Bruno D",
+        "email": "budanello@gmail.com",
+        "telefone": "43999709122",
+        "dataCadastro": "2026-01-26",
+        "status": "ativo",
+        "btg": 0,
+        "xp": 233160.66,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.01,
+        "taxaAdmMensal": 0.08,
+        "assinatura": 194.3,
+        "valorTotalContratos": 233160.66,
+        "patrimonioTotal": 233160.66,
+        "estrategiaId": "4",
+        "asaasCustomerId": "cus_000150744659"
+      },
+      {
+        "id": "novo_1769465075571_52",
+        "nome": "Lorenzo L",
+        "email": "",
+        "telefone": "",
+        "dataCadastro": "2026-01-26",
+        "status": "inativo",
+        "btg": 0,
+        "xp": 0,
+        "avenue": 0,
+        "outros": 0,
+        "taxaAdmAnual": 0.015,
+        "taxaAdmMensal": 0.13,
+        "assinatura": 0,
+        "valorTotalContratos": 0,
+        "patrimonioTotal": 0,
+        "estrategiaId": "2"
+      }
+    ],
+    "dashboard_asaas_cache_v1": {
+      "timestamp": 1775067431721,
+      "contatos": {
+        "cus_000163633853": {
+          "email": "arlindo.cervinski2909@gmail.com",
+          "telefone": "47991265568"
+        },
+        "cus_000163636807": {
+          "email": "divina_souza@yahoo.com.br",
+          "telefone": "62981510429"
+        },
+        "cus_000163633253": {
+          "email": "milena_vidalsantos@hotmail.com",
+          "telefone": "91980419777"
+        },
+        "cus_000159306226": {
+          "email": "anigri@maxinvest.com.br",
+          "telefone": "11994043035"
+        },
+        "cus_000111811962": {
+          "email": "dge@uol.com.br",
+          "telefone": "11995285571"
+        },
+        "cus_000110384058": {
+          "email": "antoniocarlosbarretojunior@gmail.com",
+          "telefone": "43999507575"
+        },
+        "cus_000112346778": {
+          "email": "brunowea@hotmail.com",
+          "telefone": "51999588951"
+        },
+        "cus_000112589167": {
+          "email": "erivan@aviacao.net.br",
+          "telefone": "31997321719"
+        },
+        "cus_000110849356": {
+          "email": "guga_melillo@yahoo.com.br",
+          "telefone": "32991581328"
+        },
+        "cus_000111444782": {
+          "email": "miguelmaksud80@gmail.com",
+          "telefone": "91991077117"
+        },
+        "cus_000112685259": {
+          "email": "gilaxl@hotmail.com",
+          "telefone": "31992429384"
+        },
+        "cus_000113002555": {
+          "email": "galdiano.fernanda@gmail.com",
+          "telefone": "31999204400"
+        },
+        "cus_000111815421": {
+          "email": "moraes@mtadvogados.com.br",
+          "telefone": "51996959326"
+        },
+        "cus_000112093291": {
+          "email": "sancmarco@gmail.com",
+          "telefone": "41999011028"
+        },
+        "cus_000114779028": {
+          "email": "alcideschiaratojr@hotmail.com",
+          "telefone": "14997865518"
+        },
+        "cus_000112117296": {
+          "email": "Psico.rafaelterrin@gmail.com",
+          "telefone": "43999911606"
+        },
+        "cus_000116121629": {
+          "email": "m.ribas.guimaraes@gmail.com",
+          "telefone": "43991565867"
+        },
+        "cus_000116152091": {
+          "email": "pedrohbm@poli.ufrj.br",
+          "telefone": "21996703372"
+        },
+        "cus_000115206967": {
+          "email": "sr.joelson@gmail.com",
+          "telefone": "61984780545"
+        },
+        "cus_000116135652": {
+          "email": "mauricio.mgm@gmail.com",
+          "telefone": "43988171910"
+        },
+        "cus_000120123500": {
+          "email": "jpnogueira_05@outlook.com",
+          "telefone": null
+        },
+        "cus_000120371852": {
+          "email": "R2345678@gmail.com",
+          "telefone": "11976034385"
+        },
+        "cus_000120393743": {
+          "email": "sanches.ilson@gmail.com",
+          "telefone": null
+        },
+        "cus_000114936260": {
+          "email": "danigesing@gmail.com",
+          "telefone": "48999663747"
+        },
+        "cus_000126327318": {
+          "email": "jonaschagasweb@gmail.com",
+          "telefone": "21984848229"
+        },
+        "cus_000126329696": {
+          "email": "jv.goulart.almeida@hotmail.com",
+          "telefone": "43998149208"
+        },
+        "cus_000126330882": {
+          "email": "thalitamab@gmail.com",
+          "telefone": "41988592785"
+        },
+        "cus_000126332341": {
+          "email": "shiguemiuehara@gmail.com",
+          "telefone": "11981818307"
+        },
+        "cus_000126331402": {
+          "email": "jeanfmaldonado@gmail.com",
+          "telefone": "44998184459"
+        },
+        "cus_000132004400": {
+          "email": "asjesuss@hotmail.com",
+          "telefone": "75988332336"
+        },
+        "cus_000128411990": {
+          "email": "teyaguu@gmail.com",
+          "telefone": "11972949459"
+        },
+        "cus_000128412754": {
+          "email": "Diego@construtoraphoenix.com.br",
+          "telefone": "13997420349"
+        },
+        "cus_000128413176": {
+          "email": "Jeancarlosgoncalves1230@gmail.com",
+          "telefone": "18996916472"
+        },
+        "cus_000128413931": {
+          "email": "rotavolt2025@gmail.com",
+          "telefone": "62999431374"
+        },
+        "cus_000133274342": {
+          "email": "igor.msilva99@gmail.com",
+          "telefone": "17996480744"
+        },
+        "cus_000133283152": {
+          "email": "nivaldo.buzzo@gmail.com",
+          "telefone": "12991230909"
+        },
+        "cus_000133283592": {
+          "email": "ewerton.in@gmail.com",
+          "telefone": "43984530656"
+        },
+        "cus_000133283910": {
+          "email": "erick_mattheus@hotmail.com",
+          "telefone": "86998290761"
+        },
+        "cus_000133285182": {
+          "email": "gdlmartins@gmail.com",
+          "telefone": null
+        },
+        "cus_000145583374": {
+          "email": "cilasaugustocacc@gmail.com",
+          "telefone": "18997779156"
+        },
+        "cus_000145588053": {
+          "email": "paulobrincker@hotmail.com",
+          "telefone": "65992717666"
+        },
+        "cus_000150743918": {
+          "email": "cacogesing@hotmail.com",
+          "telefone": "48999870433"
+        },
+        "cus_000145589042": {
+          "email": "nivaldogois2025@gmail.com",
+          "telefone": "18981328890"
+        },
+        "cus_000150744659": {
+          "email": "budanello@gmail.com",
+          "telefone": "43999709122"
+        }
+      },
+      "status": {
+        "cus_000163633853": "OK",
+        "cus_000163636807": "OK",
+        "cus_000163633253": "OK",
+        "cus_000159306226": "OK",
+        "cus_000111811962": "OK",
+        "cus_000110384058": "OK",
+        "cus_000112346778": "OK",
+        "cus_000112589167": "OK",
+        "cus_000110849356": "OK",
+        "cus_000111444782": "OK",
+        "cus_000112685259": "OK",
+        "cus_000113002555": "OK",
+        "cus_000111815421": "OK",
+        "cus_000112093291": "OK",
+        "cus_000114779028": "OK",
+        "cus_000112117296": "OK",
+        "cus_000116121629": "OK",
+        "cus_000116152091": "OK",
+        "cus_000115206967": "OK",
+        "cus_000116135652": "OK",
+        "cus_000120123500": "OK",
+        "cus_000120371852": "OK",
+        "cus_000120393743": "OK",
+        "cus_000114936260": "OK",
+        "cus_000126327318": "OK",
+        "cus_000126329696": "OK",
+        "cus_000126330882": "OK",
+        "cus_000126332341": "OK",
+        "cus_000126331402": "OK",
+        "cus_000132004400": "OK",
+        "cus_000128411990": "OK",
+        "cus_000128412754": "OK",
+        "cus_000128413176": "OK",
+        "cus_000128413931": "OK",
+        "cus_000133274342": "OK",
+        "cus_000133283152": "OK",
+        "cus_000133283592": "OK",
+        "cus_000133283910": "OK",
+        "cus_000133285182": "OK",
+        "cus_000145583374": "OK",
+        "cus_000145588053": "OK",
+        "cus_000150743918": "OK",
+        "cus_000145589042": "OK",
+        "cus_000150744659": "OK"
+      }
+    },
+    "lamina_storage_snapshot_v1": {
+      "lamina_notes_v1": "",
+      "laminas_template_json_v2": "{\n  \"header\": {\n    \"logo\": \"UP\",\n    \"titulo\": \"Carteira UP Multimercado\",\n    \"subtitulo\": \"INTELIGÊNCIA ARTIFICIAL A SERVIÇO DO SEU DINHEIRO\",\n    \"periodo\": \"Dezembro/25\",\n    \"destaque\": \"{{retorno_1m}}\"\n  },\n  \"intro\": [\n    {\n      \"texto\": \"A Carteira Quantitativa UP se encontra aberta para captação, em fase de consolidação de performance e escalonamento de capital. Trata-se de uma estratégia multi-ativos na bolsa brasileira, baseada em modelos estatísticos que identificam distorções de curto prazo e executam posições de forma sistemática, com controle de risco e alavancagem calibrada.\"\n    },\n    {\n      \"texto\": \"Apesar de integrarmos a carteira a um portfólio global (renda fixa, fundos, FIIs, ações e ETFs), o núcleo de geração de retorno vem da estratégia quantitativa, que tem apresentado resultados consistentes desde seu lançamento.\"\n    },\n    {\n      \"texto\": \"Por questões de equilíbrio no modelo estatístico, a capacidade de alocação é limitada para preservar eficiência de execução. Portanto, novas entradas estão sendo recebidas enquanto há espaço.\"\n    }\n  ],\n  \"publicoAlvo\": \"Qualquer investidor com perfil de risco moderado/arrojado.\",\n  \"kpis\": [\n    {\n      \"label\": \"Drawdown máximo\",\n      \"value\": \"-3,24%\"\n    },\n    {\n      \"label\": \"Volatilidade anualizada\",\n      \"value\": \"7,38%\"\n    },\n    {\n      \"label\": \"Retorno acumulado\",\n      \"value\": \"43,55%\"\n    },\n    {\n      \"label\": \"Índice de Sharpe\",\n      \"value\": \"3,60\"\n    },\n    {\n      \"label\": \"Benchmark\",\n      \"value\": \"IFIX\"\n    },\n    {\n      \"label\": \"Alpha sobre IFIX\",\n      \"value\": \"28,32%\"\n    },\n    {\n      \"label\": \"Investimento mínimo\",\n      \"value\": \"R$ 50.000,00\"\n    },\n    {\n      \"label\": \"Cota de resgate\",\n      \"value\": \"Imediata\"\n    },\n    {\n      \"label\": \"Prazo de resgate\",\n      \"value\": \"D+5\"\n    },\n    {\n      \"label\": \"Taxa de gestão\",\n      \"value\": \"0,60% a 2,00%\"\n    },\n    {\n      \"label\": \"Taxa de performance\",\n      \"value\": \"30%\"\n    },\n    {\n      \"label\": \"Gestão\",\n      \"value\": \"UP GCA\"\n    },\n    {\n      \"label\": \"PL total\",\n      \"value\": \"R$ 6,76MM\"\n    }\n  ],\n  \"chart\": {\n    \"title\": \"Track Record\",\n    \"subtitle\": \"+43,55%\",\n    \"data\": [\n      {\n        \"label\": \"Abr/23\",\n        \"tatica\": -4,\n        \"ifix\": -3,\n        \"cdi\": 0.2\n      },\n      {\n        \"label\": \"Jul/23\",\n        \"tatica\": 2,\n        \"ifix\": 0.6,\n        \"cdi\": 1\n      },\n      {\n        \"label\": \"Out/23\",\n        \"tatica\": 9,\n        \"ifix\": 4,\n        \"cdi\": 2.2\n      },\n      {\n        \"label\": \"Jan/24\",\n        \"tatica\": 16,\n        \"ifix\": 8,\n        \"cdi\": 3.5\n      },\n      {\n        \"label\": \"Abr/24\",\n        \"tatica\": 22,\n        \"ifix\": 11,\n        \"cdi\": 4.8\n      },\n      {\n        \"label\": \"Jul/24\",\n        \"tatica\": 29,\n        \"ifix\": 15,\n        \"cdi\": 6.1\n      },\n      {\n        \"label\": \"Out/24\",\n        \"tatica\": 35,\n        \"ifix\": 18,\n        \"cdi\": 7.3\n      },\n      {\n        \"label\": \"Jan/25\",\n        \"tatica\": 39,\n        \"ifix\": 21,\n        \"cdi\": 8.5\n      },\n      {\n        \"label\": \"Abr/25\",\n        \"tatica\": 43.6,\n        \"ifix\": 24.4,\n        \"cdi\": 9.8\n      }\n    ]\n  },\n  \"resumoMensal\": [\n    {\n      \"label\": \"Total de operações\",\n      \"value\": \"124\"\n    },\n    {\n      \"label\": \"Operações com ganhos\",\n      \"value\": \"84,68% (03 M)\"\n    },\n    {\n      \"label\": \"Maior ganho por operação\",\n      \"value\": \"+25% (Início)\"\n    },\n    {\n      \"label\": \"Dias no período\",\n      \"value\": \"0\"\n    }\n  ],\n  \"tabelaPerformance\": {\n    \"headers\": [\n      \"Período\",\n      \"Tática\",\n      \"IFIX\",\n      \"CDI\",\n      \"Alpha\"\n    ],\n    \"rows\": [\n      [\n        \"01 M\",\n        \"6,00\",\n        \"3,13\",\n        \"0,96\",\n        \"2,86\"\n      ],\n      [\n        \"03 M\",\n        \"7,91\",\n        \"5,18\",\n        \"3,01\",\n        \"2,73\"\n      ],\n      [\n        \"Início\",\n        \"43,55\",\n        \"15,23\",\n        \"14,43\",\n        \"28,32\"\n      ]\n    ]\n  },\n  \"mesTitulo\": \"Dezembro de 2025\",\n  \"comentarios\": [\n    {\n      \"texto\": \"Fechamos o mês com rentabilidade líquida de {{retorno_1m}}, frente a {{ifix_1m}} do IFIX e {{cdi_1m}} do CDI. Por gerenciamento de risco, com intuito de evitar um drawdown ainda maior, reduzimos significativamente os parâmetros de risco da estratégia em dezembro e, por isso, a menor volatilidade e retorno no mês. \",\n      \"destaques\": [\n        \"rentabilidade líquida\",\n        \"IFIX\",\n        \"CDI\",\n        \"UP 5.0\"\n      ]\n    },\n    {\n      \"texto\": \"Até o momento, mantemos um retorno líquido de {{retorno_inicio}} desde o início da carteira, que representa um alpha de {{alpha_inicio}} em relação ao IFIX e {{alpha_cdi_inicio}} em relação ao CDI. Vale a pena destacar que tivemos 2 períodos do mês de altíssima volatilidade direcional (quedas fortes ou altas fortes) que costumam trazer resultados negativos para a estratégia. No entanto, foram implementados novos parâmetros em dezembro para tentar mitigar esse ponto falho que, até o momento, vem funcionando bem. Esperamos, aos poucos, aumentar o risco, volatilidade e os retornos novamente conforme a carteira se aproxime de sua máxima histórica.\\n\",\n      \"destaques\": [\n        \"retorno líquido\",\n        \"desde o início\",\n        \"alpha\",\n        \"IFIX\",\n        \"CDI\"\n      ]\n    },\n    {\n      \"texto\": \"Atuamos via carteira administrada, com execução direta no custo do investidor. Investimento exclusivamente via BTG - contato Igor: WhatsApp (11) 97440-3788.\",\n      \"destaques\": [\n        \"BTG\",\n        \"WhatsApp\"\n      ]\n    }\n  ],\n  \"atribuicao\": {\n    \"title\": \"Atribuição de Resultados\",\n    \"itens\": [\n      {\n        \"label\": \"FIIs\",\n        \"value\": 98.09,\n        \"color\": \"var(--primary-color)\"\n      },\n      {\n        \"label\": \"Ações e ETFs\",\n        \"value\": 1.91,\n        \"color\": \"var(--secondary-color, #8ea4bf)\"\n      }\n    ]\n  },\n  \"operacional\": {\n    \"titulo\": \"Operacional\",\n    \"itens\": [\n      \"Estratégia sistemática em ETFs.\",\n      \"Gestão de risco dinâmica e automatizada via sistema interno.\",\n      \"Controle de drawdown e stop técnico com mecanismos de segurança ágil.\",\n      \"Exploração de padrões de retorno com núcleos externos.\",\n      \"Revisão mensal de parâmetros e performance.\",\n      \"Monitoramento contínuo de mercado em tempo real 24/7.\"\n    ]\n  },\n  \"rodape\": {\n    \"texto\": \"UP Carteiras Administradas\",\n    \"codigo\": \"58.450.405/0001-01\",\n    \"logo\": \"UP\"\n  }\n}",
+      "estrategia_diaria_por_estrategia": "{\"1\":[{\"id\":\"import_1773059169844_1\",\"data\":\"2024-10-04\",\"patrimonio\":1,\"resultadoCdi\":0,\"resultadoIfix\":3.276,\"fatorDiario\":0},{\"id\":\"import_1773059169844_2\",\"data\":\"2024-10-07\",\"patrimonio\":0.9995897904761903,\"resultadoCdi\":0.00040200000000001346,\"resultadoIfix\":3.276,\"fatorDiario\":1.000402},{\"id\":\"import_1773059169844_3\",\"data\":\"2024-10-08\",\"patrimonio\":0.9962659907192745,\"resultadoCdi\":0.0008041616039999866,\"resultadoIfix\":3.257,\"fatorDiario\":1.000804161604},{\"id\":\"import_1773059169844_4\",\"data\":\"2024-10-09\",\"patrimonio\":0.9896796034337811,\"resultadoCdi\":0.0012064848769648417,\"resultadoIfix\":3.232,\"fatorDiario\":1.0012064848769648},{\"id\":\"import_1773059169844_5\",\"data\":\"2024-10-10\",\"patrimonio\":0.985444306300366,\"resultadoCdi\":0.0016089698838854805,\"resultadoIfix\":3.21,\"fatorDiario\":1.0016089698838855},{\"id\":\"import_1773059169844_6\",\"data\":\"2024-10-11\",\"patrimonio\":0.9846096433406921,\"resultadoCdi\":0.0020116166897787835,\"resultadoIfix\":3.217,\"fatorDiario\":1.0020116166897788},{\"id\":\"import_1773059169844_7\",\"data\":\"2024-10-14\",\"patrimonio\":0.9814192669206127,\"resultadoCdi\":0.002414425359688055,\"resultadoIfix\":3.228,\"fatorDiario\":1.002414425359688},{\"id\":\"import_1773059169844_8\",\"data\":\"2024-10-15\",\"patrimonio\":0.9853153664618763,\"resultadoCdi\":0.002817395958682578,\"resultadoIfix\":3.234,\"fatorDiario\":1.0028173959586826},{\"id\":\"import_1773059169844_9\",\"data\":\"2024-10-16\",\"patrimonio\":0.9857817732388654,\"resultadoCdi\":0.0032205285518580595,\"resultadoIfix\":3.234,\"fatorDiario\":1.003220528551858},{\"id\":\"import_1773059169844_10\",\"data\":\"2024-10-17\",\"patrimonio\":0.9895087022442645,\"resultadoCdi\":0.003623823204335963,\"resultadoIfix\":3.23,\"fatorDiario\":1.003623823204336},{\"id\":\"import_1773059169844_11\",\"data\":\"2024-10-18\",\"patrimonio\":0.9895238091799254,\"resultadoCdi\":0.004027279981264176,\"resultadoIfix\":3.236,\"fatorDiario\":1.0040272799812642},{\"id\":\"import_1773059169844_12\",\"data\":\"2024-10-21\",\"patrimonio\":0.9860957157558973,\"resultadoCdi\":0.004430898947816564,\"resultadoIfix\":3.218,\"fatorDiario\":1.0044308989478166},{\"id\":\"import_1773059169844_13\",\"data\":\"2024-10-22\",\"patrimonio\":0.9829759706198079,\"resultadoCdi\":0.004834680169193639,\"resultadoIfix\":3.208,\"fatorDiario\":1.0048346801691936},{\"id\":\"import_1773059169844_14\",\"data\":\"2024-10-23\",\"patrimonio\":0.9758744330966979,\"resultadoCdi\":0.00523862371062167,\"resultadoIfix\":3.179,\"fatorDiario\":1.0052386237106217},{\"id\":\"import_1773059169844_15\",\"data\":\"2024-10-24\",\"patrimonio\":0.9754805313244813,\"resultadoCdi\":0.00564272963735335,\"resultadoIfix\":3.169,\"fatorDiario\":1.0056427296373533},{\"id\":\"import_1773059169844_16\",\"data\":\"2024-10-25\",\"patrimonio\":0.976372505597545,\"resultadoCdi\":0.006046998014667571,\"resultadoIfix\":3.182,\"fatorDiario\":1.0060469980146676},{\"id\":\"import_1773059169844_17\",\"data\":\"2024-10-28\",\"patrimonio\":0.9792599252997927,\"resultadoCdi\":0.006451428907869428,\"resultadoIfix\":3.19,\"fatorDiario\":1.0064514289078694},{\"id\":\"import_1773059169844_18\",\"data\":\"2024-10-29\",\"patrimonio\":0.9861288762539522,\"resultadoCdi\":0.006856022382290439,\"resultadoIfix\":3.197,\"fatorDiario\":1.0068560223822904},{\"id\":\"import_1773059169844_19\",\"data\":\"2024-10-30\",\"patrimonio\":0.9938944636616603,\"resultadoCdi\":0.007260778503288101,\"resultadoIfix\":3.207,\"fatorDiario\":1.007260778503288},{\"id\":\"import_1773059169844_20\",\"data\":\"2024-10-31\",\"patrimonio\":0.9913374661744303,\"resultadoCdi\":0.007665697336246335,\"resultadoIfix\":3.205,\"fatorDiario\":1.0076656973362463},{\"id\":\"import_1773059169844_21\",\"data\":\"2024-11-01\",\"patrimonio\":0.9924829295680928,\"resultadoCdi\":0.008070778946575485,\"resultadoIfix\":3.198,\"fatorDiario\":1.0080707789465755},{\"id\":\"import_1773059169844_22\",\"data\":\"2024-11-04\",\"patrimonio\":0.9966243656888173,\"resultadoCdi\":0.008476023399712096,\"resultadoIfix\":3.187,\"fatorDiario\":1.008476023399712},{\"id\":\"import_1773059169844_23\",\"data\":\"2024-11-05\",\"patrimonio\":0.9950779698705867,\"resultadoCdi\":0.008881430761118692,\"resultadoIfix\":3.188,\"fatorDiario\":1.0088814307611187},{\"id\":\"import_1773059169844_24\",\"data\":\"2024-11-06\",\"patrimonio\":0.9968844108713042,\"resultadoCdi\":0.009287001096284664,\"resultadoIfix\":3.18,\"fatorDiario\":1.0092870010962847},{\"id\":\"import_1773059169844_25\",\"data\":\"2024-11-07\",\"patrimonio\":0.9968236088615215,\"resultadoCdi\":0.00971090163674515,\"resultadoIfix\":3.184,\"fatorDiario\":1.0097109016367452},{\"id\":\"import_1773059169844_26\",\"data\":\"2024-11-08\",\"patrimonio\":0.9987246749660724,\"resultadoCdi\":0.010134980215432687,\"resultadoIfix\":3.196,\"fatorDiario\":1.0101349802154327},{\"id\":\"import_1773059169844_27\",\"data\":\"2024-11-11\",\"patrimonio\":0.989071029140478,\"resultadoCdi\":0.010559236907123237,\"resultadoIfix\":3.168,\"fatorDiario\":1.0105592369071232},{\"id\":\"import_1773059169844_28\",\"data\":\"2024-11-12\",\"patrimonio\":0.9897120131635936,\"resultadoCdi\":0.010983671786624294,\"resultadoIfix\":3.155,\"fatorDiario\":1.0109836717866243},{\"id\":\"import_1773059169844_29\",\"data\":\"2024-11-13\",\"patrimonio\":0.9905783152585184,\"resultadoCdi\":0.011408284928774659,\"resultadoIfix\":3.147,\"fatorDiario\":1.0114082849287747},{\"id\":\"import_1773059169844_30\",\"data\":\"2024-11-14\",\"patrimonio\":0.9895893967272027,\"resultadoCdi\":0.011833076408444887,\"resultadoIfix\":3.151,\"fatorDiario\":1.0118330764084449},{\"id\":\"import_1773059169844_31\",\"data\":\"2024-11-18\",\"patrimonio\":0.9913645017415663,\"resultadoCdi\":0.012258046300536618,\"resultadoIfix\":3.157,\"fatorDiario\":1.0122580463005366},{\"id\":\"import_1773059169844_32\",\"data\":\"2024-11-19\",\"patrimonio\":0.9948451644915247,\"resultadoCdi\":0.012683194679983023,\"resultadoIfix\":3.163,\"fatorDiario\":1.012683194679983},{\"id\":\"import_1773059169844_33\",\"data\":\"2024-11-21\",\"patrimonio\":0.9912998777018941,\"resultadoCdi\":0.013108521621748803,\"resultadoIfix\":3.162,\"fatorDiario\":1.0131085216217488},{\"id\":\"import_1773059169844_34\",\"data\":\"2024-11-22\",\"patrimonio\":0.9920266753238535,\"resultadoCdi\":0.013534027200829968,\"resultadoIfix\":3.176,\"fatorDiario\":1.01353402720083},{\"id\":\"import_1773059169844_35\",\"data\":\"2024-11-25\",\"patrimonio\":0.995356388974441,\"resultadoCdi\":0.0139597114922545,\"resultadoIfix\":3.181,\"fatorDiario\":1.0139597114922545},{\"id\":\"import_1773059169844_36\",\"data\":\"2024-11-26\",\"patrimonio\":0.9965116233461321,\"resultadoCdi\":0.01438557457108125,\"resultadoIfix\":3.184,\"fatorDiario\":1.0143855745710812},{\"id\":\"import_1773059169844_37\",\"data\":\"2024-11-27\",\"patrimonio\":0.9948561635455763,\"resultadoCdi\":0.01481161651240126,\"resultadoIfix\":3.171,\"fatorDiario\":1.0148116165124013},{\"id\":\"import_1773059169844_38\",\"data\":\"2024-11-28\",\"patrimonio\":0.9908588764940633,\"resultadoCdi\":0.015237837391336662,\"resultadoIfix\":3.139,\"fatorDiario\":1.0152378373913367},{\"id\":\"import_1773059169844_39\",\"data\":\"2024-11-29\",\"patrimonio\":0.9963336846160517,\"resultadoCdi\":0.015664237283041116,\"resultadoIfix\":3.137,\"fatorDiario\":1.0156642372830411},{\"id\":\"import_1773059169844_40\",\"data\":\"2024-12-02\",\"patrimonio\":0.9947656957187989,\"resultadoCdi\":0.016090816262700036,\"resultadoIfix\":3.103,\"fatorDiario\":1.0160908162627},{\"id\":\"import_1773059169844_41\",\"data\":\"2024-12-03\",\"patrimonio\":0.9906292108212817,\"resultadoCdi\":0.016517574405530366,\"resultadoIfix\":3.072,\"fatorDiario\":1.0165175744055304},{\"id\":\"import_1773059169844_42\",\"data\":\"2024-12-04\",\"patrimonio\":0.9879173577448336,\"resultadoCdi\":0.016944511786780803,\"resultadoIfix\":3.023,\"fatorDiario\":1.0169445117867808},{\"id\":\"import_1773059169844_43\",\"data\":\"2024-12-05\",\"patrimonio\":0.9833858359029825,\"resultadoCdi\":0.01737162848173135,\"resultadoIfix\":2.965,\"fatorDiario\":1.0173716284817313},{\"id\":\"import_1773059169844_44\",\"data\":\"2024-12-06\",\"patrimonio\":0.9846898886211752,\"resultadoCdi\":0.017798924565693763,\"resultadoIfix\":3.018,\"fatorDiario\":1.0177989245656938},{\"id\":\"import_1773059169844_45\",\"data\":\"2024-12-09\",\"patrimonio\":0.9809251102904939,\"resultadoCdi\":0.018226400114011554,\"resultadoIfix\":2.999,\"fatorDiario\":1.0182264001140116},{\"id\":\"import_1773059169844_46\",\"data\":\"2024-12-10\",\"patrimonio\":0.9826804215973917,\"resultadoCdi\":0.01865405520205954,\"resultadoIfix\":2.965,\"fatorDiario\":1.0186540552020595},{\"id\":\"import_1773059169844_47\",\"data\":\"2024-12-11\",\"patrimonio\":0.9829527577778298,\"resultadoCdi\":0.01908188990524451,\"resultadoIfix\":2.94,\"fatorDiario\":1.0190818899052445},{\"id\":\"import_1773059169844_48\",\"data\":\"2024-12-12\",\"patrimonio\":0.9781386874740732,\"resultadoCdi\":0.019545572165151404,\"resultadoIfix\":2.947,\"fatorDiario\":1.0195455721651514},{\"id\":\"import_1773059169844_49\",\"data\":\"2024-12-13\",\"patrimonio\":0.9843476651243714,\"resultadoCdi\":0.020009465400486537,\"resultadoIfix\":2.975,\"fatorDiario\":1.0200094654004865},{\"id\":\"import_1773059169844_50\",\"data\":\"2024-12-16\",\"patrimonio\":0.9844316949418683,\"resultadoCdi\":0.02047356970724379,\"resultadoIfix\":2.957,\"fatorDiario\":1.0204735697072438},{\"id\":\"import_1773059169844_51\",\"data\":\"2024-12-17\",\"patrimonio\":0.9789722560919889,\"resultadoCdi\":0.02093788518146078,\"resultadoIfix\":2.924,\"fatorDiario\":1.0209378851814608},{\"id\":\"import_1773059169844_52\",\"data\":\"2024-12-18\",\"patrimonio\":0.9725452138954153,\"resultadoCdi\":0.021402411919218434,\"resultadoIfix\":2.886,\"fatorDiario\":1.0214024119192184},{\"id\":\"import_1773059169844_53\",\"data\":\"2024-12-19\",\"patrimonio\":0.9675761913903225,\"resultadoCdi\":0.021867150016641856,\"resultadoIfix\":2.878,\"fatorDiario\":1.0218671500166419},{\"id\":\"import_1773059169844_54\",\"data\":\"2024-12-20\",\"patrimonio\":0.9844811538619561,\"resultadoCdi\":0.022332099569899455,\"resultadoIfix\":2.947,\"fatorDiario\":1.0223320995698995},{\"id\":\"import_1773059169844_55\",\"data\":\"2024-12-23\",\"patrimonio\":0.9996366471678166,\"resultadoCdi\":0.022797260675203823,\"resultadoIfix\":3.021,\"fatorDiario\":1.0227972606752038},{\"id\":\"import_1773059169844_56\",\"data\":\"2024-12-26\",\"patrimonio\":1.0067835129619316,\"resultadoCdi\":0.023262633428811075,\"resultadoIfix\":3.069,\"fatorDiario\":1.023262633428811},{\"id\":\"import_1773059169844_57\",\"data\":\"2024-12-27\",\"patrimonio\":1.015638888037329,\"resultadoCdi\":0.02372821792702129,\"resultadoIfix\":3.113,\"fatorDiario\":1.0237282179270213},{\"id\":\"import_1773059169844_58\",\"data\":\"2024-12-30\",\"patrimonio\":1.0130122269697568,\"resultadoCdi\":0.024194014266178288,\"resultadoIfix\":3.116,\"fatorDiario\":1.0241940142661783},{\"id\":\"import_1773059169844_59\",\"data\":\"2025-01-02\",\"patrimonio\":1.016676105951291,\"resultadoCdi\":0.024660022542669413,\"resultadoIfix\":3.117,\"fatorDiario\":1.0246600225426694},{\"id\":\"import_1773059169844_60\",\"data\":\"2025-01-03\",\"patrimonio\":1.0165615356828794,\"resultadoCdi\":0.025126242852926417,\"resultadoIfix\":3.117,\"fatorDiario\":1.0251262428529264},{\"id\":\"import_1773059169844_61\",\"data\":\"2025-01-06\",\"patrimonio\":1.0187597029173152,\"resultadoCdi\":0.02559267529342457,\"resultadoIfix\":3.119,\"fatorDiario\":1.0255926752934246},{\"id\":\"import_1773059169844_62\",\"data\":\"2025-01-07\",\"patrimonio\":1.0235997298969153,\"resultadoCdi\":0.026059319960683114,\"resultadoIfix\":3.115,\"fatorDiario\":1.0260593199606831},{\"id\":\"import_1773059169844_63\",\"data\":\"2025-01-08\",\"patrimonio\":1.0263900170475613,\"resultadoCdi\":0.026526176951265246,\"resultadoIfix\":3.086,\"fatorDiario\":1.0265261769512652},{\"id\":\"import_1773059169844_64\",\"data\":\"2025-01-09\",\"patrimonio\":1.026061826378152,\"resultadoCdi\":0.026993246361778134,\"resultadoIfix\":3.07,\"fatorDiario\":1.0269932463617781},{\"id\":\"import_1773059169844_65\",\"data\":\"2025-01-10\",\"patrimonio\":1.0253358535354897,\"resultadoCdi\":0.02746052828887291,\"resultadoIfix\":3.077,\"fatorDiario\":1.027460528288873},{\"id\":\"import_1773059169844_66\",\"data\":\"2025-01-13\",\"patrimonio\":1.0273958992965375,\"resultadoCdi\":0.027928022829244448,\"resultadoIfix\":3.068,\"fatorDiario\":1.0279280228292444},{\"id\":\"import_1773059169844_67\",\"data\":\"2025-01-14\",\"patrimonio\":1.0275534237610973,\"resultadoCdi\":0.02839573007963181,\"resultadoIfix\":3.065,\"fatorDiario\":1.0283957300796318},{\"id\":\"import_1773059169844_68\",\"data\":\"2025-01-15\",\"patrimonio\":1.0312150341973538,\"resultadoCdi\":0.028863650136818242,\"resultadoIfix\":3.091,\"fatorDiario\":1.0288636501368182},{\"id\":\"import_1773059169844_69\",\"data\":\"2025-01-16\",\"patrimonio\":1.029825331660901,\"resultadoCdi\":0.029331783097630515,\"resultadoIfix\":3.084,\"fatorDiario\":1.0293317830976305},{\"id\":\"import_1773059169844_70\",\"data\":\"2025-01-17\",\"patrimonio\":1.0278177227710827,\"resultadoCdi\":0.029800129058940028,\"resultadoIfix\":3.041,\"fatorDiario\":1.02980012905894},{\"id\":\"import_1773059169844_71\",\"data\":\"2025-01-20\",\"patrimonio\":1.029195533587486,\"resultadoCdi\":0.030268688117661924,\"resultadoIfix\":3.038,\"fatorDiario\":1.030268688117662},{\"id\":\"import_1773059169844_72\",\"data\":\"2025-01-21\",\"patrimonio\":1.0236910190203368,\"resultadoCdi\":0.03073746037075553,\"resultadoIfix\":3.018,\"fatorDiario\":1.0307374603707555},{\"id\":\"import_1773059169844_73\",\"data\":\"2025-01-22\",\"patrimonio\":1.025851333128124,\"resultadoCdi\":0.031206445915224368,\"resultadoIfix\":3.011,\"fatorDiario\":1.0312064459152244},{\"id\":\"import_1773059169844_74\",\"data\":\"2025-01-23\",\"patrimonio\":1.0214454805307134,\"resultadoCdi\":0.031675644848115914,\"resultadoIfix\":2.997,\"fatorDiario\":1.031675644848116},{\"id\":\"import_1773059169844_75\",\"data\":\"2025-01-24\",\"patrimonio\":1.0246095828461144,\"resultadoCdi\":0.03214505726652184,\"resultadoIfix\":3.001,\"fatorDiario\":1.0321450572665218},{\"id\":\"import_1773059169844_76\",\"data\":\"2025-01-27\",\"patrimonio\":1.022035956685236,\"resultadoCdi\":0.032614683267578215,\"resultadoIfix\":2.989,\"fatorDiario\":1.0326146832675782},{\"id\":\"import_1773059169844_77\",\"data\":\"2025-01-28\",\"patrimonio\":1.0209170436773878,\"resultadoCdi\":0.03308452294846509,\"resultadoIfix\":2.975,\"fatorDiario\":1.033084522948465},{\"id\":\"import_1773059169844_78\",\"data\":\"2025-01-29\",\"patrimonio\":1.02549507669775,\"resultadoCdi\":0.03355457640640669,\"resultadoIfix\":2.971,\"fatorDiario\":1.0335545764064067},{\"id\":\"import_1773059169844_79\",\"data\":\"2025-01-30\",\"patrimonio\":1.0299639169088628,\"resultadoCdi\":0.03406503040771147,\"resultadoIfix\":2.997,\"fatorDiario\":1.0340650304077115},{\"id\":\"import_1773059169844_80\",\"data\":\"2025-01-31\",\"patrimonio\":1.0501987418951262,\"resultadoCdi\":0.03457573651305923,\"resultadoIfix\":3.021,\"fatorDiario\":1.0345757365130592},{\"id\":\"import_1773059169844_81\",\"data\":\"2025-02-03\",\"patrimonio\":1.0371699563339642,\"resultadoCdi\":0.0350866948469597,\"resultadoIfix\":3.001,\"fatorDiario\":1.0350866948469597},{\"id\":\"import_1773059169844_82\",\"data\":\"2025-02-04\",\"patrimonio\":1.0362538974795428,\"resultadoCdi\":0.03559790553398412,\"resultadoIfix\":3,\"fatorDiario\":1.0355979055339841},{\"id\":\"import_1773059169844_83\",\"data\":\"2025-02-05\",\"patrimonio\":1.035970709090691,\"resultadoCdi\":0.03610936869876502,\"resultadoIfix\":2.994,\"fatorDiario\":1.036109368698765},{\"id\":\"import_1773059169844_84\",\"data\":\"2025-02-06\",\"patrimonio\":1.0370976663047493,\"resultadoCdi\":0.036621084465996656,\"resultadoIfix\":2.995,\"fatorDiario\":1.0366210844659967},{\"id\":\"import_1773059169844_85\",\"data\":\"2025-02-07\",\"patrimonio\":1.0394015530056198,\"resultadoCdi\":0.03713305296043479,\"resultadoIfix\":3.007,\"fatorDiario\":1.0371330529604348},{\"id\":\"import_1773059169844_86\",\"data\":\"2025-02-10\",\"patrimonio\":1.0424189726726683,\"resultadoCdi\":0.0376452743068969,\"resultadoIfix\":3.005,\"fatorDiario\":1.037645274306897},{\"id\":\"import_1773059169844_87\",\"data\":\"2025-02-11\",\"patrimonio\":1.0457555939398708,\"resultadoCdi\":0.03815774863026222,\"resultadoIfix\":3.004,\"fatorDiario\":1.0381577486302622},{\"id\":\"import_1773059169844_88\",\"data\":\"2025-02-12\",\"patrimonio\":1.0428630419503306,\"resultadoCdi\":0.03867047605547125,\"resultadoIfix\":3.005,\"fatorDiario\":1.0386704760554712},{\"id\":\"import_1773059169844_89\",\"data\":\"2025-02-13\",\"patrimonio\":1.0461059774747652,\"resultadoCdi\":0.03918345670752643,\"resultadoIfix\":2.998,\"fatorDiario\":1.0391834567075264},{\"id\":\"import_1773059169844_90\",\"data\":\"2025-02-14\",\"patrimonio\":1.0526948561989236,\"resultadoCdi\":0.039696690711491955,\"resultadoIfix\":3.018,\"fatorDiario\":1.039696690711492},{\"id\":\"import_1773059169844_91\",\"data\":\"2025-02-17\",\"patrimonio\":1.0602104617517667,\"resultadoCdi\":0.04021017819249395,\"resultadoIfix\":3.044,\"fatorDiario\":1.040210178192494},{\"id\":\"import_1773059169844_92\",\"data\":\"2025-02-18\",\"patrimonio\":1.0662257369796813,\"resultadoCdi\":0.040723919275720055,\"resultadoIfix\":3.06,\"fatorDiario\":1.04072391927572},{\"id\":\"import_1773059169844_93\",\"data\":\"2025-02-19\",\"patrimonio\":1.0723851880823405,\"resultadoCdi\":0.04123791408641986,\"resultadoIfix\":3.06,\"fatorDiario\":1.0412379140864199},{\"id\":\"import_1773059169844_94\",\"data\":\"2025-02-20\",\"patrimonio\":1.0670291578686255,\"resultadoCdi\":0.041752162749904675,\"resultadoIfix\":3.075,\"fatorDiario\":1.0417521627499047},{\"id\":\"import_1773059169844_95\",\"data\":\"2025-02-21\",\"patrimonio\":1.0755757209601453,\"resultadoCdi\":0.042266665391548,\"resultadoIfix\":3.107,\"fatorDiario\":1.042266665391548},{\"id\":\"import_1773059169844_96\",\"data\":\"2025-02-24\",\"patrimonio\":1.0770431818555077,\"resultadoCdi\":0.04278142213678482,\"resultadoIfix\":3.113,\"fatorDiario\":1.0427814221367848},{\"id\":\"import_1773059169844_97\",\"data\":\"2025-02-25\",\"patrimonio\":1.0866710877402606,\"resultadoCdi\":0.04329643311111253,\"resultadoIfix\":3.118,\"fatorDiario\":1.0432964331111125},{\"id\":\"import_1773059169844_98\",\"data\":\"2025-02-26\",\"patrimonio\":1.0835510540507751,\"resultadoCdi\":0.04381169844009025,\"resultadoIfix\":3.106,\"fatorDiario\":1.0438116984400903},{\"id\":\"import_1773059169844_99\",\"data\":\"2025-02-27\",\"patrimonio\":1.0884179091492392,\"resultadoCdi\":0.04432721824933927,\"resultadoIfix\":3.115,\"fatorDiario\":1.0443272182493393},{\"id\":\"import_1773059169844_100\",\"data\":\"2025-02-28\",\"patrimonio\":1.0875570804114634,\"resultadoCdi\":0.044842992664542614,\"resultadoIfix\":3.121,\"fatorDiario\":1.0448429926645426},{\"id\":\"import_1773059169844_101\",\"data\":\"2025-03-05\",\"patrimonio\":1.0976949302663304,\"resultadoCdi\":0.04535902181144569,\"resultadoIfix\":3.122,\"fatorDiario\":1.0453590218114457},{\"id\":\"import_1773059169844_102\",\"data\":\"2025-03-06\",\"patrimonio\":1.1056288091421864,\"resultadoCdi\":0.04587530581585586,\"resultadoIfix\":3.14,\"fatorDiario\":1.0458753058158559},{\"id\":\"import_1773059169844_103\",\"data\":\"2025-03-07\",\"patrimonio\":1.113256399720825,\"resultadoCdi\":0.04639184480364289,\"resultadoIfix\":3.161,\"fatorDiario\":1.046391844803643},{\"id\":\"import_1773059169844_104\",\"data\":\"2025-03-10\",\"patrimonio\":1.1116792346078805,\"resultadoCdi\":0.046908638900738264,\"resultadoIfix\":3.164,\"fatorDiario\":1.0469086389007383},{\"id\":\"import_1773059169844_105\",\"data\":\"2025-03-11\",\"patrimonio\":1.1143729293597457,\"resultadoCdi\":0.047425688233135865,\"resultadoIfix\":3.174,\"fatorDiario\":1.0474256882331359},{\"id\":\"import_1773059169844_106\",\"data\":\"2025-03-12\",\"patrimonio\":1.1250635720798066,\"resultadoCdi\":0.04794299292689175,\"resultadoIfix\":3.185,\"fatorDiario\":1.0479429929268917},{\"id\":\"import_1773059169844_107\",\"data\":\"2025-03-13\",\"patrimonio\":1.1208575801462322,\"resultadoCdi\":0.04846055310812436,\"resultadoIfix\":3.188,\"fatorDiario\":1.0484605531081244},{\"id\":\"import_1773059169844_108\",\"data\":\"2025-03-14\",\"patrimonio\":1.1304242211237725,\"resultadoCdi\":0.048978368903014546,\"resultadoIfix\":3.213,\"fatorDiario\":1.0489783689030145},{\"id\":\"import_1773059169844_109\",\"data\":\"2025-03-17\",\"patrimonio\":1.1291936200646444,\"resultadoCdi\":0.0494964404378051,\"resultadoIfix\":3.22,\"fatorDiario\":1.049496440437805},{\"id\":\"import_1773059169844_110\",\"data\":\"2025-03-18\",\"patrimonio\":1.1382840218268453,\"resultadoCdi\":0.05001476783880143,\"resultadoIfix\":3.236,\"fatorDiario\":1.0500147678388014},{\"id\":\"import_1773059169844_111\",\"data\":\"2025-03-19\",\"patrimonio\":1.1459442124010522,\"resultadoCdi\":0.050533351232371126,\"resultadoIfix\":3.255,\"fatorDiario\":1.0505333512323711},{\"id\":\"import_1773059169844_112\",\"data\":\"2025-03-20\",\"patrimonio\":1.143202294318645,\"resultadoCdi\":0.051085206175480735,\"resultadoIfix\":3.25203,\"fatorDiario\":1.0510852061754807},{\"id\":\"import_1773059169844_113\",\"data\":\"2025-03-21\",\"patrimonio\":1.1454841345380782,\"resultadoCdi\":0.051637351013126276,\"resultadoIfix\":3.25864,\"fatorDiario\":1.0516373510131263},{\"id\":\"import_1773059169844_114\",\"data\":\"2025-03-24\",\"patrimonio\":1.1516565138194952,\"resultadoCdi\":0.052189785897591934,\"resultadoIfix\":3.261,\"fatorDiario\":1.052189785897592},{\"id\":\"import_1773059169844_115\",\"data\":\"2025-03-25\",\"patrimonio\":1.1533950690363177,\"resultadoCdi\":0.05274251098124205,\"resultadoIfix\":3.265,\"fatorDiario\":1.052742510981242},{\"id\":\"import_1773059169844_116\",\"data\":\"2025-03-26\",\"patrimonio\":1.1546199623825228,\"resultadoCdi\":0.05329552641652091,\"resultadoIfix\":3.272,\"fatorDiario\":1.053295526416521},{\"id\":\"import_1773059169844_117\",\"data\":\"2025-03-27\",\"patrimonio\":1.161128093008625,\"resultadoCdi\":0.05384883235595295,\"resultadoIfix\":3.286,\"fatorDiario\":1.053848832355953},{\"id\":\"import_1773059169844_118\",\"data\":\"2025-03-28\",\"patrimonio\":1.1681421496444455,\"resultadoCdi\":0.054402428952142534,\"resultadoIfix\":3.302,\"fatorDiario\":1.0544024289521425},{\"id\":\"import_1773059169844_119\",\"data\":\"2025-03-31\",\"patrimonio\":1.1721965218174446,\"resultadoCdi\":0.05495631635777465,\"resultadoIfix\":3.313,\"fatorDiario\":1.0549563163577746},{\"id\":\"import_1773059169844_120\",\"data\":\"2025-04-01\",\"patrimonio\":1.1726539209387676,\"resultadoCdi\":0.05551049472561398,\"resultadoIfix\":3.311,\"fatorDiario\":1.055510494725614},{\"id\":\"import_1773059169844_121\",\"data\":\"2025-04-02\",\"patrimonio\":1.1687604256085353,\"resultadoCdi\":0.05606496420850582,\"resultadoIfix\":3.309,\"fatorDiario\":1.0560649642085058},{\"id\":\"import_1773059169844_122\",\"data\":\"2025-04-03\",\"patrimonio\":1.147018380453973,\"resultadoCdi\":0.05661972495937562,\"resultadoIfix\":3.305,\"fatorDiario\":1.0566197249593756},{\"id\":\"import_1773059169844_123\",\"data\":\"2025-04-04\",\"patrimonio\":1.1788362693276229,\"resultadoCdi\":0.05717477713122898,\"resultadoIfix\":3.28,\"fatorDiario\":1.057174777131229},{\"id\":\"import_1773059169844_124\",\"data\":\"2025-04-07\",\"patrimonio\":1.1646128575424943,\"resultadoCdi\":0.05773012087715235,\"resultadoIfix\":3.254,\"fatorDiario\":1.0577301208771523},{\"id\":\"import_1773059169844_125\",\"data\":\"2025-04-08\",\"patrimonio\":1.172790475916905,\"resultadoCdi\":0.05828575635031208,\"resultadoIfix\":3.243,\"fatorDiario\":1.058285756350312},{\"id\":\"import_1773059169844_126\",\"data\":\"2025-04-09\",\"patrimonio\":1.1721537288118524,\"resultadoCdi\":0.05884168370395515,\"resultadoIfix\":3.247,\"fatorDiario\":1.0588416837039551},{\"id\":\"import_1773059169844_127\",\"data\":\"2025-04-10\",\"patrimonio\":1.1690837941174383,\"resultadoCdi\":0.059397903091409354,\"resultadoIfix\":3.247,\"fatorDiario\":1.0593979030914094},{\"id\":\"import_1773059169844_128\",\"data\":\"2025-04-11\",\"patrimonio\":1.1781696108386621,\"resultadoCdi\":0.05995441466608242,\"resultadoIfix\":3.258,\"fatorDiario\":1.0599544146660824},{\"id\":\"import_1773059169844_129\",\"data\":\"2025-04-14\",\"patrimonio\":1.179103627274224,\"resultadoCdi\":0.060511218581463355,\"resultadoIfix\":3.28,\"fatorDiario\":1.0605112185814634},{\"id\":\"import_1773059169844_130\",\"data\":\"2025-04-15\",\"patrimonio\":1.1811056725932672,\"resultadoCdi\":0.06106831499112131,\"resultadoIfix\":3.292,\"fatorDiario\":1.0610683149911213},{\"id\":\"import_1773059169844_131\",\"data\":\"2025-04-16\",\"patrimonio\":1.1886576394431252,\"resultadoCdi\":0.061625704048706265,\"resultadoIfix\":3.308,\"fatorDiario\":1.0616257040487063},{\"id\":\"import_1773059169844_132\",\"data\":\"2025-04-17\",\"patrimonio\":1.1979656449016312,\"resultadoCdi\":0.06218338590794881,\"resultadoIfix\":3.333,\"fatorDiario\":1.0621833859079488},{\"id\":\"import_1773059169844_133\",\"data\":\"2025-04-22\",\"patrimonio\":1.2010444274377523,\"resultadoCdi\":0.06274136072266034,\"resultadoIfix\":3.35,\"fatorDiario\":1.0627413607226603},{\"id\":\"import_1773059169844_134\",\"data\":\"2025-04-23\",\"patrimonio\":1.2088696326894828,\"resultadoCdi\":0.06329962864673333,\"resultadoIfix\":3.36,\"fatorDiario\":1.0632996286467333},{\"id\":\"import_1773059169844_135\",\"data\":\"2025-04-24\",\"patrimonio\":1.2097696397228468,\"resultadoCdi\":0.0638581898341406,\"resultadoIfix\":3.365,\"fatorDiario\":1.0638581898341406},{\"id\":\"import_1773059169844_136\",\"data\":\"2025-04-25\",\"patrimonio\":1.217565945307489,\"resultadoCdi\":0.06441704443893626,\"resultadoIfix\":3.391,\"fatorDiario\":1.0644170444389363},{\"id\":\"import_1773059169844_137\",\"data\":\"2025-04-28\",\"patrimonio\":1.2235499465269593,\"resultadoCdi\":0.06497619261525522,\"resultadoIfix\":3.394,\"fatorDiario\":1.0649761926152552},{\"id\":\"import_1773059169844_138\",\"data\":\"2025-04-29\",\"patrimonio\":1.2242220807563153,\"resultadoCdi\":0.06553563451731326,\"resultadoIfix\":3.401,\"fatorDiario\":1.0655356345173133},{\"id\":\"import_1773059169844_139\",\"data\":\"2025-04-30\",\"patrimonio\":1.2258045643226714,\"resultadoCdi\":0.06609537029940715,\"resultadoIfix\":3.412,\"fatorDiario\":1.0660953702994072},{\"id\":\"import_1773059169844_140\",\"data\":\"2025-05-02\",\"patrimonio\":1.2375555255887885,\"resultadoCdi\":0.06665540085837907,\"resultadoIfix\":3.419,\"fatorDiario\":1.066655400858379},{\"id\":\"import_1773059169844_141\",\"data\":\"2025-05-05\",\"patrimonio\":1.2357526679732544,\"resultadoCdi\":0.06721572560700406,\"resultadoIfix\":3.391,\"fatorDiario\":1.067215725607004},{\"id\":\"import_1773059169844_142\",\"data\":\"2025-05-06\",\"patrimonio\":1.2342554353767554,\"resultadoCdi\":0.06777634469982274,\"resultadoIfix\":3.385,\"fatorDiario\":1.0677763446998227},{\"id\":\"import_1773059169844_143\",\"data\":\"2025-05-07\",\"patrimonio\":1.237180662082406,\"resultadoCdi\":0.06833725829145698,\"resultadoIfix\":3.388,\"fatorDiario\":1.068337258291457},{\"id\":\"import_1773059169844_144\",\"data\":\"2025-05-08\",\"patrimonio\":1.2415472809526311,\"resultadoCdi\":0.06891700218804142,\"resultadoIfix\":3.389,\"fatorDiario\":1.0689170021880414},{\"id\":\"import_1773059169844_145\",\"data\":\"2025-05-09\",\"patrimonio\":1.246547957595624,\"resultadoCdi\":0.06949706068844885,\"resultadoIfix\":3.407,\"fatorDiario\":1.0694970606884489},{\"id\":\"import_1773059169844_146\",\"data\":\"2025-05-12\",\"patrimonio\":1.2495963480908878,\"resultadoCdi\":0.07007743396340205,\"resultadoIfix\":3.406,\"fatorDiario\":1.070077433963402},{\"id\":\"import_1773059169844_147\",\"data\":\"2025-05-13\",\"patrimonio\":1.2485466176725937,\"resultadoCdi\":0.07065812218371659,\"resultadoIfix\":3.411,\"fatorDiario\":1.0706581221837166},{\"id\":\"import_1773059169844_148\",\"data\":\"2025-05-14\",\"patrimonio\":1.2531499607458587,\"resultadoCdi\":0.07123912552030087,\"resultadoIfix\":3.406,\"fatorDiario\":1.0712391255203009},{\"id\":\"import_1773059169844_149\",\"data\":\"2025-05-15\",\"patrimonio\":1.2557941578069773,\"resultadoCdi\":0.07182044414415567,\"resultadoIfix\":3.422,\"fatorDiario\":1.0718204441441557},{\"id\":\"import_1773059169844_150\",\"data\":\"2025-05-16\",\"patrimonio\":1.2600326442846461,\"resultadoCdi\":0.07240207822637501,\"resultadoIfix\":3.439,\"fatorDiario\":1.072402078226375},{\"id\":\"import_1773059169844_151\",\"data\":\"2025-05-19\",\"patrimonio\":1.2618153213760404,\"resultadoCdi\":0.07298402793814529,\"resultadoIfix\":3.434,\"fatorDiario\":1.0729840279381453},{\"id\":\"import_1773059169844_152\",\"data\":\"2025-05-20\",\"patrimonio\":1.2607231701481199,\"resultadoCdi\":0.07356629345074617,\"resultadoIfix\":3.437,\"fatorDiario\":1.0735662934507462},{\"id\":\"import_1773059169844_153\",\"data\":\"2025-05-21\",\"patrimonio\":1.2639616133273515,\"resultadoCdi\":0.07414887493555011,\"resultadoIfix\":3.436,\"fatorDiario\":1.0741488749355501},{\"id\":\"import_1773059169844_154\",\"data\":\"2025-05-22\",\"patrimonio\":1.2462886652972882,\"resultadoCdi\":0.07473177256402264,\"resultadoIfix\":3.436,\"fatorDiario\":1.0747317725640226},{\"id\":\"import_1773059169844_155\",\"data\":\"2025-05-23\",\"patrimonio\":1.2588787371073038,\"resultadoCdi\":0.07531498650772228,\"resultadoIfix\":3.44,\"fatorDiario\":1.0753149865077223},{\"id\":\"import_1773059169844_156\",\"data\":\"2025-05-26\",\"patrimonio\":1.2568960604618091,\"resultadoCdi\":0.07589851693830063,\"resultadoIfix\":3.436,\"fatorDiario\":1.0758985169383006},{\"id\":\"import_1773059169844_157\",\"data\":\"2025-05-27\",\"patrimonio\":1.2570668652242039,\"resultadoCdi\":0.0764823640275023,\"resultadoIfix\":3.438,\"fatorDiario\":1.0764823640275023},{\"id\":\"import_1773059169844_158\",\"data\":\"2025-05-28\",\"patrimonio\":1.254405552871746,\"resultadoCdi\":0.0770665279471654,\"resultadoIfix\":3.442,\"fatorDiario\":1.0770665279471654},{\"id\":\"import_1773059169844_159\",\"data\":\"2025-05-29\",\"patrimonio\":1.260025520721431,\"resultadoCdi\":0.07765100886922127,\"resultadoIfix\":3.461,\"fatorDiario\":1.0776510088692213},{\"id\":\"import_1773059169844_160\",\"data\":\"2025-05-30\",\"patrimonio\":1.257397252628487,\"resultadoCdi\":0.07823580696569432,\"resultadoIfix\":3.461,\"fatorDiario\":1.0782358069656943},{\"id\":\"import_1773059169844_161\",\"data\":\"2025-06-02\",\"patrimonio\":1.2623215602679003,\"resultadoCdi\":0.07882092240870242,\"resultadoIfix\":3.444,\"fatorDiario\":1.0788209224087024},{\"id\":\"import_1773059169844_162\",\"data\":\"2025-06-03\",\"patrimonio\":1.2597439975242455,\"resultadoCdi\":0.0794063553704567,\"resultadoIfix\":3.454,\"fatorDiario\":1.0794063553704567},{\"id\":\"import_1773059169844_163\",\"data\":\"2025-06-04\",\"patrimonio\":1.2550282916683861,\"resultadoCdi\":0.07999210602326201,\"resultadoIfix\":3.447,\"fatorDiario\":1.079992106023262},{\"id\":\"import_1773059169844_164\",\"data\":\"2025-06-05\",\"patrimonio\":1.2651456233865397,\"resultadoCdi\":0.08057817453951666,\"resultadoIfix\":3.448,\"fatorDiario\":1.0805781745395167},{\"id\":\"import_1773059169844_165\",\"data\":\"2025-06-06\",\"patrimonio\":1.2547984719706284,\"resultadoCdi\":0.08116456109171222,\"resultadoIfix\":3.449,\"fatorDiario\":1.0811645610917122},{\"id\":\"import_1773059169844_166\",\"data\":\"2025-06-09\",\"patrimonio\":1.2555620583770346,\"resultadoCdi\":0.0817512658524342,\"resultadoIfix\":3.416,\"fatorDiario\":1.0817512658524342},{\"id\":\"import_1773059169844_167\",\"data\":\"2025-06-10\",\"patrimonio\":1.2543223350666752,\"resultadoCdi\":0.0823382889943618,\"resultadoIfix\":3.407,\"fatorDiario\":1.0823382889943618},{\"id\":\"import_1773059169844_168\",\"data\":\"2025-06-11\",\"patrimonio\":1.2545900491615496,\"resultadoCdi\":0.08292563069026748,\"resultadoIfix\":3.408,\"fatorDiario\":1.0829256306902675},{\"id\":\"import_1773059169844_169\",\"data\":\"2025-06-12\",\"patrimonio\":1.2493920040495978,\"resultadoCdi\":0.08351329111301786,\"resultadoIfix\":3.391,\"fatorDiario\":1.0835132911130179},{\"id\":\"import_1773059169844_170\",\"data\":\"2025-06-13\",\"patrimonio\":1.261403955145254,\"resultadoCdi\":0.08410127043557325,\"resultadoIfix\":3.418,\"fatorDiario\":1.0841012704355732},{\"id\":\"import_1773059169844_171\",\"data\":\"2025-06-16\",\"patrimonio\":1.2558132668216075,\"resultadoCdi\":0.08468956883098788,\"resultadoIfix\":3.431,\"fatorDiario\":1.0846895688309879},{\"id\":\"import_1773059169844_172\",\"data\":\"2025-06-17\",\"patrimonio\":1.2445082761989015,\"resultadoCdi\":0.0852781864724097,\"resultadoIfix\":3.432,\"fatorDiario\":1.0852781864724097},{\"id\":\"import_1773059169844_173\",\"data\":\"2025-06-18\",\"patrimonio\":1.258098412748485,\"resultadoCdi\":0.0858802605080764,\"resultadoIfix\":3.441,\"fatorDiario\":1.0858802605080764},{\"id\":\"import_1773059169844_174\",\"data\":\"2025-06-20\",\"patrimonio\":1.253337301658357,\"resultadoCdi\":0.08647891715449729,\"resultadoIfix\":3.436,\"fatorDiario\":1.0864789171544973},{\"id\":\"import_1773059169844_175\",\"data\":\"2025-06-23\",\"patrimonio\":1.252562240034163,\"resultadoCdi\":0.08707790384631386,\"resultadoIfix\":3.429,\"fatorDiario\":1.0870779038463139},{\"id\":\"import_1773059169844_176\",\"data\":\"2025-06-24\",\"patrimonio\":1.2494022766789001,\"resultadoCdi\":0.08767722076548345,\"resultadoIfix\":3.434,\"fatorDiario\":1.0876772207654835},{\"id\":\"import_1773059169844_177\",\"data\":\"2025-06-25\",\"patrimonio\":1.2522502971887122,\"resultadoCdi\":0.08827686809406377,\"resultadoIfix\":3.442,\"fatorDiario\":1.0882768680940638},{\"id\":\"import_1773059169844_178\",\"data\":\"2025-06-26\",\"patrimonio\":1.2564727297885254,\"resultadoCdi\":0.08887684601421286,\"resultadoIfix\":3.449,\"fatorDiario\":1.0888768460142129},{\"id\":\"import_1773059169844_179\",\"data\":\"2025-06-27\",\"patrimonio\":1.2546645812487895,\"resultadoCdi\":0.08947715470818896,\"resultadoIfix\":3.462,\"fatorDiario\":1.089477154708189},{\"id\":\"import_1773059169844_180\",\"data\":\"2025-06-30\",\"patrimonio\":1.2534032550604581,\"resultadoCdi\":0.09007779435835128,\"resultadoIfix\":3.483,\"fatorDiario\":1.0900777943583513},{\"id\":\"import_1773059169844_181\",\"data\":\"2025-07-01\",\"patrimonio\":1.2474544434957837,\"resultadoCdi\":0.090678765147159,\"resultadoIfix\":3.474,\"fatorDiario\":1.090678765147159},{\"id\":\"import_1773059169844_182\",\"data\":\"2025-07-02\",\"patrimonio\":1.2543039290996534,\"resultadoCdi\":0.0912800672571723,\"resultadoIfix\":3.475,\"fatorDiario\":1.0912800672571723},{\"id\":\"import_1773059169844_183\",\"data\":\"2025-07-03\",\"patrimonio\":1.2556685397741767,\"resultadoCdi\":0.09188170087105196,\"resultadoIfix\":3.481,\"fatorDiario\":1.091881700871052},{\"id\":\"import_1773059169844_184\",\"data\":\"2025-07-04\",\"patrimonio\":1.2597627092692658,\"resultadoCdi\":0.09248366617155934,\"resultadoIfix\":3.495,\"fatorDiario\":1.0924836661715593},{\"id\":\"import_1773059169844_185\",\"data\":\"2025-07-07\",\"patrimonio\":1.2643117861342532,\"resultadoCdi\":0.09308596334155639,\"resultadoIfix\":3.489,\"fatorDiario\":1.0930859633415564},{\"id\":\"import_1773059169844_186\",\"data\":\"2025-07-08\",\"patrimonio\":1.2614282686606477,\"resultadoCdi\":0.0936885925640063,\"resultadoIfix\":3.486,\"fatorDiario\":1.0936885925640063},{\"id\":\"import_1773059169844_187\",\"data\":\"2025-07-09\",\"patrimonio\":1.2640066001633612,\"resultadoCdi\":0.09429155402197287,\"resultadoIfix\":3.482,\"fatorDiario\":1.0942915540219729},{\"id\":\"import_1773059169844_188\",\"data\":\"2025-07-10\",\"patrimonio\":1.265236602306549,\"resultadoCdi\":0.0948948478986209,\"resultadoIfix\":3.474,\"fatorDiario\":1.094894847898621},{\"id\":\"import_1773059169844_189\",\"data\":\"2025-07-11\",\"patrimonio\":1.267023133660395,\"resultadoCdi\":0.09549847437721604,\"resultadoIfix\":3.483,\"fatorDiario\":1.095498474377216},{\"id\":\"import_1773059169844_190\",\"data\":\"2025-07-14\",\"patrimonio\":1.2714447263608415,\"resultadoCdi\":0.09610243364112514,\"resultadoIfix\":3.483,\"fatorDiario\":1.0961024336411251},{\"id\":\"import_1773059169844_191\",\"data\":\"2025-07-15\",\"patrimonio\":1.2723374892875545,\"resultadoCdi\":0.0967067258738159,\"resultadoIfix\":3.479,\"fatorDiario\":1.096706725873816},{\"id\":\"import_1773059169844_192\",\"data\":\"2025-07-16\",\"patrimonio\":1.2708121414769487,\"resultadoCdi\":0.09731135125885748,\"resultadoIfix\":3.475,\"fatorDiario\":1.0973113512588575},{\"id\":\"import_1773059169844_193\",\"data\":\"2025-07-17\",\"patrimonio\":1.271984058752918,\"resultadoCdi\":0.09791630997992007,\"resultadoIfix\":3.475,\"fatorDiario\":1.09791630997992},{\"id\":\"import_1773059169844_194\",\"data\":\"2025-07-18\",\"patrimonio\":1.2714633393940165,\"resultadoCdi\":0.0985216022207751,\"resultadoIfix\":3.465,\"fatorDiario\":1.098521602220775},{\"id\":\"import_1773059169844_195\",\"data\":\"2025-07-21\",\"patrimonio\":1.2694238017768773,\"resultadoCdi\":0.09912722816529551,\"resultadoIfix\":3.443,\"fatorDiario\":1.0991272281652955},{\"id\":\"import_1773059169844_196\",\"data\":\"2025-07-22\",\"patrimonio\":1.2696570927676762,\"resultadoCdi\":0.09973318799745545,\"resultadoIfix\":3.44,\"fatorDiario\":1.0997331879974555},{\"id\":\"import_1773059169844_197\",\"data\":\"2025-07-23\",\"patrimonio\":1.2701153033132022,\"resultadoCdi\":0.10033948190133035,\"resultadoIfix\":3.432,\"fatorDiario\":1.1003394819013304},{\"id\":\"import_1773059169844_198\",\"data\":\"2025-07-24\",\"patrimonio\":1.2725476107694722,\"resultadoCdi\":0.10094611006109755,\"resultadoIfix\":3.437,\"fatorDiario\":1.1009461100610975},{\"id\":\"import_1773059169844_199\",\"data\":\"2025-07-25\",\"patrimonio\":1.270995765665423,\"resultadoCdi\":0.10155307266103542,\"resultadoIfix\":3.445,\"fatorDiario\":1.1015530726610354},{\"id\":\"import_1773059169844_200\",\"data\":\"2025-07-28\",\"patrimonio\":1.2709139285528874,\"resultadoCdi\":0.10216036988552424,\"resultadoIfix\":3.431,\"fatorDiario\":1.1021603698855242},{\"id\":\"import_1773059169844_201\",\"data\":\"2025-07-29\",\"patrimonio\":1.27101475696294,\"resultadoCdi\":0.102768001919046,\"resultadoIfix\":3.42,\"fatorDiario\":1.102768001919046},{\"id\":\"import_1773059169844_202\",\"data\":\"2025-07-30\",\"patrimonio\":1.2706412143833727,\"resultadoCdi\":0.10337596894618417,\"resultadoIfix\":3.413,\"fatorDiario\":1.1033759689461842},{\"id\":\"import_1773059169844_203\",\"data\":\"2025-07-31\",\"patrimonio\":1.2778580932711654,\"resultadoCdi\":0.1039842711516239,\"resultadoIfix\":3.436,\"fatorDiario\":1.103984271151624},{\"id\":\"import_1773059169844_204\",\"data\":\"2025-08-01\",\"patrimonio\":1.2770606514273275,\"resultadoCdi\":0.1045929087201527,\"resultadoIfix\":3.43,\"fatorDiario\":1.1045929087201527},{\"id\":\"import_1773059169844_205\",\"data\":\"2025-08-04\",\"patrimonio\":1.2714572771367971,\"resultadoCdi\":0.10520188183665935,\"resultadoIfix\":3.419,\"fatorDiario\":1.1052018818366594},{\"id\":\"import_1773059169844_206\",\"data\":\"2025-08-05\",\"patrimonio\":1.2671156582188297,\"resultadoCdi\":0.10581119068613476,\"resultadoIfix\":3.408,\"fatorDiario\":1.1058111906861348},{\"id\":\"import_1773059169844_207\",\"data\":\"2025-08-06\",\"patrimonio\":1.2647006728278551,\"resultadoCdi\":0.10642083545367198,\"resultadoIfix\":3.404,\"fatorDiario\":1.106420835453672},{\"id\":\"import_1773059169844_208\",\"data\":\"2025-08-07\",\"patrimonio\":1.2699027014904505,\"resultadoCdi\":0.10703081632446598,\"resultadoIfix\":3.41,\"fatorDiario\":1.107030816324466},{\"id\":\"import_1773059169844_209\",\"data\":\"2025-08-08\",\"patrimonio\":1.2711802503135365,\"resultadoCdi\":0.10764113348381388,\"resultadoIfix\":3.419,\"fatorDiario\":1.1076411334838139},{\"id\":\"import_1773059169844_210\",\"data\":\"2025-08-11\",\"patrimonio\":1.2691747514543645,\"resultadoCdi\":0.10825178711711492,\"resultadoIfix\":3.417,\"fatorDiario\":1.108251787117115},{\"id\":\"import_1773059169844_211\",\"data\":\"2025-08-12\",\"patrimonio\":1.2710210503169772,\"resultadoCdi\":0.10886277740987049,\"resultadoIfix\":3.411,\"fatorDiario\":1.1088627774098705},{\"id\":\"import_1773059169844_212\",\"data\":\"2025-08-13\",\"patrimonio\":1.2693181264531308,\"resultadoCdi\":0.10947410454768436,\"resultadoIfix\":3.41,\"fatorDiario\":1.1094741045476844},{\"id\":\"import_1773059169844_213\",\"data\":\"2025-08-14\",\"patrimonio\":1.2715956869033036,\"resultadoCdi\":0.11008576871626263,\"resultadoIfix\":3.419,\"fatorDiario\":1.1100857687162626},{\"id\":\"import_1773059169844_214\",\"data\":\"2025-08-15\",\"patrimonio\":1.2731504504549804,\"resultadoCdi\":0.1106977701014138,\"resultadoIfix\":3.431,\"fatorDiario\":1.1106977701014138},{\"id\":\"import_1773059169844_215\",\"data\":\"2025-08-18\",\"patrimonio\":1.2772240804168775,\"resultadoCdi\":0.11131010888904846,\"resultadoIfix\":3.434,\"fatorDiario\":1.1113101088890485},{\"id\":\"import_1773059169844_216\",\"data\":\"2025-08-19\",\"patrimonio\":1.2749410334969231,\"resultadoCdi\":0.11192278526518007,\"resultadoIfix\":3.428,\"fatorDiario\":1.11192278526518},{\"id\":\"import_1773059169844_217\",\"data\":\"2025-08-20\",\"patrimonio\":1.27082483250666,\"resultadoCdi\":0.11253579941592462,\"resultadoIfix\":3.422,\"fatorDiario\":1.1125357994159246},{\"id\":\"import_1773059169844_218\",\"data\":\"2025-08-21\",\"patrimonio\":1.2704940867463939,\"resultadoCdi\":0.11314915152750071,\"resultadoIfix\":3.425,\"fatorDiario\":1.1131491515275007},{\"id\":\"import_1773059169844_219\",\"data\":\"2025-08-22\",\"patrimonio\":1.2731567285410115,\"resultadoCdi\":0.11376284178622953,\"resultadoIfix\":3.43,\"fatorDiario\":1.1137628417862295},{\"id\":\"import_1773059169844_220\",\"data\":\"2025-08-25\",\"patrimonio\":1.2776733294215832,\"resultadoCdi\":0.11437687037853483,\"resultadoIfix\":3.432,\"fatorDiario\":1.1143768703785348},{\"id\":\"import_1773059169844_221\",\"data\":\"2025-08-26\",\"patrimonio\":1.279053852996644,\"resultadoCdi\":0.11499123749094342,\"resultadoIfix\":3.44,\"fatorDiario\":1.1149912374909434},{\"id\":\"import_1773059169844_222\",\"data\":\"2025-08-27\",\"patrimonio\":1.2800083654321768,\"resultadoCdi\":0.11560594331008467,\"resultadoIfix\":3.441,\"fatorDiario\":1.1156059433100847},{\"id\":\"import_1773059169844_223\",\"data\":\"2025-08-28\",\"patrimonio\":1.2837267014985878,\"resultadoCdi\":0.11622098802269099,\"resultadoIfix\":3.452,\"fatorDiario\":1.116220988022691},{\"id\":\"import_1773059169844_224\",\"data\":\"2025-08-29\",\"patrimonio\":1.2907530779796565,\"resultadoCdi\":0.1168363718155978,\"resultadoIfix\":3.476,\"fatorDiario\":1.1168363718155978},{\"id\":\"import_1773059169844_225\",\"data\":\"2025-09-01\",\"patrimonio\":1.2909510938583741,\"resultadoCdi\":0.1174520948757436,\"resultadoIfix\":3.479,\"fatorDiario\":1.1174520948757436},{\"id\":\"import_1773059169844_226\",\"data\":\"2025-09-02\",\"patrimonio\":1.291968830486949,\"resultadoCdi\":0.11806815739016963,\"resultadoIfix\":3.472,\"fatorDiario\":1.1180681573901696},{\"id\":\"import_1773059169844_227\",\"data\":\"2025-09-03\",\"patrimonio\":1.2900197108050708,\"resultadoCdi\":0.11868455954602042,\"resultadoIfix\":3.485,\"fatorDiario\":1.1186845595460204},{\"id\":\"import_1773059169844_228\",\"data\":\"2025-09-04\",\"patrimonio\":1.2932916554002547,\"resultadoCdi\":0.11930130153054375,\"resultadoIfix\":3.485,\"fatorDiario\":1.1193013015305437},{\"id\":\"import_1773059169844_229\",\"data\":\"2025-09-05\",\"patrimonio\":1.2989445037494052,\"resultadoCdi\":0.11991838353109063,\"resultadoIfix\":3.5,\"fatorDiario\":1.1199183835310906},{\"id\":\"import_1773059169844_230\",\"data\":\"2025-09-08\",\"patrimonio\":1.303590266657823,\"resultadoCdi\":0.12053580573511535,\"resultadoIfix\":3.509,\"fatorDiario\":1.1205358057351154},{\"id\":\"import_1773059169844_231\",\"data\":\"2025-09-09\",\"patrimonio\":1.3013233696494395,\"resultadoCdi\":0.12115356833017521,\"resultadoIfix\":3.505,\"fatorDiario\":1.1211535683301752},{\"id\":\"import_1773059169844_232\",\"data\":\"2025-09-10\",\"patrimonio\":1.3032724605924424,\"resultadoCdi\":0.12177167150393142,\"resultadoIfix\":3.514,\"fatorDiario\":1.1217716715039314},{\"id\":\"import_1773059169844_233\",\"data\":\"2025-09-11\",\"patrimonio\":1.305286043774957,\"resultadoCdi\":0.12239011544414824,\"resultadoIfix\":3.514,\"fatorDiario\":1.1223901154441482},{\"id\":\"import_1773059169844_234\",\"data\":\"2025-09-12\",\"patrimonio\":1.3089555146637983,\"resultadoCdi\":0.12300890033869383,\"resultadoIfix\":3.534,\"fatorDiario\":1.1230089003386938},{\"id\":\"import_1773059169844_235\",\"data\":\"2025-09-15\",\"patrimonio\":1.3136819160211322,\"resultadoCdi\":0.1236280263755396,\"resultadoIfix\":3.547,\"fatorDiario\":1.1236280263755396},{\"id\":\"import_1773059169845_236\",\"data\":\"2025-09-16\",\"patrimonio\":1.3167558058566342,\"resultadoCdi\":0.1242474937427609,\"resultadoIfix\":3.559,\"fatorDiario\":1.124247493742761},{\"id\":\"import_1773059169845_237\",\"data\":\"2025-09-17\",\"patrimonio\":1.3200949420278791,\"resultadoCdi\":0.12486730262853629,\"resultadoIfix\":3.563,\"fatorDiario\":1.1248673026285363},{\"id\":\"import_1773059169845_238\",\"data\":\"2025-09-18\",\"patrimonio\":1.3198446472349885,\"resultadoCdi\":0.12548745322114851,\"resultadoIfix\":3.554,\"fatorDiario\":1.1254874532211485},{\"id\":\"import_1773059169845_239\",\"data\":\"2025-09-19\",\"patrimonio\":1.3187864172933697,\"resultadoCdi\":0.12610794570898398,\"resultadoIfix\":3.566,\"fatorDiario\":1.126107945708984},{\"id\":\"import_1773059169845_240\",\"data\":\"2025-09-22\",\"patrimonio\":1.3203102465395324,\"resultadoCdi\":0.1267287802805328,\"resultadoIfix\":3.558,\"fatorDiario\":1.1267287802805328},{\"id\":\"import_1773059169845_241\",\"data\":\"2025-09-23\",\"patrimonio\":1.3121461190059076,\"resultadoCdi\":0.12734995712438946,\"resultadoIfix\":3.563,\"fatorDiario\":1.1273499571243895},{\"id\":\"import_1773059169845_242\",\"data\":\"2025-09-24\",\"patrimonio\":1.3158551441978794,\"resultadoCdi\":0.12797147642925188,\"resultadoIfix\":3.564,\"fatorDiario\":1.1279714764292519},{\"id\":\"import_1773059169845_243\",\"data\":\"2025-09-25\",\"patrimonio\":1.3174409998336685,\"resultadoCdi\":0.12859333838392217,\"resultadoIfix\":3.568,\"fatorDiario\":1.1285933383839222},{\"id\":\"import_1773059169845_244\",\"data\":\"2025-09-26\",\"patrimonio\":1.3250762709835746,\"resultadoCdi\":0.12921554317730677,\"resultadoIfix\":3.578,\"fatorDiario\":1.1292155431773068},{\"id\":\"import_1773059169845_245\",\"data\":\"2025-09-29\",\"patrimonio\":1.325891632581386,\"resultadoCdi\":0.12983809099841603,\"resultadoIfix\":3.582,\"fatorDiario\":1.129838090998416},{\"id\":\"import_1773059169845_246\",\"data\":\"2025-09-30\",\"patrimonio\":1.3302863797026816,\"resultadoCdi\":0.13046098203636447,\"resultadoIfix\":3.589,\"fatorDiario\":1.1304609820363645},{\"id\":\"import_1773059169845_247\",\"data\":\"2025-10-01\",\"patrimonio\":1.3230509421772985,\"resultadoCdi\":0.13108421648037094,\"resultadoIfix\":3.572,\"fatorDiario\":1.131084216480371},{\"id\":\"import_1773059169845_248\",\"data\":\"2025-10-02\",\"patrimonio\":1.325535661792113,\"resultadoCdi\":0.1317077945197589,\"resultadoIfix\":3.574,\"fatorDiario\":1.131707794519759},{\"id\":\"import_1773059169845_249\",\"data\":\"2025-10-03\",\"patrimonio\":1.3298990963551311,\"resultadoCdi\":0.13233171634395569,\"resultadoIfix\":3.584,\"fatorDiario\":1.1323317163439557},{\"id\":\"import_1773059169845_250\",\"data\":\"2025-10-06\",\"patrimonio\":1.3312098881550087,\"resultadoCdi\":0.13295598214249327,\"resultadoIfix\":3.582,\"fatorDiario\":1.1329559821424933},{\"id\":\"import_1773059169845_251\",\"data\":\"2025-10-07\",\"patrimonio\":1.3258667184673614,\"resultadoCdi\":0.1335805921050084,\"resultadoIfix\":3.575,\"fatorDiario\":1.1335805921050084},{\"id\":\"import_1773059169845_252\",\"data\":\"2025-10-08\",\"patrimonio\":1.3307684383408531,\"resultadoCdi\":0.13420554642124194,\"resultadoIfix\":3.577,\"fatorDiario\":1.134205546421242},{\"id\":\"import_1773059169845_253\",\"data\":\"2025-10-09\",\"patrimonio\":1.3309907207384395,\"resultadoCdi\":0.1348308452810396,\"resultadoIfix\":3.573,\"fatorDiario\":1.1348308452810396},{\"id\":\"import_1773059169845_254\",\"data\":\"2025-10-10\",\"patrimonio\":1.3326158709603537,\"resultadoCdi\":0.1354564888743517,\"resultadoIfix\":3.577,\"fatorDiario\":1.1354564888743517},{\"id\":\"import_1773059169845_255\",\"data\":\"2025-10-13\",\"patrimonio\":1.3351012152969626,\"resultadoCdi\":0.13608247739123303,\"resultadoIfix\":3.569,\"fatorDiario\":1.136082477391233},{\"id\":\"import_1773059169845_256\",\"data\":\"2025-10-14\",\"patrimonio\":1.3287311636909582,\"resultadoCdi\":0.13670881102184373,\"resultadoIfix\":3.575,\"fatorDiario\":1.1367088110218437},{\"id\":\"import_1773059169845_257\",\"data\":\"2025-10-15\",\"patrimonio\":1.3356034761900435,\"resultadoCdi\":0.1373354899564483,\"resultadoIfix\":3.586,\"fatorDiario\":1.1373354899564483},{\"id\":\"import_1773059169845_258\",\"data\":\"2025-10-16\",\"patrimonio\":1.325991375504238,\"resultadoCdi\":0.13796251438541618,\"resultadoIfix\":3.578,\"fatorDiario\":1.1379625143854162},{\"id\":\"import_1773059169845_259\",\"data\":\"2025-10-17\",\"patrimonio\":1.3281108337541527,\"resultadoCdi\":0.13858988449922216,\"resultadoIfix\":3.577,\"fatorDiario\":1.1385898844992222},{\"id\":\"import_1773059169845_260\",\"data\":\"2025-10-20\",\"patrimonio\":1.3233110072169711,\"resultadoCdi\":0.13921760048844556,\"resultadoIfix\":3.567,\"fatorDiario\":1.1392176004884456},{\"id\":\"import_1773059169845_261\",\"data\":\"2025-10-21\",\"patrimonio\":1.3212903518284904,\"resultadoCdi\":0.13984566254377095,\"resultadoIfix\":3.572,\"fatorDiario\":1.139845662543771},{\"id\":\"import_1773059169845_262\",\"data\":\"2025-10-22\",\"patrimonio\":1.320753859701242,\"resultadoCdi\":0.14047407085598795,\"resultadoIfix\":3.567,\"fatorDiario\":1.140474070855988},{\"id\":\"import_1773059169845_263\",\"data\":\"2025-10-23\",\"patrimonio\":1.3197173052700415,\"resultadoCdi\":0.14110282561599163,\"resultadoIfix\":3.567,\"fatorDiario\":1.1411028256159916},{\"id\":\"import_1773059169845_264\",\"data\":\"2025-10-24\",\"patrimonio\":1.3218853300015476,\"resultadoCdi\":0.1417319270147821,\"resultadoIfix\":3.578,\"fatorDiario\":1.141731927014782},{\"id\":\"import_1773059169845_265\",\"data\":\"2025-10-27\",\"patrimonio\":1.3266959157057088,\"resultadoCdi\":0.1423613752434647,\"resultadoIfix\":3.582,\"fatorDiario\":1.1423613752434647},{\"id\":\"import_1773059169845_266\",\"data\":\"2025-10-28\",\"patrimonio\":1.3298920764455011,\"resultadoCdi\":0.14299117049325027,\"resultadoIfix\":3.584,\"fatorDiario\":1.1429911704932503},{\"id\":\"import_1773059169845_267\",\"data\":\"2025-10-29\",\"patrimonio\":1.3307510204061974,\"resultadoCdi\":0.1436213129554551,\"resultadoIfix\":3.589,\"fatorDiario\":1.143621312955455},{\"id\":\"import_1773059169845_268\",\"data\":\"2025-10-30\",\"patrimonio\":1.3318915400174083,\"resultadoCdi\":0.14425180282150074,\"resultadoIfix\":3.585,\"fatorDiario\":1.1442518028215007},{\"id\":\"import_1773059169845_269\",\"data\":\"2025-10-31\",\"patrimonio\":1.3371223022436862,\"resultadoCdi\":0.14488264028291442,\"resultadoIfix\":3.593,\"fatorDiario\":1.1448826402829144},{\"id\":\"import_1773059169845_270\",\"data\":\"2025-11-03\",\"patrimonio\":1.33736470879414,\"resultadoCdi\":0.14551382553132886,\"resultadoIfix\":3.5914699999999997,\"fatorDiario\":1.1455138255313289},{\"id\":\"import_1773059169845_271\",\"data\":\"2025-11-04\",\"patrimonio\":1.3373977526047747,\"resultadoCdi\":0.14614535875848267,\"resultadoIfix\":3.5895300000000003,\"fatorDiario\":1.1461453587584827},{\"id\":\"import_1773059169845_272\",\"data\":\"2025-11-05\",\"patrimonio\":1.3427326946354348,\"resultadoCdi\":0.14677724015621996,\"resultadoIfix\":3.59071,\"fatorDiario\":1.14677724015622},{\"id\":\"import_1773059169845_273\",\"data\":\"2025-11-06\",\"patrimonio\":1.343013465746153,\"resultadoCdi\":0.1474094699164905,\"resultadoIfix\":3.59267,\"fatorDiario\":1.1474094699164905},{\"id\":\"import_1773059169845_274\",\"data\":\"2025-11-07\",\"patrimonio\":1.344326474653742,\"resultadoCdi\":0.14804204823135025,\"resultadoIfix\":3.5966,\"fatorDiario\":1.1480420482313503},{\"id\":\"import_1773059169845_275\",\"data\":\"2025-11-10\",\"patrimonio\":1.3400946890767944,\"resultadoCdi\":0.1486749752929608,\"resultadoIfix\":3.59306,\"fatorDiario\":1.1486749752929608},{\"id\":\"import_1773059169845_276\",\"data\":\"2025-11-11\",\"patrimonio\":1.340036130019647,\"resultadoCdi\":0.1493082512935897,\"resultadoIfix\":3.5926799999999997,\"fatorDiario\":1.1493082512935897},{\"id\":\"import_1773059169845_277\",\"data\":\"2025-11-12\",\"patrimonio\":1.339570417055714,\"resultadoCdi\":0.1499418764256104,\"resultadoIfix\":3.59706,\"fatorDiario\":1.1499418764256104},{\"id\":\"import_1773059169845_278\",\"data\":\"2025-11-13\",\"patrimonio\":1.3350804170226276,\"resultadoCdi\":0.15057585088150272,\"resultadoIfix\":3.59108,\"fatorDiario\":1.1505758508815027},{\"id\":\"import_1773059169845_279\",\"data\":\"2025-11-14\",\"patrimonio\":1.3427909524248824,\"resultadoCdi\":0.15121017485385235,\"resultadoIfix\":3.61672,\"fatorDiario\":1.1512101748538524},{\"id\":\"import_1773059169845_280\",\"data\":\"2025-11-17\",\"patrimonio\":1.3429326647804167,\"resultadoCdi\":0.15184484853535118,\"resultadoIfix\":3.6164899999999998,\"fatorDiario\":1.1518448485353512},{\"id\":\"import_1773059169845_281\",\"data\":\"2025-11-18\",\"patrimonio\":1.3425593965326805,\"resultadoCdi\":0.1524798721187972,\"resultadoIfix\":3.61591,\"fatorDiario\":1.1524798721187972},{\"id\":\"import_1773059169845_282\",\"data\":\"2025-11-19\",\"patrimonio\":1.3407811328160502,\"resultadoCdi\":0.153115245797095,\"resultadoIfix\":3.61962,\"fatorDiario\":1.153115245797095},{\"id\":\"import_1773059169845_283\",\"data\":\"2025-11-21\",\"patrimonio\":1.3345406312501746,\"resultadoCdi\":0.15375096976325553,\"resultadoIfix\":3.62545,\"fatorDiario\":1.1537509697632555},{\"id\":\"import_1773059169845_284\",\"data\":\"2025-11-24\",\"patrimonio\":1.334554289423451,\"resultadoCdi\":0.15438704421039584,\"resultadoIfix\":3.6262800000000004,\"fatorDiario\":1.1543870442103958},{\"id\":\"import_1773059169845_285\",\"data\":\"2025-11-25\",\"patrimonio\":1.338204754071187,\"resultadoCdi\":0.1550234693317396,\"resultadoIfix\":3.63123,\"fatorDiario\":1.1550234693317396},{\"id\":\"import_1773059169845_286\",\"data\":\"2025-11-26\",\"patrimonio\":1.3396139319828864,\"resultadoCdi\":0.15566024532061706,\"resultadoIfix\":3.61812,\"fatorDiario\":1.155660245320617},{\"id\":\"import_1773059169845_287\",\"data\":\"2025-11-27\",\"patrimonio\":1.3455959698648348,\"resultadoCdi\":0.15629737237046482,\"resultadoIfix\":3.6345500000000004,\"fatorDiario\":1.1562973723704648},{\"id\":\"import_1773059169845_288\",\"data\":\"2025-11-28\",\"patrimonio\":1.3542997239451486,\"resultadoCdi\":0.1569348506748265,\"resultadoIfix\":3.6604099999999997,\"fatorDiario\":1.1569348506748265},{\"id\":\"import_1773059169845_289\",\"data\":\"2025-12-01\",\"patrimonio\":1.3584679672817757,\"resultadoCdi\":0.15757268042735206,\"resultadoIfix\":3.66023,\"fatorDiario\":1.157572680427352},{\"id\":\"import_1773059169845_290\",\"data\":\"2025-12-02\",\"patrimonio\":1.365222479088845,\"resultadoCdi\":0.15821086182179855,\"resultadoIfix\":3.66828,\"fatorDiario\":1.1582108618217986},{\"id\":\"import_1773059169845_291\",\"data\":\"2025-12-03\",\"patrimonio\":1.3787586957642808,\"resultadoCdi\":0.15884939505202955,\"resultadoIfix\":3.66719,\"fatorDiario\":1.1588493950520296},{\"id\":\"import_1773059169845_292\",\"data\":\"2025-12-04\",\"patrimonio\":1.380536116503114,\"resultadoCdi\":0.15948828031201567,\"resultadoIfix\":3.6759299999999997,\"fatorDiario\":1.1594882803120157},{\"id\":\"import_1773059169845_293\",\"data\":\"2025-12-05\",\"patrimonio\":1.3788263628949955,\"resultadoCdi\":0.16012751779583456,\"resultadoIfix\":3.67034,\"fatorDiario\":1.1601275177958346},{\"id\":\"import_1773059169845_294\",\"data\":\"2025-12-08\",\"patrimonio\":1.3804608611129519,\"resultadoCdi\":0.16076710769767066,\"resultadoIfix\":3.6776500000000003,\"fatorDiario\":1.1607671076976707},{\"id\":\"import_1773059169845_295\",\"data\":\"2025-12-09\",\"patrimonio\":1.3833842342788079,\"resultadoCdi\":0.16140705021181567,\"resultadoIfix\":3.67558,\"fatorDiario\":1.1614070502118157},{\"id\":\"import_1773059169845_296\",\"data\":\"2025-12-10\",\"patrimonio\":1.388255654348902,\"resultadoCdi\":0.16204734553266809,\"resultadoIfix\":3.67639,\"fatorDiario\":1.162047345532668},{\"id\":\"import_1773059169845_297\",\"data\":\"2025-12-11\",\"patrimonio\":1.3896125272735633,\"resultadoCdi\":0.16268799385473387,\"resultadoIfix\":3.67811,\"fatorDiario\":1.1626879938547339},{\"id\":\"import_1773059169845_298\",\"data\":\"2025-12-12\",\"patrimonio\":1.3903019004307695,\"resultadoCdi\":0.16332899537262602,\"resultadoIfix\":3.68596,\"fatorDiario\":1.163328995372626},{\"id\":\"import_1773059169845_299\",\"data\":\"2025-12-15\",\"patrimonio\":1.3974460749124389,\"resultadoCdi\":0.163970350281065,\"resultadoIfix\":3.69027,\"fatorDiario\":1.163970350281065},{\"id\":\"import_1773059169845_300\",\"data\":\"2025-12-16\",\"patrimonio\":1.3956642386870337,\"resultadoCdi\":0.1646120587748785,\"resultadoIfix\":3.6915500000000003,\"fatorDiario\":1.1646120587748785},{\"id\":\"import_1773059169845_301\",\"data\":\"2025-12-17\",\"patrimonio\":1.3932278810606233,\"resultadoCdi\":0.16525412104900172,\"resultadoIfix\":3.6869699999999996,\"fatorDiario\":1.1652541210490017},{\"id\":\"import_1773059169845_302\",\"data\":\"2025-12-18\",\"patrimonio\":1.3953113672746467,\"resultadoCdi\":0.1658965372984773,\"resultadoIfix\":3.6971100000000003,\"fatorDiario\":1.1658965372984773},{\"id\":\"import_1773059169845_303\",\"data\":\"2025-12-19\",\"patrimonio\":1.4025246132087148,\"resultadoCdi\":0.16653930771845538,\"resultadoIfix\":3.7073400000000003,\"fatorDiario\":1.1665393077184554},{\"id\":\"import_1773059169845_304\",\"data\":\"2025-12-22\",\"patrimonio\":1.4158442375168776,\"resultadoCdi\":0.16718243250419373,\"resultadoIfix\":3.73509,\"fatorDiario\":1.1671824325041937},{\"id\":\"import_1773059169845_305\",\"data\":\"2025-12-23\",\"patrimonio\":1.4233816731281554,\"resultadoCdi\":0.16782591185105766,\"resultadoIfix\":3.75515,\"fatorDiario\":1.1678259118510577},{\"id\":\"import_1773059169845_306\",\"data\":\"2025-12-26\",\"patrimonio\":1.4336156795280761,\"resultadoCdi\":0.16846974595452036,\"resultadoIfix\":3.77174,\"fatorDiario\":1.1684697459545204},{\"id\":\"import_1773059169845_307\",\"data\":\"2025-12-29\",\"patrimonio\":1.4331414454017029,\"resultadoCdi\":0.1691139350101627,\"resultadoIfix\":3.772,\"fatorDiario\":1.1691139350101627},{\"id\":\"import_1773059169845_308\",\"data\":\"2025-12-30\",\"patrimonio\":1.4354951442101136,\"resultadoCdi\":0.16975847921367326,\"resultadoIfix\":3.775,\"fatorDiario\":1.1697584792136733},{\"id\":\"import_1773059169845_309\",\"data\":\"2026-01-02\",\"patrimonio\":1.4391485511983113,\"resultadoCdi\":0.17040337876084855,\"resultadoIfix\":3.77889,\"fatorDiario\":1.1704033787608485},{\"id\":\"import_1773059169845_310\",\"data\":\"2026-01-05\",\"patrimonio\":1.4407866076999696,\"resultadoCdi\":0.1710486338475934,\"resultadoIfix\":3.78293,\"fatorDiario\":1.1710486338475934},{\"id\":\"import_1773059169845_311\",\"data\":\"2026-01-06\",\"patrimonio\":1.4418662767881394,\"resultadoCdi\":0.1716942446699199,\"resultadoIfix\":3.7884499999999997,\"fatorDiario\":1.17169424466992},{\"id\":\"import_1773059169845_312\",\"data\":\"2026-01-07\",\"patrimonio\":1.4400585467899678,\"resultadoCdi\":0.17234021142394895,\"resultadoIfix\":3.78107,\"fatorDiario\":1.172340211423949},{\"id\":\"import_1773059169845_313\",\"data\":\"2026-01-08\",\"patrimonio\":1.4428067901742865,\"resultadoCdi\":0.17298653430590916,\"resultadoIfix\":3.78255,\"fatorDiario\":1.1729865343059092},{\"id\":\"import_1773059169845_314\",\"data\":\"2026-01-09\",\"patrimonio\":1.4449995314208472,\"resultadoCdi\":0.17363321351213745,\"resultadoIfix\":3.78946,\"fatorDiario\":1.1736332135121375},{\"id\":\"import_1773059169845_315\",\"data\":\"2026-01-12\",\"patrimonio\":1.4470229707995923,\"resultadoCdi\":0.17428024923907892,\"resultadoIfix\":3.78809,\"fatorDiario\":1.174280249239079},{\"id\":\"import_1773059169845_316\",\"data\":\"2026-01-13\",\"patrimonio\":1.4462560281826347,\"resultadoCdi\":0.174927641683287,\"resultadoIfix\":3.7958600000000002,\"fatorDiario\":1.174927641683287},{\"id\":\"import_1773059169845_317\",\"data\":\"2026-01-14\",\"patrimonio\":1.451190121161899,\"resultadoCdi\":0.1755753910414235,\"resultadoIfix\":3.79788,\"fatorDiario\":1.1755753910414235},{\"id\":\"import_1773059169845_318\",\"data\":\"2026-01-15\",\"patrimonio\":1.4534706526832,\"resultadoCdi\":0.17622349751025856,\"resultadoIfix\":3.80448,\"fatorDiario\":1.1762234975102586},{\"id\":\"import_1773059169845_319\",\"data\":\"2026-01-16\",\"patrimonio\":1.4577997653112056,\"resultadoCdi\":0.17687196128667093,\"resultadoIfix\":3.8093000000000004,\"fatorDiario\":1.176871961286671},{\"id\":\"import_1773059169845_320\",\"data\":\"2026-01-19\",\"patrimonio\":1.4574631493114882,\"resultadoCdi\":0.17752078256764792,\"resultadoIfix\":3.81338,\"fatorDiario\":1.177520782567648},{\"id\":\"import_1773059169845_321\",\"data\":\"2026-01-20\",\"patrimonio\":1.456931047091825,\"resultadoCdi\":0.17816996155028542,\"resultadoIfix\":3.8108,\"fatorDiario\":1.1781699615502854},{\"id\":\"import_1773059169845_322\",\"data\":\"2026-01-21\",\"patrimonio\":1.4607077727456035,\"resultadoCdi\":0.1788194984317879,\"resultadoIfix\":3.81231,\"fatorDiario\":1.178819498431788},{\"id\":\"import_1773059169845_323\",\"data\":\"2026-01-22\",\"patrimonio\":1.4618999961433103,\"resultadoCdi\":0.17946939340946844,\"resultadoIfix\":3.8202,\"fatorDiario\":1.1794693934094684},{\"id\":\"import_1773059169845_324\",\"data\":\"2026-01-23\",\"patrimonio\":1.4644517909158163,\"resultadoCdi\":0.1801196466807491,\"resultadoIfix\":3.84153,\"fatorDiario\":1.180119646680749},{\"id\":\"import_1773059169845_325\",\"data\":\"2026-01-26\",\"patrimonio\":1.4682985428103201,\"resultadoCdi\":0.18077025844316075,\"resultadoIfix\":3.84591,\"fatorDiario\":1.1807702584431607},{\"id\":\"import_1773059169845_326\",\"data\":\"2026-01-27\",\"patrimonio\":1.4686215273849814,\"resultadoCdi\":0.1814212288943431,\"resultadoIfix\":3.84008,\"fatorDiario\":1.181421228894343},{\"id\":\"import_1773059169845_327\",\"data\":\"2026-01-28\",\"patrimonio\":1.4686500762563692,\"resultadoCdi\":0.18207255823204482,\"resultadoIfix\":3.84856,\"fatorDiario\":1.1820725582320448},{\"id\":\"import_1773059169845_328\",\"data\":\"2026-01-29\",\"patrimonio\":1.4686888063056587,\"resultadoCdi\":0.1827242466541239,\"resultadoIfix\":3.84302,\"fatorDiario\":1.182724246654124},{\"id\":\"import_1773059169845_329\",\"data\":\"2026-01-30\",\"patrimonio\":1.475077834571368,\"resultadoCdi\":0.18337629435854685,\"resultadoIfix\":3.86,\"fatorDiario\":1.1833762943585469},{\"id\":\"import_1773059169845_330\",\"data\":\"2026-02-02\",\"patrimonio\":1.4716722957296293,\"resultadoCdi\":0.18402870154338968,\"resultadoIfix\":3.8531,\"fatorDiario\":1.1840287015433897},{\"id\":\"import_1773059169845_331\",\"data\":\"2026-02-03\",\"patrimonio\":1.475684174739103,\"resultadoCdi\":0.18468146840683763,\"resultadoIfix\":3.8569400000000003,\"fatorDiario\":1.1846814684068376},{\"id\":\"import_1773059169845_332\",\"data\":\"2026-02-04\",\"patrimonio\":1.4731208201172945,\"resultadoCdi\":0.1853345951471852,\"resultadoIfix\":3.84809,\"fatorDiario\":1.1853345951471852},{\"id\":\"import_1773059169845_333\",\"data\":\"2026-02-05\",\"patrimonio\":1.4709964224455065,\"resultadoCdi\":0.1859880819628359,\"resultadoIfix\":3.84768,\"fatorDiario\":1.185988081962836},{\"id\":\"import_1773059169845_334\",\"data\":\"2026-02-06\",\"patrimonio\":1.4719941341025713,\"resultadoCdi\":0.18664192905230292,\"resultadoIfix\":3.84706,\"fatorDiario\":1.186641929052303},{\"id\":\"import_1773059169845_335\",\"data\":\"2026-02-09\",\"patrimonio\":1.4730729562641245,\"resultadoCdi\":0.18729613661420874,\"resultadoIfix\":3.84346,\"fatorDiario\":1.1872961366142087},{\"id\":\"import_1773059169845_336\",\"data\":\"2026-02-10\",\"patrimonio\":1.4668122996746855,\"resultadoCdi\":0.1879507048472857,\"resultadoIfix\":3.83381,\"fatorDiario\":1.1879507048472857},{\"id\":\"import_1773059169845_337\",\"data\":\"2026-02-11\",\"patrimonio\":1.4726227676801604,\"resultadoCdi\":0.18860563395037522,\"resultadoIfix\":3.83662,\"fatorDiario\":1.1886056339503752},{\"id\":\"import_1773059169845_338\",\"data\":\"2026-02-12\",\"patrimonio\":1.4705131293515497,\"resultadoCdi\":0.18926092412242856,\"resultadoIfix\":3.8329299999999997,\"fatorDiario\":1.1892609241224286},{\"id\":\"import_1773059169845_339\",\"data\":\"2026-02-13\",\"patrimonio\":1.4711559303705357,\"resultadoCdi\":0.18991657556250652,\"resultadoIfix\":3.85265,\"fatorDiario\":1.1899165755625065},{\"id\":\"import_1773059169845_340\",\"data\":\"2026-02-18\",\"patrimonio\":1.474088352487355,\"resultadoCdi\":0.19057258846977998,\"resultadoIfix\":3.8523400000000003,\"fatorDiario\":1.19057258846978},{\"id\":\"import_1773059169845_341\",\"data\":\"2026-02-19\",\"patrimonio\":1.4725586004862123,\"resultadoCdi\":0.19122896304352932,\"resultadoIfix\":3.85494,\"fatorDiario\":1.1912289630435293},{\"id\":\"import_1773059169845_342\",\"data\":\"2026-02-20\",\"patrimonio\":1.4787796352613376,\"resultadoCdi\":0.19188569948314504,\"resultadoIfix\":3.8689299999999998,\"fatorDiario\":1.191885699483145},{\"id\":\"import_1773059169845_343\",\"data\":\"2026-02-23\",\"patrimonio\":1.478683721164887,\"resultadoCdi\":0.19254279798812712,\"resultadoIfix\":3.86504,\"fatorDiario\":1.1925427979881271},{\"id\":\"import_1773059169845_344\",\"data\":\"2026-02-24\",\"patrimonio\":1.4816536737254133,\"resultadoCdi\":0.1932002587580861,\"resultadoIfix\":3.86763,\"fatorDiario\":1.193200258758086},{\"id\":\"import_1773059169845_345\",\"data\":\"2026-02-25\",\"patrimonio\":1.4842972021690966,\"resultadoCdi\":0.19385808199274224,\"resultadoIfix\":3.87696,\"fatorDiario\":1.1938580819927422},{\"id\":\"import_1773059169845_346\",\"data\":\"2026-02-26\",\"patrimonio\":1.4902941290100868,\"resultadoCdi\":0.19451626789192566,\"resultadoIfix\":3.88514,\"fatorDiario\":1.1945162678919257},{\"id\":\"import_1773059169845_347\",\"data\":\"2026-02-27\",\"patrimonio\":1.491152675792625,\"resultadoCdi\":0.19517481665557734,\"resultadoIfix\":3.91199,\"fatorDiario\":1.1951748166555773}],\"2\":[{\"id\":\"import_1773080042867_1\",\"data\":\"2025-07-31\",\"patrimonio\":1,\"resultadoCdi\":0,\"resultadoIfix\":133071.05,\"fatorDiario\":0},{\"id\":\"import_1773080042867_2\",\"data\":\"2025-08-01\",\"patrimonio\":1.0057,\"resultadoCdi\":0.0005513100000000826,\"resultadoIfix\":132437.39,\"fatorDiario\":1.00055131},{\"id\":\"import_1773080042867_3\",\"data\":\"2025-08-04\",\"patrimonio\":1.0021,\"resultadoCdi\":0.0011029239427162718,\"resultadoIfix\":132971.2,\"fatorDiario\":1.0011029239427163},{\"id\":\"import_1773080042867_4\",\"data\":\"2025-08-05\",\"patrimonio\":1.0021,\"resultadoCdi\":0.001654841995715195,\"resultadoIfix\":133151.3,\"fatorDiario\":1.0016548419957152},{\"id\":\"import_1773080042867_5\",\"data\":\"2025-08-06\",\"patrimonio\":1.0021,\"resultadoCdi\":0.00220706432665585,\"resultadoIfix\":134537.62,\"fatorDiario\":1.0022070643266558},{\"id\":\"import_1773080042867_6\",\"data\":\"2025-08-07\",\"patrimonio\":1.002,\"resultadoCdi\":0.002759591103289827,\"resultadoIfix\":136527.61,\"fatorDiario\":1.0027595911032898},{\"id\":\"import_1773080042867_7\",\"data\":\"2025-08-08\",\"patrimonio\":1.0052,\"resultadoCdi\":0.003312422493461087,\"resultadoIfix\":135913.25,\"fatorDiario\":1.003312422493461},{\"id\":\"import_1773080042867_8\",\"data\":\"2025-08-11\",\"patrimonio\":1.0049,\"resultadoCdi\":0.0038655586651059615,\"resultadoIfix\":135623.15,\"fatorDiario\":1.003865558665106},{\"id\":\"import_1773080042867_9\",\"data\":\"2025-08-12\",\"patrimonio\":1.0242,\"resultadoCdi\":0.004418999786253597,\"resultadoIfix\":137913.68,\"fatorDiario\":1.0044189997862536},{\"id\":\"import_1773080042867_10\",\"data\":\"2025-08-13\",\"patrimonio\":1.0242,\"resultadoCdi\":0.004972746025025732,\"resultadoIfix\":136687.32,\"fatorDiario\":1.0049727460250257},{\"id\":\"import_1773080042867_11\",\"data\":\"2025-08-14\",\"patrimonio\":1.045,\"resultadoCdi\":0.005526797549636919,\"resultadoIfix\":136355.78,\"fatorDiario\":1.005526797549637},{\"id\":\"import_1773080042867_12\",\"data\":\"2025-08-15\",\"patrimonio\":1.058,\"resultadoCdi\":0.006081154528394084,\"resultadoIfix\":136340.77,\"fatorDiario\":1.006081154528394},{\"id\":\"import_1773080042867_13\",\"data\":\"2025-08-18\",\"patrimonio\":1.058,\"resultadoCdi\":0.006635817129697186,\"resultadoIfix\":137321.64,\"fatorDiario\":1.0066358171296972},{\"id\":\"import_1773080042867_14\",\"data\":\"2025-08-19\",\"patrimonio\":1.0083,\"resultadoCdi\":0.0071907855220390005,\"resultadoIfix\":134432.26,\"fatorDiario\":1.007190785522039},{\"id\":\"import_1773080042867_15\",\"data\":\"2025-08-20\",\"patrimonio\":1.0242,\"resultadoCdi\":0.00774605987400534,\"resultadoIfix\":134666.46,\"fatorDiario\":1.0077460598740053},{\"id\":\"import_1773080042867_16\",\"data\":\"2025-08-21\",\"patrimonio\":0.9788,\"resultadoCdi\":0.008301640354274609,\"resultadoIfix\":134510.85,\"fatorDiario\":1.0083016403542746},{\"id\":\"import_1773080042867_17\",\"data\":\"2025-08-22\",\"patrimonio\":1.1374,\"resultadoCdi\":0.00885752713161847,\"resultadoIfix\":137968.15,\"fatorDiario\":1.0088575271316185},{\"id\":\"import_1773080042867_18\",\"data\":\"2025-08-25\",\"patrimonio\":1.1363,\"resultadoCdi\":0.009413720374901402,\"resultadoIfix\":138025.17,\"fatorDiario\":1.0094137203749014},{\"id\":\"import_1773080042867_19\",\"data\":\"2025-08-26\",\"patrimonio\":1.117,\"resultadoCdi\":0.009970220253081363,\"resultadoIfix\":137771.39,\"fatorDiario\":1.0099702202530814},{\"id\":\"import_1773080042867_20\",\"data\":\"2025-08-27\",\"patrimonio\":1.1897,\"resultadoCdi\":0.010527026935209127,\"resultadoIfix\":139205.81,\"fatorDiario\":1.0105270269352091},{\"id\":\"import_1773080042867_21\",\"data\":\"2025-08-28\",\"patrimonio\":1.3062,\"resultadoCdi\":0.011084140590428948,\"resultadoIfix\":141049.2,\"fatorDiario\":1.011084140590429},{\"id\":\"import_1773080042867_22\",\"data\":\"2025-08-29\",\"patrimonio\":1.3027,\"resultadoCdi\":0.011641561387977895,\"resultadoIfix\":141422.26,\"fatorDiario\":1.011641561387978},{\"id\":\"import_1773080042867_23\",\"data\":\"2025-09-01\",\"patrimonio\":1.282,\"resultadoCdi\":0.012199289497186738,\"resultadoIfix\":141283.01,\"fatorDiario\":1.0121992894971867},{\"id\":\"import_1773080042867_24\",\"data\":\"2025-09-02\",\"patrimonio\":1.2441,\"resultadoCdi\":0.01275732508747951,\"resultadoIfix\":140335.16,\"fatorDiario\":1.0127573250874795},{\"id\":\"import_1773080042867_25\",\"data\":\"2025-09-03\",\"patrimonio\":1.1983,\"resultadoCdi\":0.013315668328373498,\"resultadoIfix\":139863.63,\"fatorDiario\":1.0133156683283735},{\"id\":\"import_1773080042867_26\",\"data\":\"2025-09-04\",\"patrimonio\":1.29,\"resultadoCdi\":0.013874319389479695,\"resultadoIfix\":140993.25,\"fatorDiario\":1.0138743193894797},{\"id\":\"import_1773080042867_27\",\"data\":\"2025-09-05\",\"patrimonio\":1.4405999999999999,\"resultadoCdi\":0.01443327844050235,\"resultadoIfix\":142640.14,\"fatorDiario\":1.0144332784405024},{\"id\":\"import_1773080042867_28\",\"data\":\"2025-09-08\",\"patrimonio\":1.3199,\"resultadoCdi\":0.01499254565123942,\"resultadoIfix\":141791.58,\"fatorDiario\":1.0149925456512394},{\"id\":\"import_1773080042867_29\",\"data\":\"2025-09-09\",\"patrimonio\":1.3053,\"resultadoCdi\":0.015552121191582557,\"resultadoIfix\":141618.29,\"fatorDiario\":1.0155521211915826},{\"id\":\"import_1773080042867_30\",\"data\":\"2025-09-10\",\"patrimonio\":1.4166,\"resultadoCdi\":0.01611200523151668,\"resultadoIfix\":142348.7,\"fatorDiario\":1.0161120052315167},{\"id\":\"import_1773080042867_31\",\"data\":\"2025-09-11\",\"patrimonio\":1.4595,\"resultadoCdi\":0.016672197941120848,\"resultadoIfix\":143150.84,\"fatorDiario\":1.0166721979411208},{\"id\":\"import_1773080042867_32\",\"data\":\"2025-09-12\",\"patrimonio\":1.4256,\"resultadoCdi\":0.017232699490567827,\"resultadoIfix\":142271.58,\"fatorDiario\":1.0172326994905678},{\"id\":\"import_1773080042867_33\",\"data\":\"2025-09-15\",\"patrimonio\":1.4512,\"resultadoCdi\":0.017793510050124084,\"resultadoIfix\":143546.58,\"fatorDiario\":1.017793510050124},{\"id\":\"import_1773080042867_34\",\"data\":\"2025-09-16\",\"patrimonio\":1.4867,\"resultadoCdi\":0.018354629790150012,\"resultadoIfix\":144061.74,\"fatorDiario\":1.01835462979015},{\"id\":\"import_1773080042867_35\",\"data\":\"2025-09-17\",\"patrimonio\":1.5326,\"resultadoCdi\":0.018916058881099707,\"resultadoIfix\":145593.63,\"fatorDiario\":1.0189160588810997},{\"id\":\"import_1773080042867_36\",\"data\":\"2025-09-18\",\"patrimonio\":1.5457999999999998,\"resultadoCdi\":0.01947779749352163,\"resultadoIfix\":145499.49,\"fatorDiario\":1.0194777974935216},{\"id\":\"import_1773080042867_37\",\"data\":\"2025-09-19\",\"patrimonio\":1.5591,\"resultadoCdi\":0.020039845798057954,\"resultadoIfix\":145865.11,\"fatorDiario\":1.020039845798058},{\"id\":\"import_1773080042867_38\",\"data\":\"2025-09-22\",\"patrimonio\":1.5211999999999999,\"resultadoCdi\":0.020602203965444987,\"resultadoIfix\":145109.25,\"fatorDiario\":1.020602203965445},{\"id\":\"import_1773080042867_39\",\"data\":\"2025-09-23\",\"patrimonio\":1.5561,\"resultadoCdi\":0.021164872166513193,\"resultadoIfix\":146424.94,\"fatorDiario\":1.0211648721665132},{\"id\":\"import_1773080042867_40\",\"data\":\"2025-09-24\",\"patrimonio\":1.5916000000000001,\"resultadoCdi\":0.0217278505721874,\"resultadoIfix\":146491.75,\"fatorDiario\":1.0217278505721874},{\"id\":\"import_1773080042867_41\",\"data\":\"2025-09-25\",\"patrimonio\":1.5722,\"resultadoCdi\":0.022291139353486367,\"resultadoIfix\":145306.23,\"fatorDiario\":1.0222911393534864},{\"id\":\"import_1773080042867_42\",\"data\":\"2025-09-26\",\"patrimonio\":1.5422,\"resultadoCdi\":0.022854738681523434,\"resultadoIfix\":145446.66,\"fatorDiario\":1.0228547386815234},{\"id\":\"import_1773080042867_43\",\"data\":\"2025-09-29\",\"patrimonio\":1.5572,\"resultadoCdi\":0.023418648727506097,\"resultadoIfix\":146336.8,\"fatorDiario\":1.023418648727506},{\"id\":\"import_1773080042867_44\",\"data\":\"2025-09-30\",\"patrimonio\":1.5901999999999998,\"resultadoCdi\":0.023982869662736217,\"resultadoIfix\":146237.02,\"fatorDiario\":1.0239828696627362},{\"id\":\"import_1773080042867_45\",\"data\":\"2025-10-01\",\"patrimonio\":1.5689,\"resultadoCdi\":0.024547401658610024,\"resultadoIfix\":145517.35,\"fatorDiario\":1.02454740165861},{\"id\":\"import_1773080042867_46\",\"data\":\"2025-10-02\",\"patrimonio\":1.5609,\"resultadoCdi\":0.025112244886618562,\"resultadoIfix\":143949.64,\"fatorDiario\":1.0251122448866186},{\"id\":\"import_1773080042867_47\",\"data\":\"2025-10-03\",\"patrimonio\":1.5852,\"resultadoCdi\":0.02567739951834702,\"resultadoIfix\":144200.65,\"fatorDiario\":1.025677399518347},{\"id\":\"import_1773080042867_48\",\"data\":\"2025-10-06\",\"patrimonio\":1.5968,\"resultadoCdi\":0.026242865725475628,\"resultadoIfix\":143608.08,\"fatorDiario\":1.0262428657254756},{\"id\":\"import_1773080042867_49\",\"data\":\"2025-10-07\",\"patrimonio\":1.5579,\"resultadoCdi\":0.026808643679778754,\"resultadoIfix\":141356.43,\"fatorDiario\":1.0268086436797788},{\"id\":\"import_1773080042867_50\",\"data\":\"2025-10-08\",\"patrimonio\":1.5991,\"resultadoCdi\":0.02737473355312603,\"resultadoIfix\":142145.38,\"fatorDiario\":1.027374733553126},{\"id\":\"import_1773080042867_51\",\"data\":\"2025-10-09\",\"patrimonio\":1.6139000000000001,\"resultadoCdi\":0.02794113551748123,\"resultadoIfix\":141708.19,\"fatorDiario\":1.0279411355174812},{\"id\":\"import_1773080042867_52\",\"data\":\"2025-10-10\",\"patrimonio\":1.6322,\"resultadoCdi\":0.02850784974490339,\"resultadoIfix\":140680.34,\"fatorDiario\":1.0285078497449034},{\"id\":\"import_1773080042867_53\",\"data\":\"2025-10-13\",\"patrimonio\":1.659,\"resultadoCdi\":0.029074876407546357,\"resultadoIfix\":141783.36,\"fatorDiario\":1.0290748764075464},{\"id\":\"import_1773080042867_54\",\"data\":\"2025-10-14\",\"patrimonio\":1.6803,\"resultadoCdi\":0.02964221567765879,\"resultadoIfix\":141682.99,\"fatorDiario\":1.0296422156776588},{\"id\":\"import_1773080042867_55\",\"data\":\"2025-10-15\",\"patrimonio\":1.6766,\"resultadoCdi\":0.03020986772758416,\"resultadoIfix\":142603.66,\"fatorDiario\":1.0302098677275842},{\"id\":\"import_1773080042867_56\",\"data\":\"2025-10-16\",\"patrimonio\":1.6963,\"resultadoCdi\":0.0307778327297612,\"resultadoIfix\":142200.02,\"fatorDiario\":1.0307778327297612},{\"id\":\"import_1773080042867_57\",\"data\":\"2025-10-17\",\"patrimonio\":1.7053,\"resultadoCdi\":0.03134611085672345,\"resultadoIfix\":143398.63,\"fatorDiario\":1.0313461108567235},{\"id\":\"import_1773080042867_58\",\"data\":\"2025-10-20\",\"patrimonio\":1.7147999999999999,\"resultadoCdi\":0.03191470228109994,\"resultadoIfix\":144509.32,\"fatorDiario\":1.0319147022811},{\"id\":\"import_1773080042867_59\",\"data\":\"2025-10-21\",\"patrimonio\":1.7508,\"resultadoCdi\":0.032483607175614715,\"resultadoIfix\":144085.15,\"fatorDiario\":1.0324836071756147},{\"id\":\"import_1773080042867_60\",\"data\":\"2025-10-22\",\"patrimonio\":1.7711000000000001,\"resultadoCdi\":0.033052825713086875,\"resultadoIfix\":144872.79,\"fatorDiario\":1.0330528257130869},{\"id\":\"import_1773080042867_61\",\"data\":\"2025-10-23\",\"patrimonio\":1.7866,\"resultadoCdi\":0.03362235806643077,\"resultadoIfix\":145720.98,\"fatorDiario\":1.0336223580664308},{\"id\":\"import_1773080042867_62\",\"data\":\"2025-10-24\",\"patrimonio\":1.8028,\"resultadoCdi\":0.034192204408656446,\"resultadoIfix\":146172.21,\"fatorDiario\":1.0341922044086564},{\"id\":\"import_1773080042867_63\",\"data\":\"2025-10-27\",\"patrimonio\":1.8269,\"resultadoCdi\":0.03476236491286899,\"resultadoIfix\":146969.1,\"fatorDiario\":1.034762364912869},{\"id\":\"import_1773080042867_64\",\"data\":\"2025-10-28\",\"patrimonio\":1.8414000000000001,\"resultadoCdi\":0.035332839752269196,\"resultadoIfix\":147428.9,\"fatorDiario\":1.0353328397522692},{\"id\":\"import_1773080042867_65\",\"data\":\"2025-10-29\",\"patrimonio\":1.8389,\"resultadoCdi\":0.0359036291001531,\"resultadoIfix\":148632.93,\"fatorDiario\":1.035903629100153},{\"id\":\"import_1773080042867_66\",\"data\":\"2025-10-30\",\"patrimonio\":1.8528,\"resultadoCdi\":0.03647473312991245,\"resultadoIfix\":148780.22,\"fatorDiario\":1.0364747331299125},{\"id\":\"import_1773080042867_67\",\"data\":\"2025-10-31\",\"patrimonio\":1.867,\"resultadoCdi\":0.03704615201503447,\"resultadoIfix\":149540.43,\"fatorDiario\":1.0370461520150345},{\"id\":\"import_1773080042867_68\",\"data\":\"2025-11-03\",\"patrimonio\":1.9008,\"resultadoCdi\":0.03761788592910187,\"resultadoIfix\":150454.24,\"fatorDiario\":1.0376178859291019},{\"id\":\"import_1773080042867_69\",\"data\":\"2025-11-04\",\"patrimonio\":1.9256,\"resultadoCdi\":0.03818993504579349,\"resultadoIfix\":150704.2,\"fatorDiario\":1.0381899350457935},{\"id\":\"import_1773080042867_70\",\"data\":\"2025-11-05\",\"patrimonio\":1.8397999999999999,\"resultadoCdi\":0.03876229953888366,\"resultadoIfix\":153294.44,\"fatorDiario\":1.0387622995388837},{\"id\":\"import_1773080042867_71\",\"data\":\"2025-11-06\",\"patrimonio\":1.7842,\"resultadoCdi\":0.039334979582242635,\"resultadoIfix\":153338.63,\"fatorDiario\":1.0393349795822426},{\"id\":\"import_1773080042867_72\",\"data\":\"2025-11-07\",\"patrimonio\":1.7816,\"resultadoCdi\":0.039907975349836144,\"resultadoIfix\":154063.53,\"fatorDiario\":1.0399079753498361},{\"id\":\"import_1773080042867_73\",\"data\":\"2025-11-10\",\"patrimonio\":1.7819,\"resultadoCdi\":0.040481287015726286,\"resultadoIfix\":155257.31,\"fatorDiario\":1.0404812870157263},{\"id\":\"import_1773080042867_74\",\"data\":\"2025-11-11\",\"patrimonio\":1.6751,\"resultadoCdi\":0.04105491475407108,\"resultadoIfix\":157748.6,\"fatorDiario\":1.041054914754071},{\"id\":\"import_1773080042867_75\",\"data\":\"2025-11-12\",\"patrimonio\":1.6772,\"resultadoCdi\":0.04162885873912425,\"resultadoIfix\":157632.9,\"fatorDiario\":1.0416288587391243},{\"id\":\"import_1773080042867_76\",\"data\":\"2025-11-13\",\"patrimonio\":1.6698,\"resultadoCdi\":0.04220311914523589,\"resultadoIfix\":157162.43,\"fatorDiario\":1.042203119145236},{\"id\":\"import_1773080042867_77\",\"data\":\"2025-11-14\",\"patrimonio\":1.6775,\"resultadoCdi\":0.04277769614685201,\"resultadoIfix\":157738.69,\"fatorDiario\":1.042777696146852},{\"id\":\"import_1773080042867_78\",\"data\":\"2025-11-17\",\"patrimonio\":1.6811,\"resultadoCdi\":0.04335258991851476,\"resultadoIfix\":156992.93,\"fatorDiario\":1.0433525899185148},{\"id\":\"import_1773080042867_79\",\"data\":\"2025-11-18\",\"patrimonio\":1.6909999999999998,\"resultadoCdi\":0.0439278006348629,\"resultadoIfix\":156522.13,\"fatorDiario\":1.043927800634863},{\"id\":\"import_1773080042867_80\",\"data\":\"2025-11-19\",\"patrimonio\":1.6947999999999999,\"resultadoCdi\":0.0445033284706311,\"resultadoIfix\":155380.66,\"fatorDiario\":1.044503328470631},{\"id\":\"import_1773080042867_81\",\"data\":\"2025-11-21\",\"patrimonio\":1.721,\"resultadoCdi\":0.04507917360065039,\"resultadoIfix\":154770.1,\"fatorDiario\":1.0450791736006504},{\"id\":\"import_1773080042867_82\",\"data\":\"2025-11-24\",\"patrimonio\":1.7301,\"resultadoCdi\":0.045655336199848184,\"resultadoIfix\":155277.56,\"fatorDiario\":1.0456553361998482},{\"id\":\"import_1773080042867_83\",\"data\":\"2025-11-25\",\"patrimonio\":1.7541,\"resultadoCdi\":0.0462318164432487,\"resultadoIfix\":155910.18,\"fatorDiario\":1.0462318164432487},{\"id\":\"import_1773080042867_84\",\"data\":\"2025-11-26\",\"patrimonio\":1.7727,\"resultadoCdi\":0.04680861450597207,\"resultadoIfix\":158554.94,\"fatorDiario\":1.046808614505972},{\"id\":\"import_1773080042867_85\",\"data\":\"2025-11-27\",\"patrimonio\":1.7884,\"resultadoCdi\":0.04738573056323547,\"resultadoIfix\":158359.76,\"fatorDiario\":1.0473857305632355},{\"id\":\"import_1773080042867_86\",\"data\":\"2025-11-28\",\"patrimonio\":1.8026,\"resultadoCdi\":0.04796316479035245,\"resultadoIfix\":159072.13,\"fatorDiario\":1.0479631647903525},{\"id\":\"import_1773080042867_87\",\"data\":\"2025-12-01\",\"patrimonio\":1.8157,\"resultadoCdi\":0.04854091736273314,\"resultadoIfix\":158611.01,\"fatorDiario\":1.0485409173627331},{\"id\":\"import_1773080042867_88\",\"data\":\"2025-12-02\",\"patrimonio\":1.8163,\"resultadoCdi\":0.04911898845588447,\"resultadoIfix\":161092.25,\"fatorDiario\":1.0491189884558845},{\"id\":\"import_1773080042867_89\",\"data\":\"2025-12-03\",\"patrimonio\":1.8184,\"resultadoCdi\":0.049697378245410206,\"resultadoIfix\":161755.18,\"fatorDiario\":1.0496973782454102},{\"id\":\"import_1773080042867_90\",\"data\":\"2025-12-04\",\"patrimonio\":1.8037,\"resultadoCdi\":0.050276086907010686,\"resultadoIfix\":164455.61,\"fatorDiario\":1.0502760869070107},{\"id\":\"import_1773080042867_91\",\"data\":\"2025-12-05\",\"patrimonio\":1.8189,\"resultadoCdi\":0.05085511461648351,\"resultadoIfix\":157369.36,\"fatorDiario\":1.0508551146164835},{\"id\":\"import_1773080042867_92\",\"data\":\"2025-12-08\",\"patrimonio\":1.8313000000000001,\"resultadoCdi\":0.051434461549722865,\"resultadoIfix\":158187.43,\"fatorDiario\":1.0514344615497229},{\"id\":\"import_1773080042867_93\",\"data\":\"2025-12-09\",\"patrimonio\":1.8380999999999998,\"resultadoCdi\":0.052014127882719974,\"resultadoIfix\":157981.13,\"fatorDiario\":1.05201412788272},{\"id\":\"import_1773080042867_94\",\"data\":\"2025-12-10\",\"patrimonio\":1.8515000000000001,\"resultadoCdi\":0.05259411379156309,\"resultadoIfix\":159074.97,\"fatorDiario\":1.052594113791563},{\"id\":\"import_1773080042867_95\",\"data\":\"2025-12-11\",\"patrimonio\":1.8629,\"resultadoCdi\":0.053174419452437505,\"resultadoIfix\":159189.1,\"fatorDiario\":1.0531744194524375},{\"id\":\"import_1773080042867_96\",\"data\":\"2025-12-12\",\"patrimonio\":1.8382,\"resultadoCdi\":0.05375504504162598,\"resultadoIfix\":160766.37,\"fatorDiario\":1.053755045041626},{\"id\":\"import_1773080042867_97\",\"data\":\"2025-12-15\",\"patrimonio\":1.8521,\"resultadoCdi\":0.05433599073550788,\"resultadoIfix\":162481.74,\"fatorDiario\":1.0543359907355079},{\"id\":\"import_1773080042867_98\",\"data\":\"2025-12-16\",\"patrimonio\":1.8295,\"resultadoCdi\":0.05491725671056025,\"resultadoIfix\":158577.88,\"fatorDiario\":1.0549172567105602},{\"id\":\"import_1773080042867_99\",\"data\":\"2025-12-17\",\"patrimonio\":1.808,\"resultadoCdi\":0.0554988431433574,\"resultadoIfix\":157327.26,\"fatorDiario\":1.0554988431433574},{\"id\":\"import_1773080042867_100\",\"data\":\"2025-12-18\",\"patrimonio\":1.8071000000000002,\"resultadoCdi\":0.05608075021057091,\"resultadoIfix\":157923.34,\"fatorDiario\":1.056080750210571},{\"id\":\"import_1773080042867_101\",\"data\":\"2025-12-19\",\"patrimonio\":1.8108,\"resultadoCdi\":0.056662978088969584,\"resultadoIfix\":158473.02,\"fatorDiario\":1.0566629780889696},{\"id\":\"import_1773080042867_102\",\"data\":\"2025-12-22\",\"patrimonio\":1.8183,\"resultadoCdi\":0.057245526955419956,\"resultadoIfix\":158141.65,\"fatorDiario\":1.05724552695542},{\"id\":\"import_1773080042867_103\",\"data\":\"2025-12-23\",\"patrimonio\":1.8214000000000001,\"resultadoCdi\":0.0578283969868858,\"resultadoIfix\":160455.83,\"fatorDiario\":1.0578283969868858},{\"id\":\"import_1773080042868_104\",\"data\":\"2025-12-26\",\"patrimonio\":1.8356,\"resultadoCdi\":0.05841158836042881,\"resultadoIfix\":160896.64,\"fatorDiario\":1.0584115883604288},{\"id\":\"import_1773080042868_105\",\"data\":\"2025-12-29\",\"patrimonio\":1.8399999999999999,\"resultadoCdi\":0.05899510125320795,\"resultadoIfix\":160490.3,\"fatorDiario\":1.058995101253208},{\"id\":\"import_1773080042868_106\",\"data\":\"2025-12-30\",\"patrimonio\":1.8464,\"resultadoCdi\":0.05957893584247986,\"resultadoIfix\":161125.37,\"fatorDiario\":1.0595789358424799},{\"id\":\"import_1773080042868_107\",\"data\":\"2026-01-02\",\"patrimonio\":1.8488,\"resultadoCdi\":0.0602,\"resultadoIfix\":160538.69,\"fatorDiario\":1.0602},{\"id\":\"import_1773080042868_108\",\"data\":\"2026-01-05\",\"patrimonio\":1.8488,\"resultadoCdi\":0.0607,\"resultadoIfix\":161869.76,\"fatorDiario\":1.0607},{\"id\":\"import_1773080042868_109\",\"data\":\"2026-01-06\",\"patrimonio\":1.8423,\"resultadoCdi\":0.0613,\"resultadoIfix\":163663.88,\"fatorDiario\":1.0613},{\"id\":\"import_1773080042868_110\",\"data\":\"2026-01-07\",\"patrimonio\":1.8455,\"resultadoCdi\":0.0619,\"resultadoIfix\":161975.24,\"fatorDiario\":1.0619},{\"id\":\"import_1773080042868_111\",\"data\":\"2026-01-08\",\"patrimonio\":1.8540999999999999,\"resultadoCdi\":0.0625,\"resultadoIfix\":162936.48,\"fatorDiario\":1.0625},{\"id\":\"import_1773080042868_112\",\"data\":\"2026-01-09\",\"patrimonio\":1.8618000000000001,\"resultadoCdi\":0.0631,\"resultadoIfix\":163370.31,\"fatorDiario\":1.0631},{\"id\":\"import_1773080042868_113\",\"data\":\"2026-01-12\",\"patrimonio\":1.8643999999999998,\"resultadoCdi\":0.0637,\"resultadoIfix\":163150.35,\"fatorDiario\":1.0637},{\"id\":\"import_1773080042868_114\",\"data\":\"2026-01-13\",\"patrimonio\":1.8641,\"resultadoCdi\":0.0643,\"resultadoIfix\":161973.05,\"fatorDiario\":1.0643},{\"id\":\"import_1773080042868_115\",\"data\":\"2026-01-14\",\"patrimonio\":1.863,\"resultadoCdi\":0.0648,\"resultadoIfix\":165145.98,\"fatorDiario\":1.0648},{\"id\":\"import_1773080042868_116\",\"data\":\"2026-01-15\",\"patrimonio\":1.8631,\"resultadoCdi\":0.0654,\"resultadoIfix\":165568.32,\"fatorDiario\":1.0654},{\"id\":\"import_1773080042868_117\",\"data\":\"2026-01-16\",\"patrimonio\":1.8731,\"resultadoCdi\":0.066,\"resultadoIfix\":164799.98,\"fatorDiario\":1.066},{\"id\":\"import_1773080042868_118\",\"data\":\"2026-01-19\",\"patrimonio\":1.8782,\"resultadoCdi\":0.0666,\"resultadoIfix\":164849.27,\"fatorDiario\":1.0666},{\"id\":\"import_1773080042868_119\",\"data\":\"2026-01-20\",\"patrimonio\":1.8834,\"resultadoCdi\":0.0672,\"resultadoIfix\":166276.9,\"fatorDiario\":1.0672},{\"id\":\"import_1773080042868_120\",\"data\":\"2026-01-21\",\"patrimonio\":1.8373,\"resultadoCdi\":0.0678,\"resultadoIfix\":171816.67,\"fatorDiario\":1.0678},{\"id\":\"import_1773080042868_121\",\"data\":\"2026-01-22\",\"patrimonio\":1.8013,\"resultadoCdi\":0.0684,\"resultadoIfix\":175589.35,\"fatorDiario\":1.0684},{\"id\":\"import_1773080042868_122\",\"data\":\"2026-01-23\",\"patrimonio\":1.8034,\"resultadoCdi\":0.069,\"resultadoIfix\":178858.54,\"fatorDiario\":1.069},{\"id\":\"import_1773080042868_123\",\"data\":\"2026-01-26\",\"patrimonio\":1.8052000000000001,\"resultadoCdi\":0.0696,\"resultadoIfix\":178720.68,\"fatorDiario\":1.0695999999999999},{\"id\":\"import_1773080042868_124\",\"data\":\"2026-01-27\",\"patrimonio\":1.8066,\"resultadoCdi\":0.0701,\"resultadoIfix\":181919.13,\"fatorDiario\":1.0701},{\"id\":\"import_1773080042868_125\",\"data\":\"2026-01-28\",\"patrimonio\":1.8072,\"resultadoCdi\":0.0707,\"resultadoIfix\":184691.05,\"fatorDiario\":1.0707},{\"id\":\"import_1773080042868_126\",\"data\":\"2026-01-29\",\"patrimonio\":1.8168,\"resultadoCdi\":0.0713,\"resultadoIfix\":183133.75,\"fatorDiario\":1.0713},{\"id\":\"import_1773080042868_127\",\"data\":\"2026-01-30\",\"patrimonio\":1.8183731632186166,\"resultadoCdi\":0.0719140890694987,\"resultadoIfix\":181363.9,\"fatorDiario\":1.0719140890694987},{\"id\":\"import_1773080042868_128\",\"data\":\"2026-02-02\",\"patrimonio\":1.817393014431518,\"resultadoCdi\":0.07250504602594376,\"resultadoIfix\":182793.4,\"fatorDiario\":1.0725050460259438},{\"id\":\"import_1773080042868_129\",\"data\":\"2026-02-03\",\"patrimonio\":1.8197055771520907,\"resultadoCdi\":0.07309632878286831,\"resultadoIfix\":185674.4,\"fatorDiario\":1.0730963287828683},{\"id\":\"import_1773080042868_130\",\"data\":\"2026-02-04\",\"patrimonio\":1.8224463209527235,\"resultadoCdi\":0.07368793751988978,\"resultadoIfix\":181708.2,\"fatorDiario\":1.0736879375198898},{\"id\":\"import_1773080042868_131\",\"data\":\"2026-02-05\",\"patrimonio\":1.822422246637025,\"resultadoCdi\":0.07427987241672396,\"resultadoIfix\":182127.3,\"fatorDiario\":1.074279872416724},{\"id\":\"import_1773080042868_132\",\"data\":\"2026-02-06\",\"patrimonio\":1.8257207266154614,\"resultadoCdi\":0.07487213365318612,\"resultadoIfix\":182949.8,\"fatorDiario\":1.0748721336531861},{\"id\":\"import_1773080042868_133\",\"data\":\"2026-02-09\",\"patrimonio\":1.824672296448472,\"resultadoCdi\":0.07546472140919058,\"resultadoIfix\":186241.2,\"fatorDiario\":1.0754647214091906},{\"id\":\"import_1773080042868_134\",\"data\":\"2026-02-10\",\"patrimonio\":1.8307469680018393,\"resultadoCdi\":0.07605763586475067,\"resultadoIfix\":185929.3,\"fatorDiario\":1.0760576358647507},{\"id\":\"import_1773080042868_135\",\"data\":\"2026-02-11\",\"patrimonio\":1.8319633916223539,\"resultadoCdi\":0.07665087719997943,\"resultadoIfix\":189699.1,\"fatorDiario\":1.0766508771999794},{\"id\":\"import_1773080042868_136\",\"data\":\"2026-02-12\",\"patrimonio\":1.8326025031322033,\"resultadoCdi\":0.0772444455950887,\"resultadoIfix\":187766.4,\"fatorDiario\":1.0772444455950887},{\"id\":\"import_1773080042868_137\",\"data\":\"2026-02-13\",\"patrimonio\":1.835640559152792,\"resultadoCdi\":0.0778383412303898,\"resultadoIfix\":186464.3,\"fatorDiario\":1.0778383412303898},{\"id\":\"import_1773080042868_138\",\"data\":\"2026-02-18\",\"patrimonio\":1.8369029349519572,\"resultadoCdi\":0.07843256428629353,\"resultadoIfix\":186016.3,\"fatorDiario\":1.0784325642862935},{\"id\":\"import_1773080042868_139\",\"data\":\"2026-02-19\",\"patrimonio\":1.836963935516063,\"resultadoCdi\":0.07902711494331038,\"resultadoIfix\":188534.4,\"fatorDiario\":1.0790271149433104},{\"id\":\"import_1773080042868_140\",\"data\":\"2026-02-20\",\"patrimonio\":1.8256252190583,\"resultadoCdi\":0.0796219933820499,\"resultadoIfix\":190534.4,\"fatorDiario\":1.07962199338205},{\"id\":\"import_1773080042868_141\",\"data\":\"2026-02-23\",\"patrimonio\":1.844568529505333,\"resultadoCdi\":0.0802171997832215,\"resultadoIfix\":188853.5,\"fatorDiario\":1.0802171997832215},{\"id\":\"import_1773080042868_142\",\"data\":\"2026-02-24\",\"patrimonio\":1.8427970967186142,\"resultadoCdi\":0.08081273432763414,\"resultadoIfix\":191490.4,\"fatorDiario\":1.0808127343276341},{\"id\":\"import_1773080042868_143\",\"data\":\"2026-02-25\",\"patrimonio\":1.8634685249197145,\"resultadoCdi\":0.08140859719619642,\"resultadoIfix\":191247.5,\"fatorDiario\":1.0814085971961964},{\"id\":\"import_1773080042868_144\",\"data\":\"2026-02-26\",\"patrimonio\":1.8656417977166995,\"resultadoCdi\":0.08200478856991666,\"resultadoIfix\":191005,\"fatorDiario\":1.0820047885699167},{\"id\":\"import_1773080042868_145\",\"data\":\"2026-02-27\",\"patrimonio\":1.8677739080310838,\"resultadoCdi\":0.08260130862990334,\"resultadoIfix\":188787,\"fatorDiario\":1.0826013086299033}]}",
+      "lamina_notes_v1__migrated": "true",
+      "lamina_notes_v1_1": "",
+      "lamina_hidden_blocks_v1": "{}",
+      "lamina_hidden_blocks_v1_1": "{\"footer\":false,\"operacional\":true}",
+      "lamina_hidden_blocks_v1_estrategia_1769699155929": "{}",
+      "lamina_layout_mode_v1_1": "false",
+      "lamina_hidden_blocks_v1__migrated": "true",
+      "lamina_estrategia_id": "2",
+      "lamina_hidden_blocks_v1_4": "{}",
+      "estrategia_diaria_periodo": "all",
+      "lamina_layout_v1_2": "{\"topbar\":{\"x\":0,\"y\":0,\"w\":793.6875776811079,\"h\":74.5833379572088},\"intro\":{\"x\":0,\"y\":74.58332408558238,\"w\":793.6875776811079,\"h\":157.66668146306816},\"divider\":{\"x\":30.229159268465907,\"y\":232.25000554865056,\"w\":733.2292036576704,\"h\":1.9999926740472966},\"left\":{\"x\":30.229159268465907,\"y\":241.79168701171872,\"w\":222.47913707386363,\"h\":491.70831853693176},\"atribuicao\":{\"x\":30.229159268465907,\"y\":745.5000721324574,\"w\":222.47913707386363,\"h\":197.97911210493606},\"chart\":{\"x\":265.4999334161932,\"y\":241.79168701171872,\"w\":497.95842950994313,\"h\":246.37503884055397},\"tables\":{\"x\":265.4999334161932,\"y\":499.35416481711644,\"w\":497.95842950994313,\"h\":168.31254438920453},\"mes\":{\"x\":265.4999334161932,\"y\":678.8541759144175,\"w\":497.95842950994313,\"h\":26.854211633855645},\"comentarios\":{\"x\":265.4999334161932,\"y\":716.8958906693891,\"w\":497.95842950994313,\"h\":220.12495561079544},\"footer\":{\"x\":30.229159268465907,\"y\":1055.6042757901278,\"w\":733.2292036576704,\"h\":47.99982244318181}}",
+      "laminas_template_json_v2__migrated": "true",
+      "lamina_layout_mode_v1_2": "false",
+      "lamina_layout_mode_v1": "false",
+      "estrategia_diaria_id": "2",
+      "lamina_hidden_blocks_v1_3": "{}",
+      "laminas_template_json_v2_2": "{\n  \"header\": {\n    \"logo\": \"UP\",\n    \"titulo\": \"Carteira UP Multimercado\",\n    \"subtitulo\": \"INTELIGÊNCIA ARTIFICIAL A SERVIÇO DO SEU DINHEIRO\",\n    \"periodo\": \"Janeiro/26\",\n    \"destaque\": \"{{retorno_1m}}\"\n  },\n  \"intro\": [\n    {\n      \"texto\": \"A Carteira Quantitativa UP se encontra aberta para captação, em fase de consolidação de performance e escalonamento de capital. Trata-se de uma estratégia multi-ativos na bolsa brasileira, baseada em modelos estatísticos que identificam distorções de curto prazo e executam posições de forma sistemática, com controle de risco e alavancagem calibrada.\"\n    },\n    {\n      \"texto\": \"Apesar de integrarmos a carteira a um portfólio global (renda fixa, fundos, FIIs, ações e ETFs), o núcleo de geração de retorno vem da estratégia quantitativa, que tem apresentado resultados consistentes desde seu lançamento.\"\n    },\n    {\n      \"texto\": \"Por questões de equilíbrio no modelo estatístico, a capacidade de alocação é limitada para preservar eficiência de execução. Portanto, novas entradas estão sendo recebidas enquanto há espaço.\"\n    }\n  ],\n  \"publicoAlvo\": \"Qualquer investidor com perfil de risco moderado/arrojado.\",\n  \"kpis\": [\n    {\n      \"label\": \"Drawdown máximo\",\n      \"value\": \"-3,24%\"\n    },\n    {\n      \"label\": \"Volatilidade anualizada\",\n      \"value\": \"7,38%\"\n    },\n    {\n      \"label\": \"Retorno acumulado\",\n      \"value\": \"43,55%\"\n    },\n    {\n      \"label\": \"Índice de Sharpe\",\n      \"value\": \"3,60\"\n    },\n    {\n      \"label\": \"Benchmark\",\n      \"value\": \"IFIX\"\n    },\n    {\n      \"label\": \"Alpha sobre IFIX\",\n      \"value\": \"28,32%\"\n    },\n    {\n      \"label\": \"Investimento mínimo\",\n      \"value\": \"R$ 50.000,00\"\n    },\n    {\n      \"label\": \"Cota de resgate\",\n      \"value\": \"Imediata\"\n    },\n    {\n      \"label\": \"Prazo de resgate\",\n      \"value\": \"D+5\"\n    },\n    {\n      \"label\": \"Taxa de gestão\",\n      \"value\": \"0,60% a 2,00%\"\n    },\n    {\n      \"label\": \"Taxa de performance\",\n      \"value\": \"30%\"\n    },\n    {\n      \"label\": \"Gestão\",\n      \"value\": \"UP GCA\"\n    },\n    {\n      \"label\": \"PL total\",\n      \"value\": \"R$ 6,76MM\"\n    }\n  ],\n  \"chart\": {\n    \"title\": \"Track Record\",\n    \"subtitle\": \"+43,55%\",\n    \"data\": [\n      {\n        \"label\": \"Abr/23\",\n        \"tatica\": -4,\n        \"ifix\": -3,\n        \"cdi\": 0.2\n      },\n      {\n        \"label\": \"Jul/23\",\n        \"tatica\": 2,\n        \"ifix\": 0.6,\n        \"cdi\": 1\n      },\n      {\n        \"label\": \"Out/23\",\n        \"tatica\": 9,\n        \"ifix\": 4,\n        \"cdi\": 2.2\n      },\n      {\n        \"label\": \"Jan/24\",\n        \"tatica\": 16,\n        \"ifix\": 8,\n        \"cdi\": 3.5\n      },\n      {\n        \"label\": \"Abr/24\",\n        \"tatica\": 22,\n        \"ifix\": 11,\n        \"cdi\": 4.8\n      },\n      {\n        \"label\": \"Jul/24\",\n        \"tatica\": 29,\n        \"ifix\": 15,\n        \"cdi\": 6.1\n      },\n      {\n        \"label\": \"Out/24\",\n        \"tatica\": 35,\n        \"ifix\": 18,\n        \"cdi\": 7.3\n      },\n      {\n        \"label\": \"Jan/25\",\n        \"tatica\": 39,\n        \"ifix\": 21,\n        \"cdi\": 8.5\n      },\n      {\n        \"label\": \"Abr/25\",\n        \"tatica\": 43.6,\n        \"ifix\": 24.4,\n        \"cdi\": 9.8\n      }\n    ]\n  },\n  \"resumoMensal\": [\n    {\n      \"label\": \"Total de operações\",\n      \"value\": \"26\"\n    },\n    {\n      \"label\": \"Operações com ganhos\",\n      \"value\": \"88,46%\"\n    },\n    {\n      \"label\": \"Fator de Lucro\",\n      \"value\": \"0,56x\"\n    },\n    {\n      \"label\": \"Dias no período\",\n      \"value\": \"20\"\n    }\n  ],\n  \"tabelaPerformance\": {\n    \"headers\": [\n      \"Período\",\n      \"Tática\",\n      \"IFIX\",\n      \"CDI\",\n      \"Alpha\"\n    ],\n    \"rows\": [\n      [\n        \"01 M\",\n        \"6,00\",\n        \"3,13\",\n        \"0,96\",\n        \"2,86\"\n      ],\n      [\n        \"03 M\",\n        \"7,91\",\n        \"5,18\",\n        \"3,01\",\n        \"2,73\"\n      ],\n      [\n        \"Início\",\n        \"43,55\",\n        \"15,23\",\n        \"14,43\",\n        \"28,32\"\n      ]\n    ]\n  },\n  \"mesTitulo\": \"Janeiro de 2026\",\n  \"comentarios\": [\n    {\n      \"texto\": \"Fechamos o mês com rentabilidade líquida de {{retorno_1m}}, frente a {{ifix_1m}} do IFIX e {{cdi_1m}} do CDI. Por gerenciamento de risco, com intuito de evitar um drawdown ainda maior, seguimos reduzindo os parâmetros de risco da estratégia em dezembro e, por isso, a menor volatilidade e retorno no mês.  \",\n      \"destaques\": [\n        \"rentabilidade líquida\",\n        \"IFIX\",\n        \"CDI\",\n        \"UP 5.0\"\n      ]\n    },\n    {\n      \"texto\": \"Até o momento, mantemos um retorno líquido de {{retorno_inicio}} desde o início da carteira, que representa um alpha de {{alpha_inicio}} em relação ao IFIX e {{alpha_cdi_inicio}} em relação ao CDI. Vale a pena destacar que operamos bem menos no mês de janeiro. Com a forte alta da bolsa seguramos um pouco as operações por conta de um parâmetro de volatilidade, tentando reduzir . No entanto, foram implementados novos parâmetros em dezembro para tentar mitigar esse ponto falho que, até o momento, vem funcionando bem. Esperamos, aos poucos, aumentar o risco, volatilidade e os retornos novamente conforme a carteira se aproxime de sua máxima histórica.\\n\",\n      \"destaques\": [\n        \"retorno líquido\",\n        \"desde o início\",\n        \"alpha\",\n        \"IFIX\",\n        \"CDI\"\n      ]\n    },\n    {\n      \"texto\": \"Atuamos via carteira administrada, com execução direta no custo do investidor. Investimento exclusivamente via BTG - contato Igor: WhatsApp (11) 97440-3788.\",\n      \"destaques\": [\n        \"BTG\",\n        \"WhatsApp\"\n      ]\n    }\n  ],\n  \"atribuicao\": {\n    \"title\": \"Atribuição de Resultados\",\n    \"itens\": [\n      {\n        \"label\": \"FIIs\",\n        \"value\": 98.09,\n        \"color\": \"var(--primary-color)\"\n      },\n      {\n        \"label\": \"Ações e ETFs\",\n        \"value\": 1.91,\n        \"color\": \"var(--secondary-color, #8ea4bf)\"\n      }\n    ]\n  },\n  \"operacional\": {\n    \"titulo\": \"Operacional\",\n    \"itens\": [\n      \"Estratégia sistemática em ETFs.\",\n      \"Gestão de risco dinâmica e automatizada via sistema interno.\",\n      \"Controle de drawdown e stop técnico com mecanismos de segurança ágil.\",\n      \"Exploração de padrões de retorno com núcleos externos.\",\n      \"Revisão mensal de parâmetros e performance.\",\n      \"Monitoramento contínuo de mercado em tempo real 24/7.\"\n    ]\n  },\n  \"rodape\": {\n    \"texto\": \"UP Carteiras Administradas\",\n    \"codigo\": \"58.450.405/0001-01\",\n    \"logo\": \"UP\"\n  }\n}",
+      "estrategia_diaria_nome": "Carteira UP Multimercado",
+      "lamina_notes_v1_2": "",
+      "laminas_template_json_v2_1": "{\n  \"header\": {\n    \"logo\": \"UP\",\n    \"titulo\": \"Carteira UP FIIs\",\n    \"subtitulo\": \"INTELIGÊNCIA ARTIFICIAL A SERVIÇO DO SEU DINHEIRO\",\n    \"periodo\": \"Fevereiro/25\",\n    \"destaque\": \"{{retorno_1m}}\"\n  },\n  \"intro\": [\n    {\n      \"texto\": \"A Carteira Tática UP se encontra aberta para captação, buscando gerar alpha junto ao IFIX e monitorar o mercado e oportunidades do agronegócio e infraestrutura. Esta é uma estratégia focada em fundos imobiliários, agro e infra que identifica movimentos de mercado e oportunidades geradas por eventos distorções nos núcleos de um acompanhamento próximo da classe de ativos.\"\n    },\n    {\n      \"texto\": \"Para fins de esclarecimento, o núcleo de gestão de retorno vem da estratégia de fundos listados, mas também é possível estar exposto a esse ativo via ETFs e outros tipos de oportunidades no mercado de renda variável.\"\n    },\n    {\n      \"texto\": \"Por questões de equilíbrio no modelo estatístico, a capacidade de alocação é limitada para preservar eficiência de execução. Portanto, novas entradas estão sendo recebidas enquanto há espaço.\"\n    }\n  ],\n  \"publicoAlvo\": \"Qualquer investidor com perfil de risco moderado/arrojado.\",\n  \"kpis\": [\n    {\n      \"label\": \"Drawdown máximo\",\n      \"value\": \"-3,24%\"\n    },\n    {\n      \"label\": \"Volatilidade anualizada\",\n      \"value\": \"7,38%\"\n    },\n    {\n      \"label\": \"Retorno acumulado\",\n      \"value\": \"43,55%\"\n    },\n    {\n      \"label\": \"Índice de Sharpe\",\n      \"value\": \"3,60\"\n    },\n    {\n      \"label\": \"Benchmark\",\n      \"value\": \"IFIX\"\n    },\n    {\n      \"label\": \"Alpha sobre IFIX\",\n      \"value\": \"28,32%\"\n    },\n    {\n      \"label\": \"Investimento mínimo\",\n      \"value\": \"R$ 50.000,00\"\n    },\n    {\n      \"label\": \"Cota de resgate\",\n      \"value\": \"Imediata\"\n    },\n    {\n      \"label\": \"Prazo de resgate\",\n      \"value\": \"D+5\"\n    },\n    {\n      \"label\": \"Taxa de gestão\",\n      \"value\": \"0,60% a 2,00%\"\n    },\n    {\n      \"label\": \"Taxa de performance\",\n      \"value\": \"30%\"\n    },\n    {\n      \"label\": \"Gestão\",\n      \"value\": \"UP GCA\"\n    },\n    {\n      \"label\": \"PL total\",\n      \"value\": \"R$ 6,76MM\"\n    }\n  ],\n  \"chart\": {\n    \"title\": \"Track Record\",\n    \"subtitle\": \"+43,55%\",\n    \"data\": [\n      {\n        \"label\": \"Abr/23\",\n        \"tatica\": -4,\n        \"ifix\": -3,\n        \"cdi\": 0.2\n      },\n      {\n        \"label\": \"Jul/23\",\n        \"tatica\": 2,\n        \"ifix\": 0.6,\n        \"cdi\": 1\n      },\n      {\n        \"label\": \"Out/23\",\n        \"tatica\": 9,\n        \"ifix\": 4,\n        \"cdi\": 2.2\n      },\n      {\n        \"label\": \"Jan/24\",\n        \"tatica\": 16,\n        \"ifix\": 8,\n        \"cdi\": 3.5\n      },\n      {\n        \"label\": \"Abr/24\",\n        \"tatica\": 22,\n        \"ifix\": 11,\n        \"cdi\": 4.8\n      },\n      {\n        \"label\": \"Jul/24\",\n        \"tatica\": 29,\n        \"ifix\": 15,\n        \"cdi\": 6.1\n      },\n      {\n        \"label\": \"Out/24\",\n        \"tatica\": 35,\n        \"ifix\": 18,\n        \"cdi\": 7.3\n      },\n      {\n        \"label\": \"Jan/25\",\n        \"tatica\": 39,\n        \"ifix\": 21,\n        \"cdi\": 8.5\n      },\n      {\n        \"label\": \"Abr/25\",\n        \"tatica\": 43.6,\n        \"ifix\": 24.4,\n        \"cdi\": 9.8\n      }\n    ]\n  },\n  \"resumoMensal\": [\n    {\n      \"label\": \"Total de operações\",\n      \"value\": \"78\"\n    },\n    {\n      \"label\": \"Operações com ganhos\",\n      \"value\": \"67,95%\"\n    },\n    {\n      \"label\": \"Maior ganho por operação\",\n      \"value\": \"+25%\"\n    },\n    {\n      \"label\": \"Dias no período\",\n      \"value\": \"18\"\n    }\n  ],\n  \"tabelaPerformance\": {\n    \"headers\": [\n      \"Período\",\n      \"Tática\",\n      \"IFIX\",\n      \"CDI\",\n      \"Alpha\"\n    ],\n    \"rows\": [\n      [\n        \"01 M\",\n        \"6,00\",\n        \"3,13\",\n        \"0,96\",\n        \"2,86\"\n      ],\n      [\n        \"03 M\",\n        \"7,91\",\n        \"5,18\",\n        \"3,01\",\n        \"2,73\"\n      ],\n      [\n        \"Início\",\n        \"43,55\",\n        \"15,23\",\n        \"14,43\",\n        \"28,32\"\n      ]\n    ]\n  },\n  \"mesTitulo\": \"Fevereiro de 2025\",\n  \"comentarios\": [\n    {\n      \"texto\": \"Fechamos o mês com rentabilidade líquida de {{retorno_1m}}, frente a {{ifix_1m}} do IFIX e {{cdi_1m}} do CDI. Como dito, seguimos desenvolvendo estratégias e aprimorando o nosso sistema de negociações, que recentemente já tem surtido efeito na agilidade e praticidade da emissão das ordens. Porém, fechamos fevereiro com um volume menor de negociações no mercado de FIIs, por conta de dois fatores: menos dias úteis para trabalhar (o que ajudou a conter o CDI no mês e também abrir alpha sobre o índice) e por poucas oportunidades relevantes observadas de acordo com nossos parâmetros de entrada. Dessa forma, apesar do resultado positivo, não conseguimos superar o IFIX na janela.\",\n      \"destaques\": [\n        \"rentabilidade líquida\",\n        \"IFIX\",\n        \"CDI\",\n        \"UP 5.0\"\n      ]\n    },\n    {\n      \"texto\": \"Até o momento, mantemos um retorno líquido de {{retorno_inicio}} desde o início da carteira, que representa um alpha de {{alpha_inicio}} em relação ao IFIX e {{alpha_cdi_inicio}} em relação ao CDI. \",\n      \"destaques\": [\n        \"retorno líquido\",\n        \"desde o início\",\n        \"alpha\",\n        \"IFIX\",\n        \"CDI\"\n      ]\n    },\n    {\n      \"texto\": \"Atuamos via carteira administrada, com execução direta na conta do investidor. Investimentos exclusivamente via BTG - contato Igor: WhatsApp (11) 97440-3788.\",\n      \"destaques\": [\n        \"BTG\",\n        \"WhatsApp\"\n      ]\n    }\n  ],\n  \"atribuicao\": {\n    \"title\": \"Atribuição de Resultados\",\n    \"itens\": [\n      {\n        \"label\": \"FIIs\",\n        \"value\": 98.09,\n        \"color\": \"var(--primary-color)\"\n      },\n      {\n        \"label\": \"Ações e ETFs\",\n        \"value\": 1.91,\n        \"color\": \"var(--secondary-color, #8ea4bf)\"\n      }\n    ]\n  },\n  \"operacional\": {\n    \"titulo\": \"Operacional\",\n    \"itens\": [\n      \"Estratégia sistemática em ETFs.\",\n      \"Gestão de risco dinâmica e automatizada via sistema interno.\",\n      \"Controle de drawdown e stop técnico com mecanismos de segurança ágil.\",\n      \"Exploração de padrões de retorno com núcleos externos.\",\n      \"Revisão mensal de parâmetros e performance.\",\n      \"Monitoramento contínuo de mercado em tempo real 24/7.\"\n    ]\n  },\n  \"rodape\": {\n    \"texto\": \"UP Carteiras Administradas\",\n    \"codigo\": \"58.450.405/0001-01\",\n    \"logo\": \"UP\"\n  }\n}",
+      "lamina_hidden_blocks_v1_2": "{\"footer\":false,\"operacional\":true,\"topbar\":false}",
+      "lamina_layout_mode_v1__migrated": "true"
+    },
+    "estrategias": [
+      {
+        "id": "1",
+        "nome": "Carteira Tática",
+        "descricao": "Estratégia focada em movimentações táticas de curto prazo, ajustando posições conforme condições de mercado.",
+        "benchmark": "IFIX",
+        "dataCriacao": "2026-04-01",
+        "dataAtualizacao": "2026-04-01"
+      },
+      {
+        "id": "2",
+        "nome": "Carteira Multimercado",
+        "descricao": "Diversificação em múltiplos mercados e classes de ativos para reduzir risco e potencializar retornos.",
+        "benchmark": "IBOV",
+        "dataCriacao": "2026-04-01",
+        "dataAtualizacao": "2026-04-01"
+      },
+      {
+        "id": "3",
+        "nome": "Consultoria",
+        "descricao": "Serviço de consultoria personalizada para orientação estratégica e tomada de decisões de investimento.",
+        "benchmark": "IFIX",
+        "dataCriacao": "2026-04-01",
+        "dataAtualizacao": "2026-04-01"
+      },
+      {
+        "id": "4",
+        "nome": "Carteira Completa",
+        "descricao": "Gestão completa de patrimônio com acompanhamento integral e estratégias abrangentes.",
+        "benchmark": "IFIX",
+        "dataCriacao": "2026-04-01",
+        "dataAtualizacao": "2026-04-01"
+      }
+    ]
+  }
+}

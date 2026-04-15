@@ -1,0 +1,11 @@
+.git
+.github
+.vscode
+.idea
+node_modules
+server/node_modules
+dist
+*.log
+recovery
+README.md
+*.md

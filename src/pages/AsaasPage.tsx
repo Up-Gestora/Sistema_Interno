@@ -6,6 +6,7 @@ import { Cliente } from '../types';
 import { formatCurrency } from '../utils/calculations';
 import { useMoneyVisibility } from '../contexts/MoneyVisibilityContext';
 import { useClientes } from '../hooks/useClientes';
+import { savePortSharedStorageValue } from '../services/portSharedStorage';
 import Card from '../components/Card/Card';
 import Modal from '../components/Modal/Modal';
 import './AsaasPage.css';
@@ -42,6 +43,7 @@ const salvarPagamentosCache = (pagamentos: AsaasPagamento[]) => {
     pagamentos,
   };
   localStorage.setItem(ASAAS_PAGAMENTOS_CACHE_KEY, JSON.stringify(payload));
+  void savePortSharedStorageValue(ASAAS_PAGAMENTOS_CACHE_KEY, payload);
 };
 
 const STATUS_RECEBIDAS = new Set(['RECEIVED', 'RECEIVED_IN_CASH', 'DUNNING_RECEIVED']);
@@ -127,10 +129,12 @@ export default function AsaasPage() {
 
   useEffect(() => {
     localStorage.setItem(INTER_LANCAMENTOS_KEY, JSON.stringify(interLancamentos));
+    void savePortSharedStorageValue(INTER_LANCAMENTOS_KEY, interLancamentos);
   }, [interLancamentos]);
 
   useEffect(() => {
     localStorage.setItem(SAIDAS_LANCAMENTOS_KEY, JSON.stringify(saidasLancamentos));
+    void savePortSharedStorageValue(SAIDAS_LANCAMENTOS_KEY, saidasLancamentos);
   }, [saidasLancamentos]);
 
   useEffect(() => {

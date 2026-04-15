@@ -1,0 +1,553 @@
+{
+  "key": "inter_manual_lancamentos_v1",
+  "action": "put",
+  "timestamp": "2026-04-15T15:08:59.051Z",
+  "previousValue": [
+    {
+      "id": "inter_1770745402880",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 5871.22,
+      "data": "2025-04-25",
+      "descricao": "Performance 1T2025"
+    },
+    {
+      "id": "inter_imp_1yzczt0",
+      "clienteId": "novo_1769465075570_14",
+      "tipo": "recebimento",
+      "valor": 658.29,
+      "data": "2026-01-28",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_imp_1y2ut7e",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 352.61,
+      "data": "2026-01-22",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_168scvn",
+      "clienteId": "novo_1769465075570_11",
+      "tipo": "recebimento",
+      "valor": 1000,
+      "data": "2026-01-21",
+      "descricao": "Pgto Adm"
+    },
+    {
+      "id": "inter_imp_1h4ogog",
+      "clienteId": "novo_1769465075570_4",
+      "tipo": "recebimento",
+      "valor": 350,
+      "data": "2026-01-18",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_imp_wtlbzw",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 7067.51,
+      "data": "2026-01-15",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_coi3tj",
+      "clienteId": "cliente_1770658064352",
+      "tipo": "recebimento",
+      "valor": 100,
+      "data": "2026-01-13",
+      "descricao": "Abate Grana"
+    },
+    {
+      "id": "inter_imp_kpek4h",
+      "clienteId": "novo_1769465075570_11",
+      "tipo": "recebimento",
+      "valor": 94.53,
+      "data": "2026-01-13",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1kkh4x1",
+      "clienteId": "novo_1769465075570_6",
+      "tipo": "recebimento",
+      "valor": 354.81,
+      "data": "2026-01-11",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1uz6uu7",
+      "clienteId": "novo_1769465075571_50",
+      "tipo": "recebimento",
+      "valor": 187.37,
+      "data": "2026-01-09",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1wj6924",
+      "clienteId": "novo_1769465075570_19",
+      "tipo": "recebimento",
+      "valor": 427.28,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_16saw6e",
+      "clienteId": "novo_1769465075570_26",
+      "tipo": "recebimento",
+      "valor": 1826.44,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1u4molf",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 1043.59,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1ryq7zv",
+      "clienteId": "novo_1769465075570_29",
+      "tipo": "recebimento",
+      "valor": 323.49,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_j6u409",
+      "clienteId": "novo_1769465075570_15",
+      "tipo": "recebimento",
+      "valor": 500,
+      "data": "2026-01-07",
+      "descricao": "Bonificação"
+    },
+    {
+      "id": "inter_imp_11zrlcx",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 212.15,
+      "data": "2026-01-04",
+      "descricao": "Pgto Adm"
+    },
+    {
+      "id": "inter_imp_vqrafr",
+      "clienteId": "cliente_1769538424246",
+      "tipo": "recebimento",
+      "valor": 6000,
+      "data": "2026-01-04",
+      "descricao": "Findmy Angel"
+    },
+    {
+      "id": "inter_imp_31kg0m",
+      "clienteId": "novo_1769465075571_36",
+      "tipo": "recebimento",
+      "valor": 305.39,
+      "data": "2025-10-20",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_25if8v",
+      "clienteId": "novo_1769465075570_25",
+      "tipo": "recebimento",
+      "valor": 4336.62,
+      "data": "2025-10-20",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1xn1ne9",
+      "clienteId": "novo_1769465075570_21",
+      "tipo": "recebimento",
+      "valor": 395.71,
+      "data": "2025-10-16",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1krurag",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 1161.25,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_pwsqcj",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 1545.81,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_i4k91l",
+      "clienteId": "novo_1769465075570_32",
+      "tipo": "recebimento",
+      "valor": 43.54,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1xymskk",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 1031.8,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_rkekr4",
+      "clienteId": "novo_1769465075570_31",
+      "tipo": "recebimento",
+      "valor": 319.7,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_oy3gk4",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 6850,
+      "data": "2025-10-10",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_coxvps",
+      "clienteId": "novo_1769465075570_29",
+      "tipo": "recebimento",
+      "valor": 202.35,
+      "data": "2025-10-10",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_z9fwwm",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 6456.85,
+      "data": "2025-07-21",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_6vcjzo",
+      "clienteId": "novo_1769465075570_8",
+      "tipo": "recebimento",
+      "valor": 3946.92,
+      "data": "2025-07-15",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_1lqdqhb",
+      "clienteId": "novo_1769465075570_1",
+      "tipo": "recebimento",
+      "valor": 14793.91,
+      "data": "2025-07-14",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_1mwwtz",
+      "clienteId": "novo_1769465075570_19",
+      "tipo": "recebimento",
+      "valor": 749.78,
+      "data": "2025-07-10",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_x0qwh",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 666.56,
+      "data": "2025-07-09",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_dupjlp",
+      "clienteId": "novo_1769465075570_10",
+      "tipo": "recebimento",
+      "valor": 1000,
+      "data": "2025-06-02",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_imp_s3qaf4",
+      "clienteId": "novo_1769465075570_1",
+      "tipo": "recebimento",
+      "valor": 28000,
+      "data": "2025-04-11",
+      "descricao": "Performance 1T2025"
+    }
+  ],
+  "nextValue": [
+    {
+      "id": "inter_imp_1yzczt0",
+      "clienteId": "novo_1769465075570_14",
+      "tipo": "recebimento",
+      "valor": 658.29,
+      "data": "2026-01-28",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_imp_1y2ut7e",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 352.61,
+      "data": "2026-01-22",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_168scvn",
+      "clienteId": "novo_1769465075570_11",
+      "tipo": "recebimento",
+      "valor": 1000,
+      "data": "2026-01-21",
+      "descricao": "Pgto Adm"
+    },
+    {
+      "id": "inter_imp_1h4ogog",
+      "clienteId": "novo_1769465075570_4",
+      "tipo": "recebimento",
+      "valor": 350,
+      "data": "2026-01-18",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_imp_wtlbzw",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 7067.51,
+      "data": "2026-01-15",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_coi3tj",
+      "clienteId": "cliente_1770658064352",
+      "tipo": "recebimento",
+      "valor": 100,
+      "data": "2026-01-13",
+      "descricao": "Abate Grana"
+    },
+    {
+      "id": "inter_imp_kpek4h",
+      "clienteId": "novo_1769465075570_11",
+      "tipo": "recebimento",
+      "valor": 94.53,
+      "data": "2026-01-13",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1kkh4x1",
+      "clienteId": "novo_1769465075570_6",
+      "tipo": "recebimento",
+      "valor": 354.81,
+      "data": "2026-01-11",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1uz6uu7",
+      "clienteId": "novo_1769465075571_50",
+      "tipo": "recebimento",
+      "valor": 187.37,
+      "data": "2026-01-09",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1wj6924",
+      "clienteId": "novo_1769465075570_19",
+      "tipo": "recebimento",
+      "valor": 427.28,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_16saw6e",
+      "clienteId": "novo_1769465075570_26",
+      "tipo": "recebimento",
+      "valor": 1826.44,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1u4molf",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 1043.59,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_1ryq7zv",
+      "clienteId": "novo_1769465075570_29",
+      "tipo": "recebimento",
+      "valor": 323.49,
+      "data": "2026-01-07",
+      "descricao": "Performance 4T2025"
+    },
+    {
+      "id": "inter_imp_j6u409",
+      "clienteId": "novo_1769465075570_15",
+      "tipo": "recebimento",
+      "valor": 500,
+      "data": "2026-01-07",
+      "descricao": "Bonificação"
+    },
+    {
+      "id": "inter_imp_11zrlcx",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 212.15,
+      "data": "2026-01-04",
+      "descricao": "Pgto Adm"
+    },
+    {
+      "id": "inter_imp_vqrafr",
+      "clienteId": "cliente_1769538424246",
+      "tipo": "recebimento",
+      "valor": 6000,
+      "data": "2026-01-04",
+      "descricao": "Findmy Angel"
+    },
+    {
+      "id": "inter_imp_31kg0m",
+      "clienteId": "novo_1769465075571_36",
+      "tipo": "recebimento",
+      "valor": 305.39,
+      "data": "2025-10-20",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_25if8v",
+      "clienteId": "novo_1769465075570_25",
+      "tipo": "recebimento",
+      "valor": 4336.62,
+      "data": "2025-10-20",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1xn1ne9",
+      "clienteId": "novo_1769465075570_21",
+      "tipo": "recebimento",
+      "valor": 395.71,
+      "data": "2025-10-16",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1krurag",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 1161.25,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_pwsqcj",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 1545.81,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_i4k91l",
+      "clienteId": "novo_1769465075570_32",
+      "tipo": "recebimento",
+      "valor": 43.54,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_1xymskk",
+      "clienteId": "novo_1769465075570_23",
+      "tipo": "recebimento",
+      "valor": 1031.8,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_rkekr4",
+      "clienteId": "novo_1769465075570_31",
+      "tipo": "recebimento",
+      "valor": 319.7,
+      "data": "2025-10-13",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_oy3gk4",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 6850,
+      "data": "2025-10-10",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_coxvps",
+      "clienteId": "novo_1769465075570_29",
+      "tipo": "recebimento",
+      "valor": 202.35,
+      "data": "2025-10-10",
+      "descricao": "Performance 3T2025"
+    },
+    {
+      "id": "inter_imp_z9fwwm",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 6456.85,
+      "data": "2025-07-21",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_6vcjzo",
+      "clienteId": "novo_1769465075570_8",
+      "tipo": "recebimento",
+      "valor": 3946.92,
+      "data": "2025-07-15",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_1lqdqhb",
+      "clienteId": "novo_1769465075570_1",
+      "tipo": "recebimento",
+      "valor": 14793.91,
+      "data": "2025-07-14",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_1mwwtz",
+      "clienteId": "novo_1769465075570_19",
+      "tipo": "recebimento",
+      "valor": 749.78,
+      "data": "2025-07-10",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_x0qwh",
+      "clienteId": "novo_1769465075570_24",
+      "tipo": "recebimento",
+      "valor": 666.56,
+      "data": "2025-07-09",
+      "descricao": "Performance 2T2025"
+    },
+    {
+      "id": "inter_imp_dupjlp",
+      "clienteId": "novo_1769465075570_10",
+      "tipo": "recebimento",
+      "valor": 1000,
+      "data": "2025-06-02",
+      "descricao": "Acerto"
+    },
+    {
+      "id": "inter_1770745402880",
+      "clienteId": "novo_1769465075570_2",
+      "tipo": "recebimento",
+      "valor": 5871.22,
+      "data": "2025-04-25",
+      "descricao": "Performance 1T2025"
+    },
+    {
+      "id": "inter_imp_s3qaf4",
+      "clienteId": "novo_1769465075570_1",
+      "tipo": "recebimento",
+      "valor": 28000,
+      "data": "2025-04-11",
+      "descricao": "Performance 1T2025"
+    }
+  ]
+}

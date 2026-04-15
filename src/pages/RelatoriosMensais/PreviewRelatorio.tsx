@@ -30,7 +30,7 @@ export default function PreviewRelatorio({ relatorio, onGerarPDF, onVoltar }: Pr
   ) => {
     const imagemMap = new Map(imagens.map((img) => [img.id, img.src]));
     const tokenRegex = /\[\[img:([a-zA-Z0-9_-]+)\]\]/g;
-    const blocos = (texto || '').split(/\n\s*\n/);
+    const blocos = (texto || '').split(/\r?\n/);
     const elementos: JSX.Element[] = [];
     let imageIndex = 0;
     let keyIndex = 0;

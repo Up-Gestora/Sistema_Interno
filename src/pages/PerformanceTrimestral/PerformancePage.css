@@ -1,22 +1,335 @@
 .performance-page {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.25rem;
 }
 
 .page-header {
-  margin-bottom: 1rem;
-}
-
-.page-header h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
-.page-subtitle {
-  font-size: 1rem;
-  color: var(--text-secondary);
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
 }
 
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.performance-tabs {
+  display: inline-flex;
+  align-self: flex-start;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 0.35rem;
+  border: 1px solid var(--border-color);
+  gap: 0.35rem;
+}
+
+.performance-tab {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.performance-tab.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.performance-card {
+  border-radius: 10px;
+}
+
+.performance-config-grid,
+.performance-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.85rem;
+}
+
+.performance-config-grid label,
+.performance-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.performance-config-grid input,
+.performance-form-grid input,
+.performance-form-grid select,
+.etapa-header input,
+.performance-table input {
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.performance-config-grid input:focus,
+.performance-form-grid input:focus,
+.performance-form-grid select:focus,
+.etapa-header input:focus,
+.performance-table input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgb(29 47 52 / 0.22);
+}
+
+.performance-warning {
+  margin-top: 0.9rem;
+  border: 1px solid rgb(245 158 11 / 0.35);
+  background: rgb(245 158 11 / 0.1);
+  color: var(--warning-color);
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.performance-actions-inline {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.performance-btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.performance-btn.primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.performance-btn.secondary {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.performance-btn.danger {
+  background: rgb(239 68 68 / 0.14);
+  border-color: rgb(239 68 68 / 0.3);
+  color: var(--danger-color);
+}
+
+.performance-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.performance-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+}
+
+.kpi-card {
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.kpi-card strong {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.kpi-label {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.performance-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1800px;
+  font-size: 0.83rem;
+}
+
+.performance-table th,
+.performance-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0.55rem;
+  text-align: left;
+  color: var(--text-primary);
+}
+
+.performance-table thead th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.performance-table tfoot td {
+  font-weight: 700;
+  background: var(--bg-secondary);
+}
+
+.performance-table input {
+  width: 100%;
+  min-width: 95px;
+}
+
+.highlight-cell {
+  font-weight: 700;
+  color: var(--success-color);
+}
+
+.empty-row {
+  text-align: center !important;
+  color: var(--text-secondary) !important;
+  padding: 1.4rem !important;
+}
+
+.performance-etapas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 0.9rem;
+}
+
+.etapa-card .card-title {
+  margin-bottom: 0.75rem;
+}
+
+.etapa-header {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.etapa-header input {
+  flex: 1;
+}
+
+.etapa-results-grid {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.55rem;
+}
+
+.result-item {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  padding: 0.65rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.result-item span {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.result-item strong {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.positive {
+  color: var(--success-color) !important;
+}
+
+.negative {
+  color: var(--danger-color) !important;
+}
+
+.performance-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+}
+
+.summary-item {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.summary-item span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.summary-item strong {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.summary-item.highlight {
+  border-color: var(--primary-color);
+  box-shadow: inset 0 0 0 1px rgb(29 47 52 / 0.3);
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .performance-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .performance-tab {
+    text-align: center;
+  }
+
+  .performance-etapas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .performance-actions-inline {
+    width: 100%;
+  }
+
+  .performance-btn {
+    flex: 1;
+    text-align: center;
+  }
+}

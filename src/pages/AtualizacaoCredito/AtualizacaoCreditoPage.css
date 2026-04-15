@@ -1,0 +1,393 @@
+.credito-update-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.credito-update-banner {
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  border: 1px solid transparent;
+}
+
+.credito-update-banner.success {
+  color: #0f5132;
+  background: #d1e7dd;
+  border-color: #badbcc;
+}
+
+.credito-update-banner.error {
+  color: #842029;
+  background: #f8d7da;
+  border-color: #f5c2c7;
+}
+
+.credito-update-card {
+  border: 1px solid var(--border-color);
+}
+
+.credito-update-card--full {
+  width: 100%;
+}
+
+.credito-fechamento-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.credito-fechamento-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.credito-fechamento-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.credito-fechamento-controls select {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.92rem;
+  min-width: 170px;
+}
+
+.credito-fechamento-controls select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.12);
+}
+
+.credito-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.credito-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.credito-form-grid input,
+.credito-form-grid select {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.92rem;
+}
+
+.credito-form-grid input:focus,
+.credito-form-grid select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.12);
+}
+
+.credito-update-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.credito-update-actions--top {
+  margin-top: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.credito-check-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.credito-info-inline {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.credito-usage-inline {
+  font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+}
+
+.credito-fundo-add {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(200px, 240px) auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.credito-fundo-add input {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 0.65rem 0.75rem;
+  font-size: 0.92rem;
+}
+
+.credito-fundos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.credito-fundo-row {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: var(--card-bg);
+  display: grid;
+  gap: 0.65rem;
+}
+
+.credito-fundo-main {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) minmax(190px, 230px) auto auto auto;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.credito-check {
+  display: inline-flex;
+  align-items: center;
+}
+
+.credito-fundo-main input[type="text"] {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 0.55rem 0.65rem;
+  font-size: 0.9rem;
+}
+
+.credito-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.credito-status.status-ok {
+  color: #065f46;
+  background: #d1fae5;
+  border-color: #a7f3d0;
+}
+
+.credito-status.status-warning {
+  color: #7c2d12;
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.credito-status.status-pending {
+  color: #334155;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.credito-status.status-processando {
+  color: #1e3a8a;
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.credito-fundo-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.4rem 0.9rem;
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+}
+
+.credito-fundo-meta span {
+  min-width: 0;
+}
+
+.credito-descricao-span {
+  grid-column: 1 / -1;
+}
+
+.credito-cost-box {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: min(360px, calc(100vw - 2rem));
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 14px 28px rgb(15 23 42 / 0.18);
+  z-index: 1200;
+}
+
+.credito-cost-box.collapsed {
+  width: auto;
+}
+
+.credito-cost-toggle {
+  width: 100%;
+  border: none;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 12px 12px 0 0;
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+}
+
+.credito-cost-box.collapsed .credito-cost-toggle {
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+}
+
+.credito-cost-content {
+  padding: 0.7rem 0.75rem 0.8rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.credito-cost-content h3 {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.credito-cost-modelo {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.credito-cost-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.credito-cost-grid label {
+  display: grid;
+  gap: 0.24rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.credito-cost-grid input {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  padding: 0.38rem 0.45rem;
+  font-size: 0.8rem;
+}
+
+.credito-cost-grid input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.12);
+}
+
+.credito-cost-resultados p,
+.credito-cost-empty {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.btn-danger-inline {
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #b91c1c;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger-inline:hover {
+  background: #fee2e2;
+}
+
+.credito-consolidado {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+
+.credito-config-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+@media (max-width: 1000px) {
+  .credito-fechamento-row {
+    align-items: flex-start;
+  }
+
+  .credito-fechamento-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .credito-fechamento-controls select {
+    width: 100%;
+  }
+
+  .credito-fundo-add {
+    grid-template-columns: 1fr;
+  }
+
+  .credito-fundo-main {
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+  }
+
+  .credito-fundo-main .credito-status,
+  .credito-fundo-main .btn-secondary,
+  .credito-fundo-main .btn-danger-inline {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
+  .credito-cost-box {
+    right: 0.6rem;
+    bottom: 0.6rem;
+    width: min(340px, calc(100vw - 1.2rem));
+  }
+}

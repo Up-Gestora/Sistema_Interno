@@ -39,6 +39,26 @@ type LaminasEditorPanelProps = {
   onRemoverLogoRodape: () => void;
 };
 
+const normalizarLabelKpi = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const isKpiAutomatico = (label: string) => {
+  const normalizado = normalizarLabelKpi(label);
+
+  if (normalizado.includes('drawdown')) return true;
+  if (normalizado.includes('volatilidade')) return true;
+  if (normalizado.includes('retorno acumulado')) return true;
+  if (normalizado.includes('indice de sharpe')) return true;
+  if (normalizado.includes('alpha') && (normalizado.includes('ifix') || !normalizado.includes('cdi'))) return true;
+
+  return false;
+};
+
 export default function LaminasEditorPanel({
   estrategias,
   strategyId,
@@ -75,6 +95,17 @@ export default function LaminasEditorPanel({
   onRemoverLogoRodape,
 }: LaminasEditorPanelProps) {
   const exportando = exportandoPdf || exportandoImagem;
+  const kpisManuais = template.kpis
+    .map((kpi, index) => ({ kpi, index }))
+    .filter(({ kpi }) => !isKpiAutomatico(kpi.label));
+
+  const onAtualizarKpiManual = (index: number, campo: 'label' | 'value', valor: string) => {
+    const proximo = template.kpis.map((item, itemIndex) => {
+      if (itemIndex !== index) return item;
+      return { ...item, [campo]: valor };
+    });
+    onAtualizarTemplate({ ...template, kpis: proximo });
+  };
 
   return (
     <div className="laminas-editor-panel">
@@ -216,6 +247,26 @@ export default function LaminasEditorPanel({
           </div>
         ))}
       </div>
+      <div className="lamina-resumo-editor">
+        <h4>KPIs manuais</h4>
+        {kpisManuais.length ? (
+          kpisManuais.map(({ kpi, index }, ordem) => (
+            <div key={`kpi-manual-${index}`}>
+              <label>
+                KPI manual {ordem + 1} - título
+                <input value={kpi.label} onChange={(e) => onAtualizarKpiManual(index, 'label', e.target.value)} />
+              </label>
+              <label>
+                KPI manual {ordem + 1} - valor
+                <input value={kpi.value} onChange={(e) => onAtualizarKpiManual(index, 'value', e.target.value)} />
+              </label>
+            </div>
+          ))
+        ) : (
+          <p className="json-hint">Nenhum KPI manual encontrado no template atual.</p>
+        )}
+        <span className="json-hint">KPIs de dados diários continuam automáticos.</span>
+      </div>
       <label>
         Comentário 1
         <textarea
@@ -279,6 +330,7 @@ export default function LaminasEditorPanel({
     </div>
   );
 }
+
 
 
 

@@ -227,6 +227,7 @@ type LaminasPreviewPanelProps = {
   layoutAtivo: boolean;
   zoomAplicado: number;
   templatePreview: LaminaTemplate;
+  benchmarkLabel: string;
   logoTopo: string | null;
   logoRodape: string | null;
   layoutMap: LaminaLayoutMap;
@@ -260,6 +261,7 @@ export default function LaminasPreviewPanel({
   layoutAtivo,
   zoomAplicado,
   templatePreview,
+  benchmarkLabel,
   logoTopo,
   logoRodape,
   layoutMap,
@@ -519,7 +521,7 @@ export default function LaminasPreviewPanel({
                             <Line
                               type="monotone"
                               dataKey="ifix"
-                              name="IFIX"
+                              name={benchmarkLabel}
                               stroke="var(--success-color)"
                               strokeWidth={2}
                               dot={false}
@@ -694,6 +696,7 @@ export default function LaminasPreviewPanel({
     </div>
   );
 }
+
 
 
 

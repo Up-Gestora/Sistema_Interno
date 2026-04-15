@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Card from '../../components/Card/Card';
+import { savePortSharedStorageValue } from '../../services/portSharedStorage';
 import './LinksUteisPage.css';
 
 type LinkUtil = {
@@ -43,6 +44,7 @@ export default function LinksUteisPage() {
 
   useEffect(() => {
     localStorage.setItem(LINKS_STORAGE_KEY, JSON.stringify(links));
+    void savePortSharedStorageValue(LINKS_STORAGE_KEY, links);
   }, [links]);
 
   const normalizarUrl = (valor: string) => {

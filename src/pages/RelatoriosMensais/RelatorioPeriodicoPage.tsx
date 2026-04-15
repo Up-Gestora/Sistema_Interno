@@ -1,11 +1,8 @@
-import { ChangeEvent, CSSProperties, PointerEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { useClientes } from '../../hooks/useClientes';
-import { CamposCompartilhadosProducaoRelatorio, RelatorioMensal } from '../../types/relatorio';
+import { ChangeEvent, CSSProperties, PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ReportCoverAdjustment, ReportCoverItem } from '../../types/reportCover';
 import {
   carregarCapaRelatorio,
-  gerarRelatorioMensalPDF,
-  gerarRelatoriosMensaisEmMassa,
+  gerarRelatorioPeriodicoPDF,
 } from '../../services/pdfGenerator';
 import {
   atualizarAjusteCapa,
@@ -13,15 +10,12 @@ import {
   listarCapas,
   uploadCapa,
 } from '../../services/reportCoverRepositoryService';
-import FormRelatorio from './FormRelatorio';
-import FormRelatorioMassa from './FormRelatorioMassa';
-import FormRelatorioViaPlanilha from './FormRelatorioViaPlanilha';
-import PreviewRelatorio from './PreviewRelatorio';
+import { RelatorioPeriodico } from '../../types/relatorio';
 import Card from '../../components/Card/Card';
+import YearSelect from '../../components/YearSelect/YearSelect';
 import './RelatoriosMensaisPage.css';
-
-type ViewMode = 'form' | 'preview';
-type ModoGeracao = 'individual' | 'massa' | 'planilha';
+import './FormRelatorio.css';
+import './RelatorioPeriodicoPage.css';
 
 type CapaSelecionada = {
   id: string;
@@ -29,11 +23,6 @@ type CapaSelecionada = {
   nomeArquivo: string;
   width: number;
   height: number;
-};
-
-type CapaPersistida = {
-  travada: boolean;
-  selectedCoverId?: string;
 };
 
 type EstadoArraste = {
@@ -44,8 +33,12 @@ type EstadoArraste = {
   fatorEscalaVisual: number;
 };
 
-const RELATORIOS_LOCAL_STORAGE_KEY = 'relatoriosMensais';
-const CAPA_LOCAL_STORAGE_KEY = 'relatorioMensalCapaTravada';
+type UploadResumoContexto = {
+  selectionStart: number;
+  selectionEnd: number;
+};
+
+const RELATORIOS_PERIODICOS_LOCAL_STORAGE_KEY = 'relatoriosPeriodicosGerados_v1';
 const DEFAULT_COVER_ID = '__default_cover__';
 const CAPA_WIDTH = 794;
 const CAPA_HEIGHT = 1123;
@@ -141,24 +134,30 @@ const criarCapaAjustadaParaPdf = async (
   return canvas.toDataURL('image/jpeg', 0.92);
 };
 
-export default function RelatoriosMensaisPage() {
-  const { clientes } = useClientes();
-  const [viewMode, setViewMode] = useState<ViewMode>('form');
-  const [modoGeracao, setModoGeracao] = useState<ModoGeracao>('massa');
-  const [relatorioAtual, setRelatorioAtual] = useState<RelatorioMensal | null>(null);
-  const [gerandoPDFs, setGerandoPDFs] = useState(false);
-  const [camposCompartilhadosProducao, setCamposCompartilhadosProducao] =
-    useState<CamposCompartilhadosProducaoRelatorio>(() => ({
-      mes: new Date().getMonth() + 1,
-      ano: new Date().getFullYear(),
-      resumoMacro: '',
-      cdiMensal: '',
-      textoAcimaCDI: '',
-      textoAbaixoCDI: '',
-    }));
-  const [relatoriosGerados, setRelatoriosGerados] = useState<RelatorioMensal[]>(() => {
-    const saved = localStorage.getItem(RELATORIOS_LOCAL_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
+export default function RelatorioPeriodicoPage() {
+  const [mensagem, setMensagem] = useState('');
+  const [erro, setErro] = useState('');
+
+  const [tituloCapa, setTituloCapa] = useState('');
+  const [mes, setMes] = useState<number>(new Date().getMonth() + 1);
+  const [ano, setAno] = useState<number>(new Date().getFullYear());
+  const [resumoTexto, setResumoTexto] = useState('');
+  const [resumoImagens, setResumoImagens] = useState<Array<{ id: string; src: string }>>([]);
+  const [uploadResumoContexto, setUploadResumoContexto] = useState<UploadResumoContexto | null>(null);
+  const [gerandoPdf, setGerandoPdf] = useState(false);
+
+  const [historicoGerado, setHistoricoGerado] = useState<Array<{
+    id: string;
+    titulo: string;
+    periodo: string;
+    dataGeracao: string;
+  }>>(() => {
+    try {
+      const saved = localStorage.getItem(RELATORIOS_PERIODICOS_LOCAL_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
 
   const [capaPadrao, setCapaPadrao] = useState<string | null>(null);
@@ -172,27 +171,31 @@ export default function RelatoriosMensaisPage() {
   const [capaSelecionadaCustom, setCapaSelecionadaCustom] = useState<CapaSelecionada | null>(null);
   const [ajusteCapa, setAjusteCapa] = useState<ReportCoverAdjustment>(AJUSTE_CAPA_INICIAL);
 
-  const [capaTravada, setCapaTravada] = useState(false);
-  const [configCapaInicializada, setConfigCapaInicializada] = useState(false);
-
   const [editorAberto, setEditorAberto] = useState(false);
   const [arrastandoEditor, setArrastandoEditor] = useState(false);
   const [ajusteEditor, setAjusteEditor] = useState<ReportCoverAdjustment>(AJUSTE_CAPA_INICIAL);
   const [salvandoAjuste, setSalvandoAjuste] = useState(false);
 
   const capaInputRef = useRef<HTMLInputElement | null>(null);
+  const resumoImagemInputRef = useRef<HTMLInputElement | null>(null);
+  const resumoTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const editorStageRef = useRef<HTMLDivElement | null>(null);
   const arrasteRef = useRef<EstadoArraste | null>(null);
 
-  const handleCamposCompartilhadosProducaoChange = useCallback(
-    (camposAtualizados: Partial<CamposCompartilhadosProducaoRelatorio>) => {
-      setCamposCompartilhadosProducao((prev) => ({
-        ...prev,
-        ...camposAtualizados,
-      }));
-    },
-    []
-  );
+  const anosDisponiveis = useMemo(() => {
+    const anoAtual = new Date().getFullYear();
+    return Array.from({ length: 12 }, (_, index) => anoAtual + 2 - index);
+  }, []);
+
+  const meses = [
+    'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+  ];
+
+  const limparFeedback = () => {
+    setMensagem('');
+    setErro('');
+  };
 
   const carregarCapasRepositorio = useCallback(async () => {
     setCarregandoCapasRepositorio(true);
@@ -237,25 +240,6 @@ export default function RelatoriosMensaisPage() {
   useEffect(() => {
     void carregarCapasRepositorio();
   }, [carregarCapasRepositorio]);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(CAPA_LOCAL_STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved) as CapaPersistida;
-        if (parsed?.travada) {
-          setCapaTravada(true);
-          if (typeof parsed.selectedCoverId === 'string' && parsed.selectedCoverId) {
-            setSelectedCoverId(parsed.selectedCoverId);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Erro ao carregar capa travada:', error);
-    } finally {
-      setConfigCapaInicializada(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (selectedCoverId === DEFAULT_COVER_ID) return;
@@ -316,21 +300,6 @@ export default function RelatoriosMensaisPage() {
       ativo = false;
     };
   }, [selectedCoverId, coverItems]);
-
-  useEffect(() => {
-    if (!configCapaInicializada) return;
-
-    if (!capaTravada) {
-      localStorage.removeItem(CAPA_LOCAL_STORAGE_KEY);
-      return;
-    }
-
-    const payload: CapaPersistida = {
-      travada: true,
-      selectedCoverId,
-    };
-    localStorage.setItem(CAPA_LOCAL_STORAGE_KEY, JSON.stringify(payload));
-  }, [configCapaInicializada, capaTravada, selectedCoverId]);
 
   useEffect(() => {
     if (!editorAberto) return undefined;
@@ -506,87 +475,148 @@ export default function RelatoriosMensaisPage() {
     }
   };
 
-  const handleFormSubmit = (relatorio: RelatorioMensal) => {
-    setRelatorioAtual(relatorio);
-    setViewMode('preview');
-  };
+  const abrirSeletorImagemResumo = () => {
+    const textarea = resumoTextareaRef.current;
+    const selectionStart = textarea?.selectionStart ?? (textarea?.value.length || 0);
+    const selectionEnd = textarea?.selectionEnd ?? (textarea?.value.length || 0);
+    setUploadResumoContexto({ selectionStart, selectionEnd });
 
-  const handleGerarPDF = async () => {
-    if (!relatorioAtual) return;
-
-    try {
-      const capaImagemPersonalizada = await obterCapaPersonalizadaParaPdf();
-      await gerarRelatorioMensalPDF(relatorioAtual, { capaImagemPersonalizada });
-
-      const novoRelatorio: RelatorioMensal = {
-        ...relatorioAtual,
-        id: Date.now().toString(),
-      };
-
-      const novosRelatorios = [novoRelatorio, ...relatoriosGerados];
-      setRelatoriosGerados(novosRelatorios);
-      localStorage.setItem(RELATORIOS_LOCAL_STORAGE_KEY, JSON.stringify(novosRelatorios));
-
-      alert('PDF gerado com sucesso!');
-      setViewMode('form');
-      setRelatorioAtual(null);
-    } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
-      alert('Erro ao gerar PDF. Por favor, tente novamente.');
+    if (resumoImagemInputRef.current) {
+      resumoImagemInputRef.current.value = '';
+      resumoImagemInputRef.current.click();
     }
   };
 
-  const handleGerarPDFsEmMassa = async (relatorios: RelatorioMensal[]) => {
-    if (relatorios.length === 0) return;
+  const inserirTokenNoResumo = (token: string) => {
+    const textarea = resumoTextareaRef.current;
+    const selectionStart = textarea?.selectionStart ?? (textarea?.value.length || 0);
+    const selectionEnd = textarea?.selectionEnd ?? (textarea?.value.length || 0);
+    const before = resumoTexto.slice(0, selectionStart);
+    const after = resumoTexto.slice(selectionEnd);
+    const prefix = before && !before.endsWith('\n') ? '\n' : '';
+    const suffix = after && !after.startsWith('\n') ? '\n' : '';
+    setResumoTexto(`${before}${prefix}${token}${suffix}${after}`);
+    textarea?.focus();
+  };
 
-    setGerandoPDFs(true);
+  const adicionarImagemResumo = (
+    dataUrl: string,
+    selectionStart?: number,
+    selectionEnd?: number
+  ) => {
+    const idImagem = `img_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const token = `[[img:${idImagem}]]`;
+    const start = selectionStart ?? resumoTexto.length;
+    const end = selectionEnd ?? resumoTexto.length;
+    const before = resumoTexto.slice(0, start);
+    const after = resumoTexto.slice(end);
+    const prefix = before && !before.endsWith('\n') ? '\n' : '';
+    const suffix = after && !after.startsWith('\n') ? '\n' : '';
+    setResumoImagens((prev) => [...prev, { id: idImagem, src: dataUrl }]);
+    setResumoTexto(`${before}${prefix}${token}${suffix}${after}`);
+  };
+
+  const handleImagemResumoSelecionada = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !uploadResumoContexto) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Selecione um arquivo de imagem.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = typeof reader.result === 'string' ? reader.result : '';
+      if (dataUrl) {
+        adicionarImagemResumo(dataUrl, uploadResumoContexto.selectionStart, uploadResumoContexto.selectionEnd);
+      }
+      setUploadResumoContexto(null);
+    };
+    reader.onerror = () => {
+      alert('Nao foi possivel carregar a imagem.');
+      setUploadResumoContexto(null);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removerImagemResumo = (imagemIndex: number) => {
+    const imagemRemovida = resumoImagens[imagemIndex];
+    if (!imagemRemovida) return;
+    const token = `[[img:${imagemRemovida.id}]]`;
+
+    setResumoImagens((prev) => prev.filter((_, idx) => idx !== imagemIndex));
+    setResumoTexto((prev) => prev.split(token).join('').replace(/\n{3,}/g, '\n\n').trim());
+  };
+
+  const handleGerarPdf = async () => {
+    limparFeedback();
+
+    if (!tituloCapa.trim()) {
+      setErro('Informe o Titulo da Capa.');
+      return;
+    }
+
+    if (!resumoTexto.trim()) {
+      setErro('Informe o texto do relatorio.');
+      return;
+    }
+
+    const relatorio: RelatorioPeriodico = {
+      tituloCapa: tituloCapa.trim(),
+      mes,
+      ano,
+      resumoTexto: resumoTexto.trim(),
+      resumoImagens,
+      dataGeracao: new Date().toISOString(),
+    };
+
+    setGerandoPdf(true);
     try {
       const capaImagemPersonalizada = await obterCapaPersonalizadaParaPdf();
-      await gerarRelatoriosMensaisEmMassa(relatorios, { capaImagemPersonalizada });
+      await gerarRelatorioPeriodicoPDF(relatorio, { capaImagemPersonalizada });
 
-      const novosRelatorios = relatorios.map((rel) => ({
-        ...rel,
-        id: `${Date.now()}_${rel.clienteId}`,
-      }));
+      const periodo = `${String(mes).padStart(2, '0')}/${ano}`;
+      const novosGerados = [
+        {
+          id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          titulo: relatorio.tituloCapa,
+          periodo,
+          dataGeracao: new Date().toISOString(),
+        },
+        ...historicoGerado,
+      ].slice(0, 15);
 
-      const todosRelatorios = [...novosRelatorios, ...relatoriosGerados];
-      setRelatoriosGerados(todosRelatorios);
-      localStorage.setItem(RELATORIOS_LOCAL_STORAGE_KEY, JSON.stringify(todosRelatorios));
-
-      alert(`${relatorios.length} PDF(s) gerado(s) com sucesso!`);
+      setHistoricoGerado(novosGerados);
+      localStorage.setItem(RELATORIOS_PERIODICOS_LOCAL_STORAGE_KEY, JSON.stringify(novosGerados));
+      setMensagem('Relatorio periodico gerado com sucesso.');
     } catch (error) {
-      console.error('Erro ao gerar PDFs:', error);
-      alert('Erro ao gerar PDFs. Por favor, tente novamente.');
+      console.error('Erro ao gerar relatorio periodico:', error);
+      setErro(error instanceof Error ? error.message : 'Nao foi possivel gerar o relatorio.');
     } finally {
-      setGerandoPDFs(false);
+      setGerandoPdf(false);
     }
   };
 
-  const handleVoltar = () => {
-    setViewMode('form');
-  };
-
-  const meses = [
-    'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
-  ];
-  const dataAtual = new Date();
-  const mesEditor = relatorioAtual?.mes ? relatorioAtual.mes - 1 : dataAtual.getMonth();
-  const anoEditor = relatorioAtual?.ano || dataAtual.getFullYear();
-  const mesNomeEditor = meses[mesEditor] || 'Mes';
-  const periodoEditor = `${mesNomeEditor} ${anoEditor}`;
-  const clienteEditor = relatorioAtual?.clienteNome || 'Cliente';
+  const periodoEditor = `${meses[mes - 1] || 'Mes'} ${ano}`;
 
   const usandoCapaPadrao = selectedCoverId === DEFAULT_COVER_ID;
   const temImagemNaPreview = Boolean(usandoCapaPadrao ? capaPadrao : capaSelecionadaCustom?.src);
   const podeAjustarCorte = Boolean(!usandoCapaPadrao && capaSelecionadaCustom);
 
   return (
-    <div className="relatorios-mensais-page">
+    <div className="relatorios-periodicos-page">
       <div className="page-header">
-        <h1>Relatórios</h1>
-        <p className="page-subtitle">Gere relatorios padronizados para seus clientes</p>
+        <h1>Relatórios Periódicos</h1>
+        <p className="page-subtitle">
+          Gere um relatorio unico por tema, sem apuracao de resultado e sem nome de cliente.
+        </p>
       </div>
+
+      {(mensagem || erro) && (
+        <div className={`relatorios-periodicos-banner ${erro ? 'error' : 'success'}`}>
+          {erro || mensagem}
+        </div>
+      )}
 
       <Card title="Capa do Relatorio" className="capa-relatorio-card">
         <div className="capa-relatorio-content">
@@ -665,22 +695,13 @@ export default function RelatoriosMensaisPage() {
               </button>
             </div>
 
-            <label className="capa-relatorio-lock">
-              <input
-                type="checkbox"
-                checked={capaTravada}
-                onChange={(event) => setCapaTravada(event.target.checked)}
-              />
-              Travar capa
-            </label>
-
             <p className="capa-relatorio-info">
               {usandoCapaPadrao
                 ? 'Usando capa padrao'
                 : `Capa selecionada: ${capaSelecionadaCustom?.nomeArquivo || 'Personalizada'}`}
             </p>
             <p className="capa-relatorio-info">
-              Repositorio local: clique em uma miniatura para selecionar, use "+" para enviar nova capa.
+              Repositorio local: clique em uma miniatura para selecionar e use "+" para enviar nova capa.
             </p>
             {erroCapasRepositorio && (
               <>
@@ -788,16 +809,17 @@ export default function RelatoriosMensaisPage() {
               <div className="capa-editor-grid" />
               <div className="capa-editor-texto-topo">UP Gestao</div>
               <div className="capa-editor-texto-base">
-                <div className="capa-editor-texto-titulo">Report Mensal</div>
-                <div className="capa-editor-texto-cliente">{clienteEditor}</div>
+                <div className="capa-editor-texto-cliente relatorio-periodico-capa-titulo">
+                  {tituloCapa.trim() || 'Titulo da Capa'}
+                </div>
                 <div className="capa-editor-texto-periodo">{periodoEditor}</div>
               </div>
             </div>
 
             <div className="capa-editor-controls">
-              <label htmlFor="capa-editor-zoom">Zoom</label>
+              <label htmlFor="capa-editor-zoom-periodico">Zoom</label>
               <input
-                id="capa-editor-zoom"
+                id="capa-editor-zoom-periodico"
                 type="range"
                 min={ZOOM_MIN}
                 max={ZOOM_MAX}
@@ -838,95 +860,133 @@ export default function RelatoriosMensaisPage() {
         </div>
       )}
 
-      {viewMode === 'form' && (
-        <>
-          <div className="modo-geracao-toggle">
-            <button
-              className={`toggle-btn ${modoGeracao === 'individual' ? 'active' : ''}`}
-              onClick={() => setModoGeracao('individual')}
-            >
-              Individual
-            </button>
-            <button
-              className={`toggle-btn ${modoGeracao === 'massa' ? 'active' : ''}`}
-              onClick={() => setModoGeracao('massa')}
-            >
-              Em Massa
-            </button>
-            <button
-              className={`toggle-btn ${modoGeracao === 'planilha' ? 'active' : ''}`}
-              onClick={() => setModoGeracao('planilha')}
-            >
-              Via Planilha
-            </button>
+      <Card title="Relatório Periódico" className="form-relatorio relatorio-periodico-form">
+        <input
+          ref={resumoImagemInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImagemResumoSelecionada}
+          style={{ display: 'none' }}
+        />
+
+        <div className="form-section">
+          <h3>Dados da Capa</h3>
+          <div className="form-group">
+            <label htmlFor="periodico-titulo-capa">Titulo da Capa *</label>
+            <input
+              id="periodico-titulo-capa"
+              type="text"
+              value={tituloCapa}
+              onChange={(event) => setTituloCapa(event.target.value)}
+              placeholder="Ex.: Relatorio Especial de Mercado"
+            />
           </div>
 
-          {modoGeracao === 'individual' ? (
-            <FormRelatorio
-              clientes={clientes}
-              onSubmit={handleFormSubmit}
-              camposCompartilhados={camposCompartilhadosProducao}
-              onCamposCompartilhadosChange={handleCamposCompartilhadosProducaoChange}
-            />
-          ) : modoGeracao === 'massa' ? (
-            <FormRelatorioMassa
-              clientes={clientes}
-              onGerarPDFs={handleGerarPDFsEmMassa}
-              camposCompartilhados={camposCompartilhadosProducao}
-              onCamposCompartilhadosChange={handleCamposCompartilhadosProducaoChange}
-            />
-          ) : (
-            <FormRelatorioViaPlanilha
-              clientes={clientes}
-              onGerarPDFs={handleGerarPDFsEmMassa}
-              camposCompartilhados={camposCompartilhadosProducao}
-              onCamposCompartilhadosChange={handleCamposCompartilhadosProducaoChange}
-            />
-          )}
-
-          {gerandoPDFs && (
-            <div className="loading-overlay">
-              <div className="loading-spinner"></div>
-              <p>Gerando PDFs... Por favor, aguarde.</p>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="periodico-mes">Mes *</label>
+              <select
+                id="periodico-mes"
+                value={mes}
+                onChange={(event) => setMes(Number(event.target.value))}
+              >
+                {meses.map((mesLabel, index) => (
+                  <option key={mesLabel} value={index + 1}>
+                    {mesLabel}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+            <div className="form-group">
+              <label htmlFor="periodico-ano">Ano *</label>
+              <YearSelect
+                id="periodico-ano"
+                value={ano}
+                years={anosDisponiveis}
+                onChange={setAno}
+              />
+            </div>
+          </div>
+        </div>
 
-          {relatoriosGerados.length > 0 && (
-            <Card title="Relatorios Gerados" className="relatorios-list">
-              <div className="relatorios-grid">
-                {relatoriosGerados.slice(0, 10).map((relatorio) => (
-                  <div key={relatorio.id} className="relatorio-item">
-                    <div className="relatorio-info">
-                      <h4>{relatorio.clienteNome}</h4>
-                      <p>
-                        {relatorio.mes}/{relatorio.ano}
-                      </p>
-                    </div>
-                    <div className="relatorio-actions">
+        <div className="form-section">
+          <h3>Texto e Imagens</h3>
+          <div className="form-group">
+            <label htmlFor="periodico-resumo">Conteudo do relatorio *</label>
+            <textarea
+              id="periodico-resumo"
+              value={resumoTexto}
+              onChange={(event) => setResumoTexto(event.target.value)}
+              rows={12}
+              placeholder="Escreva aqui o resumo do que aconteceu no periodo..."
+              ref={resumoTextareaRef}
+            />
+            <div className="comentario-actions">
+              <button type="button" className="btn-anexo" onClick={abrirSeletorImagemResumo}>
+                Adicionar imagem
+              </button>
+              {resumoImagens.length > 0 && (
+                <span className="comentario-count">{resumoImagens.length} imagem(ns)</span>
+              )}
+            </div>
+            <p className="comentario-hint">
+              Use os tokens <code>[[img:ID]]</code> para posicionar imagens no texto.
+            </p>
+
+            {resumoImagens.length > 0 && (
+              <div className="comentario-imagens">
+                {resumoImagens.map((imagem, index) => (
+                  <div key={imagem.id} className="comentario-imagem">
+                    <img src={imagem.src} alt={`Resumo imagem ${index + 1}`} />
+                    <div className="comentario-imagem-meta">
+                      <span className="comentario-token">[[img:{imagem.id}]]</span>
                       <button
-                        onClick={() => {
-                          setRelatorioAtual(relatorio);
-                          setViewMode('preview');
-                        }}
-                        className="btn-view"
+                        type="button"
+                        className="btn-inserir-token"
+                        onClick={() => inserirTokenNoResumo(`[[img:${imagem.id}]]`)}
                       >
-                        Ver
+                        Inserir no texto
                       </button>
                     </div>
+                    <button
+                      type="button"
+                      className="btn-remover-imagem"
+                      onClick={() => removerImagemResumo(index)}
+                    >
+                      Remover
+                    </button>
                   </div>
                 ))}
               </div>
-            </Card>
-          )}
-        </>
-      )}
+            )}
+          </div>
+        </div>
 
-      {viewMode === 'preview' && relatorioAtual && (
-        <PreviewRelatorio
-          relatorio={relatorioAtual}
-          onGerarPDF={handleGerarPDF}
-          onVoltar={handleVoltar}
-        />
+        <div className="form-actions">
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={handleGerarPdf}
+            disabled={gerandoPdf}
+          >
+            {gerandoPdf ? 'Gerando PDF...' : 'Emitir relatorio'}
+          </button>
+        </div>
+      </Card>
+
+      {historicoGerado.length > 0 && (
+        <Card title="Relatórios Periódicos Emitidos" className="relatorios-list">
+          <div className="relatorios-grid">
+            {historicoGerado.map((item) => (
+              <div key={item.id} className="relatorio-item">
+                <div className="relatorio-info">
+                  <h4>{item.titulo}</h4>
+                  <p>{item.periodo}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
       )}
     </div>
   );

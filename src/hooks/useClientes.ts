@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Cliente, Aplicacao, SaldoCliente } from '../types';
 import { mockClientes, mockAplicacoes, mockSaldos } from '../data/mockData';
+import { savePortSharedStorageValue } from '../services/portSharedStorage';
 
 export function useClientes() {
   const normalizarStatus = (status?: string) => {
@@ -39,6 +40,7 @@ export function useClientes() {
       // Salvar no localStorage
       const dadosSerializados = JSON.stringify(clientesParaSalvar);
       localStorage.setItem('clientes', dadosSerializados);
+      void savePortSharedStorageValue('clientes', clientesParaSalvar);
       
       // Verificar se foi salvo corretamente
       const verificado = localStorage.getItem('clientes');
@@ -49,11 +51,13 @@ export function useClientes() {
         if (clientesVerificados.length !== clientesParaSalvar.length) {
           console.warn('⚠️ Aviso: Número de clientes não corresponde. Tentando salvar novamente...');
           localStorage.setItem('clientes', dadosSerializados);
+          void savePortSharedStorageValue('clientes', clientesParaSalvar);
         }
       } else {
         console.error('❌ Erro: Falha ao salvar no localStorage!');
         // Tentar novamente
         localStorage.setItem('clientes', dadosSerializados);
+        void savePortSharedStorageValue('clientes', clientesParaSalvar);
       }
       
       // Disparar evento customizado para sincronizar outras instâncias do hook
@@ -64,7 +68,9 @@ export function useClientes() {
       setClientesState(normalizarClientes(novosClientes));
       // Tentar salvar novamente
       try {
-        localStorage.setItem('clientes', JSON.stringify(normalizarClientes(novosClientes)));
+        const clientesNormalizados = normalizarClientes(novosClientes);
+        localStorage.setItem('clientes', JSON.stringify(clientesNormalizados));
+        void savePortSharedStorageValue('clientes', clientesNormalizados);
       } catch (retryError) {
         console.error('❌ Erro ao tentar salvar novamente:', retryError);
       }

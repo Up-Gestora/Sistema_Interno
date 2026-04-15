@@ -1,0 +1,22 @@
+services:
+  - type: web
+    runtime: docker
+    name: sistema-interno
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: STORAGE_ROOT_DIR
+        value: /app/storage
+      - key: ASAAS_API_KEY
+        sync: false
+      - key: ASAAS_AMBIENTE
+        value: production
+      - key: ASSINAFY_API_KEY
+        sync: false
+      - key: ASSINAFY_AMBIENTE
+        value: production
+    disk:
+      name: sistema-storage
+      mountPath: /app/storage
+      sizeGB: 1
